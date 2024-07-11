@@ -1,21 +1,37 @@
 package com.baldomeronapoli.eventplanner.presentation
 
 import com.baldomeronapoli.eventplanner.domain.usecases.GetGreetingUseCase
-import com.baldomeronapoli.eventplanner.mvi.KmmStateFlow
 import com.baldomeronapoli.eventplanner.mvi.KmmViewModel
-import com.baldomeronapoli.eventplanner.mvi.asKmmStateFlow
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GreetingViewModel(private val getGreetingUseCase: GetGreetingUseCase) : KmmViewModel() {
+class GreetingViewModel(private val getGreetingUseCase: GetGreetingUseCase) :
+    KmmViewModel<GreetingState, GreetingEvent>(GreetingState.default()) {
 
-    private val _state = MutableStateFlow(GreetingState.default())
-    val state: KmmStateFlow<GreetingState> get() = _state.asKmmStateFlow()
+    private val eventChannel = Channel<GreetingEvent>(Channel.UNLIMITED)
+    private val eventsFlow = eventChannel.receiveAsFlow()
 
     init {
-        getGreeting()
+        observeEvents()
+    }
+
+    private fun observeEvents() {
+        scope.launch {
+            eventsFlow.collect { event ->
+                when (event) {
+                    is GreetingEvent.LoadData -> getGreeting()
+                }
+            }
+        }
+    }
+
+    fun sendEvent(event: GreetingEvent) {
+        scope.launch {
+            eventChannel.send(event)
+        }
     }
 
     private fun getGreeting() {
