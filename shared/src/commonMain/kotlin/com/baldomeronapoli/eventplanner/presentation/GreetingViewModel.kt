@@ -1,16 +1,18 @@
 package com.baldomeronapoli.eventplanner.presentation
 
 import com.baldomeronapoli.eventplanner.domain.usecases.GetGreetingUseCase
+import com.baldomeronapoli.eventplanner.mvi.KmmStateFlow
+import com.baldomeronapoli.eventplanner.mvi.KmmViewModel
+import com.baldomeronapoli.eventplanner.mvi.asKmmStateFlow
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class GreetingViewModel(private val getGreetingUseCase: GetGreetingUseCase) : BaseViewModel() {
+class GreetingViewModel(private val getGreetingUseCase: GetGreetingUseCase) : KmmViewModel() {
 
-    private val _greet: MutableStateFlow<String> = MutableStateFlow("")
-
-    val greet: StateFlow<String> get() = _greet
+    private val _state = MutableStateFlow(GreetingState.default())
+    val state: KmmStateFlow<GreetingState> get() = _state.asKmmStateFlow()
 
     init {
         getGreeting()
@@ -20,14 +22,24 @@ class GreetingViewModel(private val getGreetingUseCase: GetGreetingUseCase) : Ba
         scope.launch {
             getGreetingUseCase().collect { result ->
                 when (result) {
-                    is NetworkResult.Success -> _greet.emit(result.data)
-                    is NetworkResult.Error -> _greet.emit(result.exception)
-                    is NetworkResult.Loading -> _greet.emit("cargando.....")
+                    is NetworkResult.Success -> _state.update {
+                        it.copy(
+                            isLoading = false,
+                            data = result.data
+                        )
+                    }
+
+                    is NetworkResult.Loading -> _state.update { it.copy(isLoading = true) }
+                    is NetworkResult.Error -> handleException(result.exception)
                 }
 
             }
 
         }
 
+    }
+
+    private fun handleException(e: String) {
+        _state.update { it.copy(isLoading = false, errorMessage = e) }
     }
 }

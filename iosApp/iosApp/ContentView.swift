@@ -7,22 +7,29 @@ extension ContentView {
     @MainActor
     class GreetingViewModelWrapper: ObservableObject {
         
-        let greetingViewModel: GreetingViewModel
+        @Published var state: GreetingState = GreetingState.companion.default()
+    
+        private let viewModel: GreetingViewModel
+        private var stateSubscription: KmmSubscription!
         
         init() {
-            greetingViewModel = GreetingInjector().greetingViewModel
-            greetValue = greetingViewModel.greet.value
+            self.viewModel = ViewModelInjector().greetingViewModel
+            subscribeState()
         }
         
-        @Published var greetValue: String
+
         
-        func startObserving() {
-            Task {
-                for await value in greetingViewModel.greet {
-                    self.greetValue = value
+        private func subscribeState() {
+            stateSubscription = viewModel.state.subscribe(
+                onEach: { state in
+                    self.state = state!
+                },
+                onCompletion: { error in
+                    if let error = error {
+                        print(error)
+                    }
                 }
-                self.greetValue = greetingViewModel.greet.value
-            }
+            )
         }
     }
 }
@@ -32,11 +39,8 @@ struct ContentView: View {
 
 	var body: some View {
         VStack{
-            Text(viewModel.greetValue)
-        }.onAppear{
-            self.viewModel.startObserving()
+            Text(viewModel.state.data)
         }
-  
 	}
 }
 

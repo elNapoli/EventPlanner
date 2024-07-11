@@ -16,7 +16,7 @@ fun initKoin() {
     }
 }
 
-class GreetingInjector : KoinComponent {
+class ViewModelInjector : KoinComponent {
 
     val greetingViewModel: GreetingViewModel by inject()
 }
