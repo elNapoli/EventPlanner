@@ -46,4 +46,8 @@ dependencies {
 
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    implementation(libs.androidx.navigation.compose)
+
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.3")
 }
