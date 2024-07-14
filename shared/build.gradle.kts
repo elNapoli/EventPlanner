@@ -21,6 +21,7 @@ kotlin {
         it.binaries.framework {
             baseName = "shared"
             isStatic = true
+            freeCompilerArgs += listOf("-Xbinary=bundleId=com.baldomeronapoli.eventplanner.shared")
         }
     }
 

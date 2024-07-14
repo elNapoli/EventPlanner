@@ -47,6 +47,7 @@ constructor(initialState: STATE) :
         onSuccess: ((data: T) -> Unit),
         useCase: suspend () -> Flow<NetworkResult<T>>,
     ) {
+        // TODO: no funciona el loadingManager....
         val defaultLoadingUpdater = { isLoading: Boolean ->
             loadingManager.setLoading(isLoading)
         }
