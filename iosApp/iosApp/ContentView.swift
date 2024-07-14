@@ -1,5 +1,6 @@
-import shared
 import SwiftUI
+import shared
+
 
 extension ContentView {
     @MainActor
@@ -38,9 +39,15 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            Text(viewModel.state.data)
+            if viewModel.state.isLoading{
+                Text("cargando....")
+            }
+            else {
+                Text(viewModel.state.data)
+            }
+        
             Button(action: {
-                viewModel.sendEvent(event: GreetingEvent.OtroEvento())
+                viewModel.sendEvent(event: GreetingEvent.LoadData())
             }) {
                 Text("Buswcnado datos")
             }
@@ -53,3 +60,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView(viewModel: .init())
     }
 }
+
