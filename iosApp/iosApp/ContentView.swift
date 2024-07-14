@@ -40,9 +40,9 @@ struct ContentView: View {
         VStack {
             Text(viewModel.state.data)
             Button(action: {
-                viewModel.sendEvent(event: GreetingEvent.LoadData())
+                viewModel.sendEvent(event: GreetingEvent.OtroEvento())
             }) {
-                Text("Load Data")
+                Text("Buswcnado datos")
             }
         }
     }

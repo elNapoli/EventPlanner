@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flow
 class GreetingRepositoryImpl : GreetingRepository {
     override suspend fun getGreeting(): Flow<NetworkResult<String>> = flow {
         emit(NetworkResult.Loading(true))
-        delay(2000)
-        emit(NetworkResult.Success("Hola"))
+        delay(4000)
+        emit(NetworkResult.Success("esto es una prueba y estoy viendo que hcucha pasa"))
     }
 }

@@ -1,5 +1,7 @@
 package com.baldomeronapoli.eventplanner.mvi
 
+import com.baldomeronapoli.eventplanner.domain.usecases.CoroutinesUseCaseRunner
+import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -11,9 +13,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-actual abstract class KmmViewModel<STATE : KmmState, EVENT : KmmEvent> actual constructor(private val initialState: STATE) {
-    protected actual val scope: CoroutineScope =
+actual abstract class KmmViewModel<STATE : KmmState, EVENT : KmmEvent> actual
+constructor(initialState: STATE) : CoroutinesUseCaseRunner {
+    actual override val scope: CoroutineScope =
         CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
+    actual val loadingManager = LoadingManager()
+    actual val errorManager = ErrorManager()
 
     fun onCleared() {
         scope.cancel()
@@ -39,5 +45,27 @@ actual abstract class KmmViewModel<STATE : KmmState, EVENT : KmmEvent> actual co
 
     protected actual fun initialize() {
         observeEvents()
+    }
+
+
+    actual override fun <T> withUseCaseScope(
+        loadingUpdater: ((Boolean) -> Unit)?,
+        onError: ((Throwable) -> Unit)?,
+        onSuccess: ((data: T) -> Unit),
+        useCase: suspend () -> Flow<NetworkResult<T>>,
+    ) {
+        val defaultLoadingUpdater = { isLoading: Boolean ->
+            loadingManager.setLoading(isLoading)
+        }
+        super.withUseCaseScope(
+            loadingUpdater = {
+                loadingUpdater?.invoke(it) ?: defaultLoadingUpdater(it)
+            },
+            onError = {
+                onError?.invoke(it) ?: errorManager.pushError(it)
+            },
+            onSuccess = onSuccess,
+            useCase = useCase
+        )
     }
 }
