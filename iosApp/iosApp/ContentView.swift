@@ -5,32 +5,17 @@ import shared
 extension ContentView {
     @MainActor
     class GreetingViewModelWrapper: ObservableObject {
-        @Published var state: GreetingState = GreetingState.companion.default()
+       
 
         private let viewModel: GreetingViewModel
-        private var stateSubscription: KmmSubscription!
+        private let hola: GreetingContract.hola
+        
 
         init() {
             viewModel = ViewModelInjector().greetingViewModel
-            subscribeState()
         }
 
-        func sendEvent(event: GreetingEvent) {
-            viewModel.sendEvent(event: event)
-        }
 
-        private func subscribeState() {
-            stateSubscription = viewModel.state.subscribe(
-                onEach: { state in
-                    self.state = state!
-                },
-                onCompletion: { error in
-                    if let error = error {
-                        print(error)
-                    }
-                }
-            )
-        }
     }
 }
 
@@ -39,15 +24,10 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
-            if viewModel.state.isLoading{
-                Text("cargando....")
-            }
-            else {
-                Text(viewModel.state.data)
-            }
+            Text("adfadsf")
         
             Button(action: {
-                viewModel.sendEvent(event: GreetingEvent.LoadData())
+              
             }) {
                 Text("Buswcnado datos")
             }

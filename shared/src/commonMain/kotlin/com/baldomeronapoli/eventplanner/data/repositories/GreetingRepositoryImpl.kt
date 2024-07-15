@@ -10,6 +10,6 @@ class GreetingRepositoryImpl : GreetingRepository {
     override suspend fun getGreeting(): Flow<NetworkResult<String>> = flow {
         emit(NetworkResult.Loading(true))
         delay(4000)
-        emit(NetworkResult.Success("funciona ?"))
+        emit(NetworkResult.Success("opopop ?"))
     }
 }

@@ -14,26 +14,28 @@ interface BaseUiSate
 interface BaseUiAction
 interface BaseSideEffect
 
-abstract class BaseViewModel(initialUiState: BaseUiSate) :
-    KmmViewModel<BaseUiSate, BaseUiAction, BaseSideEffect>(initialUiState) {
+abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFECT : BaseSideEffect>(
+    initialUiState: STATE
+) :
+    KmmViewModel() {
 
     private val _uiState = MutableStateFlow(initialUiState)
-    val uiState: StateFlow<BaseUiSate> = _uiState.asStateFlow()
+    val uiState: StateFlow<STATE> = _uiState.asStateFlow()
 
-    private val _sideEffect by lazy { Channel<BaseSideEffect>() }
-    val sideEffect: Flow<BaseSideEffect> by lazy { _sideEffect.receiveAsFlow() }
+    private val _sideEffect by lazy { Channel<SIDEEFFECT>() }
+    val sideEffect: Flow<SIDEEFFECT> by lazy { _sideEffect.receiveAsFlow() }
 
-    abstract fun onAction(uiAction: BaseUiAction)
+    abstract fun onAction(uiAction: ACTION)
 
-    fun updateUiState(newUiState: BaseUiSate) {
+    fun updateUiState(newUiState: STATE) {
         _uiState.update { newUiState }
     }
 
-    fun updateUiState(block: BaseUiSate.() -> BaseUiSate) {
+    fun updateUiState(block: STATE.() -> STATE) {
         _uiState.update(block)
     }
 
-    fun CoroutineScope.emitSideEffect(effect: BaseSideEffect) {
+    fun CoroutineScope.emitSideEffect(effect: SIDEEFFECT) {
         this.launch { _sideEffect.send(effect) }
     }
 }

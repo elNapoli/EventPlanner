@@ -20,14 +20,14 @@ fun NavGraphBuilder.homeGraph(
     ) {
         composable(HomeRoute.Index.path) {
             val viewmodel: GreetingViewModel = koinViewModel()
-            val state = viewmodel.state.collectAsStateWithLifecycle()
+            val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             HomeScreen(
-                state = state.value,
-                sendEvent = viewmodel::sendEvent,
-                goToTest = {
-                    navController.navigate(HomeRoute.Test.path)
-                }
-            )
+                uiState = uiState.value,
+                sideEffect = viewmodel.sideEffect,
+                onAction = viewmodel::onAction
+            ) {
+                navController.navigate(HomeRoute.Test.path)
+            }
         }
 
         composable(HomeRoute.Test.path) {
