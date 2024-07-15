@@ -8,7 +8,7 @@ extension ContentView {
        
 
         private let viewModel: GreetingViewModel
-        private let hola: GreetingContract.hola
+  
         
 
         init() {

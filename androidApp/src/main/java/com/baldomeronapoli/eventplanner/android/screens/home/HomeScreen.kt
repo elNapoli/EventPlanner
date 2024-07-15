@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.SideEffect
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiAction
@@ -50,6 +51,8 @@ fun HomeScreen(
 
 }
 
+
+@Preview
 @Composable
 fun PreviewHomeScreen() {
     val viewmodel: GreetingViewModel = koinViewModel()
