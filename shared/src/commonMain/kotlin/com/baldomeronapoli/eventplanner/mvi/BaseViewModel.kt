@@ -16,8 +16,7 @@ interface BaseSideEffect
 
 abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFECT : BaseSideEffect>(
     initialUiState: STATE
-) :
-    KmmViewModel() {
+) : KmmViewModel() {
 
     private val _uiState = MutableStateFlow(initialUiState)
     val uiState: StateFlow<STATE> = _uiState.asStateFlow()
@@ -26,10 +25,6 @@ abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFE
     val sideEffect: Flow<SIDEEFFECT> by lazy { _sideEffect.receiveAsFlow() }
 
     abstract fun onAction(uiAction: ACTION)
-
-    fun updateUiState(newUiState: STATE) {
-        _uiState.update { newUiState }
-    }
 
     fun updateUiState(block: STATE.() -> STATE) {
         _uiState.update(block)

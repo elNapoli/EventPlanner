@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -7,7 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.baldomeronapoli.eventplanner.presentation.GreetingContract
+import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.SideEffect
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiAction
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.GreetingViewModel
 import kotlinx.coroutines.flow.Flow
 import org.koin.androidx.compose.koinViewModel
@@ -15,13 +19,18 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    uiState: GreetingContract.UiState,
-    sideEffect: Flow<GreetingContract.SideEffect>,
-    onAction: (GreetingContract.UiAction) -> Unit,
+    uiState: UiState,
+    sideEffect: Flow<SideEffect>,
+    onAction: (UiAction) -> Unit,
     goToTest: () -> Unit
 ) {
-
-
+    CollectSideEffect(sideEffect) {
+        when (it) {
+            SideEffect.ShowCountCanNotBeNegativeToast -> {
+                Log.e("TAG", "HomeScreen: ")
+            }
+        }
+    }
     Column {
         if (uiState.isLoading) {
             Text("Cargando...")
@@ -29,7 +38,7 @@ fun HomeScreen(
             Text(uiState.data)
         }
 
-        Button(onClick = { onAction(GreetingContract.UiAction.LoadGreeting) }) {
+        Button(onClick = { onAction(UiAction.LoadGreeting) }) {
             Text(text = "buscar datos")
         }
 
@@ -37,6 +46,7 @@ fun HomeScreen(
             Text(text = "Ir a otra pantalla")
         }
     }
+
 
 }
 
