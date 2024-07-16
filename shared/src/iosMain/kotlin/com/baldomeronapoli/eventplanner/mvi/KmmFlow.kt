@@ -19,8 +19,9 @@ actual class KmmFlow<T> actual constructor(
         source.collect(collector)
     }
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
     fun subscribe(onEach: (T) -> Unit, onCompletion: (Throwable?) -> Unit): KmmSubscription {
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
         source
             .onEach { onEach(it) }
             .catch { onCompletion(it) }

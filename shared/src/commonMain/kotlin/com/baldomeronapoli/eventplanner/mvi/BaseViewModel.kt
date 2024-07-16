@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.mvi
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +17,7 @@ abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFE
     val uiState: KmmStateFlow<STATE> = _uiState.asKmmStateFlow()
 
     private val _sideEffect = MutableSharedFlow<SIDEEFFECT>()
-    val sideEffect: Flow<SIDEEFFECT> = _sideEffect.asKmmFlow()
+    val sideEffect: KmmFlow<SIDEEFFECT> = _sideEffect.asKmmFlow()
 
     abstract fun onAction(uiAction: ACTION)
 
