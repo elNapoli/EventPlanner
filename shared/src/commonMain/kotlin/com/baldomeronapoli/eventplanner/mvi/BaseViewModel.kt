@@ -1,10 +1,8 @@
 package com.baldomeronapoli.eventplanner.mvi
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -19,8 +17,8 @@ abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFE
     private val _uiState = MutableStateFlow(initialUiState)
     val uiState: KmmStateFlow<STATE> = _uiState.asKmmStateFlow()
 
-    private val _sideEffect by lazy { Channel<SIDEEFFECT>() }
-    val sideEffect: Flow<SIDEEFFECT> by lazy { _sideEffect.receiveAsFlow() }
+    private val _sideEffect = MutableSharedFlow<SIDEEFFECT>()
+    val sideEffect: Flow<SIDEEFFECT> = _sideEffect.asKmmFlow()
 
     abstract fun onAction(uiAction: ACTION)
 
@@ -28,7 +26,9 @@ abstract class BaseViewModel<STATE : BaseUiSate, ACTION : BaseUiAction, SIDEEFFE
         _uiState.update(block)
     }
 
-    fun CoroutineScope.emitSideEffect(effect: SIDEEFFECT) {
-        this.launch { _sideEffect.send(effect) }
+    protected fun emitSideEffect(sideEffect: SIDEEFFECT) {
+        scope.launch {
+            _sideEffect.emit(sideEffect)
+        }
     }
 }

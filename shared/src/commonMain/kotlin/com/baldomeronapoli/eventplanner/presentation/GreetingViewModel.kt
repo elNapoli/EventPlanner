@@ -15,8 +15,9 @@ class GreetingViewModel(
 
     private fun getGreeting() = scope.useCaseRunner(
         loadingUpdater = { value -> updateUiState { copy(isLoading = value) } },
-        onError = { scope.emitSideEffect(SideEffect.ShowCountCanNotBeNegativeToast) },
+        onError = { emitSideEffect(SideEffect.ShowCountCanNotBeNegativeToast) },
         onSuccess = { data ->
+            emitSideEffect(SideEffect.ShowCountCanNotBeNegativeToast)
             updateUiState { copy(data = data) }
         },
         useCase = { getGreetingUseCase() }

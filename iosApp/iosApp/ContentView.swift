@@ -9,11 +9,13 @@ extension ContentView {
         @Published var uiState =  GreetingContractUiState.companion.initialUiState()
         private let viewModel: GreetingViewModel
         private var stateSubscription: KmmSubscription!
+        private var sideEffectSubscription: KmmSubscription!
         
 
         init() {
             viewModel = ViewModelInjector().greetingViewModel
             subscribeState()
+            subscribeSideEffect()
         }
 
         func sendEvent(event: GreetingContractUiAction) {
@@ -32,6 +34,18 @@ extension ContentView {
                 }
             )
         }
+        private func subscribeSideEffect() {
+                 sideEffectSubscription = viewModel.sideEffect.subscribe(
+                     onEach: { sideEffect in
+                         self.handleSideEffect(sideEffect)
+                     },
+                     onCompletion: { error in
+                         if let error = error {
+                             print(error)
+                         }
+                     }
+                 )
+             }
         
 
     }
