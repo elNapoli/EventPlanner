@@ -15,18 +15,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
-import com.baldomeronapoli.eventplanner.android.models.OnboardPage
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 
 @Composable
 fun OnBoardDetails(
-    modifier: Modifier = Modifier, currentPage: OnboardPage
+    modifier: Modifier = Modifier, title: String, description: String
 ) {
     Column(
         modifier = modifier
     ) {
         Text(
-            text = currentPage.title,
+            text = title,
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center,
             color = GrayTitle,
@@ -35,7 +34,7 @@ fun OnBoardDetails(
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = currentPage.description,
+            text = description,
             style = MaterialTheme.typography.labelLarge,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
@@ -48,6 +47,6 @@ fun OnBoardDetails(
 @Composable
 fun PreviewOnBoardDetailsLight(modifier: Modifier = Modifier) {
     NPreview {
-        OnBoardDetails(currentPage = onboardPagesList[0])
+        OnBoardDetails(title = onboardPagesList[0].title, description = onboardPagesList[0].description)
     }
 }
