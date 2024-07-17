@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.onboarding
+package com.baldomeronapoli.eventplanner.android.views.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -21,7 +21,7 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray80
 
 
 @Composable
-fun TabSelector(
+fun TabSelectorView(
     modifier: Modifier = Modifier,
     onboardPages: List<OnboardPage>,
     currentPage: Int,
@@ -40,7 +40,7 @@ fun TabSelector(
                     .size(8.dp)
                     .background(
                         color = if (index == currentPage) MaterialTheme.colorScheme.primary
-                        else Gray80, shape = RoundedCornerShape(4.dp)
+                        else MaterialTheme.colorScheme.primary.copy(alpha = 0.2F), shape = RoundedCornerShape(4.dp)
                     )
             )
         }
@@ -53,7 +53,7 @@ fun PreviewTabSelectorLight(modifier: Modifier = Modifier) {
     val onboardPages = onboardPagesList
 
     NPreview {
-        TabSelector(
+        TabSelectorView(
             onboardPages = onboardPages,
             currentPage = 0
         ) {

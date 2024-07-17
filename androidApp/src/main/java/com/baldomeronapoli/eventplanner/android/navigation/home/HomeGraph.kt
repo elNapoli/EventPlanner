@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
-import com.baldomeronapoli.eventplanner.android.screens.home.HomeScreen
+import com.baldomeronapoli.eventplanner.android.views.home.HomeScreen
 import com.baldomeronapoli.eventplanner.presentation.GreetingViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,7 +27,7 @@ fun NavGraphBuilder.homeGraph(
                 onAction = viewmodel::onAction,
             ) {
                 onNavigationEvent(NavigationEvent.OnNavigateToScreen(HomeRoute.Test))
-        
+
             }
         }
 

@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.onboarding
+package com.baldomeronapoli.eventplanner.android.views.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -16,7 +16,7 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
 
 @Composable
-fun OnboardScreenPage(title: String, description: String, imageRes: Int) {
+fun OnboardPageView(title: String, description: String, imageRes: Int) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -31,7 +31,7 @@ fun OnboardScreenPage(title: String, description: String, imageRes: Int) {
             contentScale = ContentScale.FillWidth
         )
 
-        OnBoardDetails(
+        OnBoardDetailsView(
             modifier = Modifier
                 .padding(32.dp),
             title = title,
@@ -46,6 +46,6 @@ fun OnboardScreenPage(title: String, description: String, imageRes: Int) {
 fun PreviewOnboardScreenPageLight(modifier: Modifier = Modifier) {
     NPreview {
         val data = onboardPagesList[0]
-        OnboardScreenPage(data.title, data.description, data.imageRes)
+        OnboardPageView(data.title, data.description, data.imageRes)
     }
 }

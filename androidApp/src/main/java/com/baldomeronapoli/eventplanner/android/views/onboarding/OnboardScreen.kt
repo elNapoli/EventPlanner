@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.onboarding
+package com.baldomeronapoli.eventplanner.android.views.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -49,9 +49,9 @@ fun OnboardScreen() {
                 .weight(1F)
         ) {
             val currentPage = onboardPages[pagerState.currentPage]
-            OnboardScreenPage(currentPage.title, currentPage.description, currentPage.imageRes)
+            OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
         }
-        TabSelector(
+        TabSelectorView(
             modifier = Modifier.width(100.dp),
             onboardPages = onboardPages,
             currentPage = pagerState.currentPage
@@ -59,7 +59,7 @@ fun OnboardScreen() {
             targetPage = index
         }
 
-        OnBoardNavButton(
+        OnBoardNavButtonView(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(top = 16.dp),

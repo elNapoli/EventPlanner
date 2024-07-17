@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.base
+package com.baldomeronapoli.eventplanner.android.views.base
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

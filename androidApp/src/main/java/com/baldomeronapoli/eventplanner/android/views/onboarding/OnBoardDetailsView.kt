@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.onboarding
+package com.baldomeronapoli.eventplanner.android.views.onboarding
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
@@ -18,7 +18,7 @@ import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 
 @Composable
-fun OnBoardDetails(
+fun OnBoardDetailsView(
     modifier: Modifier = Modifier, title: String, description: String
 ) {
     Column(
@@ -47,6 +47,6 @@ fun OnBoardDetails(
 @Composable
 fun PreviewOnBoardDetailsLight(modifier: Modifier = Modifier) {
     NPreview {
-        OnBoardDetails(title = onboardPagesList[0].title, description = onboardPagesList[0].description)
+        OnBoardDetailsView(title = onboardPagesList[0].title, description = onboardPagesList[0].description)
     }
 }

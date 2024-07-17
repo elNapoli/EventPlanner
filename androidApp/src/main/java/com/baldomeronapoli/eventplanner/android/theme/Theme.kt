@@ -13,7 +13,8 @@ fun MyTheme(
 ) {
     val colors = if (darkTheme) {
         darkColorScheme(
-            primary = PrimaryDark,
+            primary = Orange,
+            onPrimary = White,
             secondary = SecondaryDark,
             tertiary = TertiaryDark
         )
@@ -27,7 +28,7 @@ fun MyTheme(
             onErrorContainer = Red.copy(alpha = 0.20F),
             onSurface = Red,
             onBackground = Gray60,
-            )
+        )
     }
 
 

@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.onboarding
+package com.baldomeronapoli.eventplanner.android.views.onboarding
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,7 +7,7 @@ import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.NButton
 
 @Composable
-fun OnBoardNavButton(
+fun OnBoardNavButtonView(
     modifier: Modifier = Modifier, currentPage: Int, noOfPages: Int, onNextClicked: () -> Unit
 ) {
     NButton(

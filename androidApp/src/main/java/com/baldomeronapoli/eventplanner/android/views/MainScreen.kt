@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens
+package com.baldomeronapoli.eventplanner.android.views
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
