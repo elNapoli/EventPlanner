@@ -4,6 +4,8 @@
     <application
         android:name="MyApp"
         android:allowBackup="false"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:label="Event Planner"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting">
         <activity
