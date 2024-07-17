@@ -14,12 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.AppState
 import com.baldomeronapoli.eventplanner.android.navigation.AppNavigationHost
+import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
+import com.baldomeronapoli.eventplanner.android.navigation.NavigationViewModel
 import com.baldomeronapoli.eventplanner.android.theme.MyTheme
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(modifier: Modifier = Modifier, appState: AppState) {
-
+    val navigationViewModel = koinViewModel<NavigationViewModel>()
+    navigationViewModel.onEvent(
+        NavigationEvent.OnSetContent(
+            activityNavController = appState.navController,
+        ) {
+            // no tengo idea que colocar aca
+        })
     MyTheme {
         Scaffold(
             modifier = modifier,
@@ -42,7 +51,10 @@ fun MainScreen(modifier: Modifier = Modifier, appState: AppState) {
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    AppNavigationHost(appState = appState)
+                    AppNavigationHost(
+                        appState = appState, // TODO: Analizar si es necesario usar appState
+                        navigationViewModel = navigationViewModel
+                    )
                 }
             }
         }

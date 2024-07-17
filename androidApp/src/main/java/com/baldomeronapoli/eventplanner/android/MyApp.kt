@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.android
 
 import android.app.Application
+import com.baldomeronapoli.eventplanner.android.di.appCoreMode
 import com.baldomeronapoli.eventplanner.di.repositoryModule
 import com.baldomeronapoli.eventplanner.di.useCaseModule
 import com.baldomeronapoli.eventplanner.di.viewModelModule
@@ -15,7 +16,7 @@ class MyApp : Application() {
     }
 
     private fun initKoin() {
-        val modules = repositoryModule + viewModelModule + useCaseModule
+        val modules = repositoryModule + viewModelModule + useCaseModule + appCoreMode
 
         startKoin {
             androidContext(this@MyApp)

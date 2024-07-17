@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
+import com.baldomeronapoli.eventplanner.android.components.NButton
+import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.SideEffect
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiAction
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
@@ -38,10 +40,13 @@ fun HomeScreen(
         } else {
             Text(uiState.data)
         }
+        NOutlinedTextField(value = "Hola ", onValueChange = {})
 
-        Button(onClick = { onAction(UiAction.LoadGreeting) }) {
-            Text(text = "buscar datos")
-        }
+        NButton(
+            enabled = true,
+            onClick = { onAction(UiAction.LoadGreeting) },
+            text = "Buscar datos"
+        )
 
         Button(onClick = goToTest) {
             Text(text = "Ir a otra pantalla")

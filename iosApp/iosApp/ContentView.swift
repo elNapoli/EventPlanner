@@ -1,16 +1,14 @@
-import SwiftUI
 import shared
+import SwiftUI
 
 extension ContentView {
     @MainActor
     class GreetingViewModelWrapper: ObservableObject {
-       
-        @Published var uiState =  GreetingContractUiState.companion.initialUiState()
+        @Published var uiState = GreetingContractUiState.companion.initialUiState()
         @Published var sideEffect: GreetingContractSideEffect?
         private let viewModel: GreetingViewModel
         private var stateSubscription: KmmSubscription!
         private var sideEffectSubscription: KmmSubscription!
-        
 
         init() {
             viewModel = ViewModelInjector().greetingViewModel
@@ -19,7 +17,7 @@ extension ContentView {
         }
 
         func sendEvent(event: GreetingContractUiAction) {
-                viewModel.onAction(uiAction: event)
+            viewModel.onAction(uiAction: event)
         }
 
         private func subscribeState() {
@@ -34,7 +32,7 @@ extension ContentView {
                 }
             )
         }
-        
+
         private func subscribeSideEffect() {
             sideEffectSubscription = viewModel.sideEffect.subscribe(
                 onEach: { effect in
@@ -50,13 +48,12 @@ extension ContentView {
                 }
             )
         }
-
     }
 }
 
 struct ContentView: View {
     @ObservedObject private(set) var viewModel: GreetingViewModelWrapper
-    
+
     var body: some View {
         VStack {
             if viewModel.uiState.isLoading {
@@ -64,7 +61,7 @@ struct ContentView: View {
             } else {
                 Text(viewModel.uiState.data)
             }
-            
+
             Button(action: {
                 viewModel.sendEvent(event: GreetingContractUiActionLoadGreeting())
             }) {
@@ -77,7 +74,7 @@ struct ContentView: View {
         switch sideEffect {
         case is GreetingContractSideEffectShowCountCanNotBeNegativeToast:
             print("ShowCountCanNotBeNegativeToast")
-            // Aquí puedes mostrar una alerta, mensaje o tomar otra acción según el side effect
+        // Aquí puedes mostrar una alerta, mensaje o tomar otra acción según el side effect
         default:
             break
         }

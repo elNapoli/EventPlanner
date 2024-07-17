@@ -11,12 +11,13 @@ import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 fun AppNavigationHost(
     modifier: Modifier = Modifier,
     appState: AppState,
+    navigationViewModel: NavigationViewModel,
 ) {
     val navController = appState.navController
     NavHost(
         modifier = modifier,
         navController = navController, startDestination = MainRoute.Home.path
     ) {
-        homeGraph(navController)
+        homeGraph(onNavigationEvent = navigationViewModel::onEvent)
     }
 }

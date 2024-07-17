@@ -1,5 +1,5 @@
-import SwiftUI
 import shared
+import SwiftUI
 
 @main
 struct iOSApp: App {
@@ -9,7 +9,7 @@ struct iOSApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: .init())
+            MainScreen()
         }
     }
 }
