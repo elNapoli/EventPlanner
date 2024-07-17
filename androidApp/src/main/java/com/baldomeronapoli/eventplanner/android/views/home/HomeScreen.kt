@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.android.screens.home
+package com.baldomeronapoli.eventplanner.android.views.home
 
 import android.util.Log
 import androidx.compose.foundation.layout.Column

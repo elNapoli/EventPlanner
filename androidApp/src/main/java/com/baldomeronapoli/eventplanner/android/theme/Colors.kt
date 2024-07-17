@@ -2,11 +2,9 @@ package com.baldomeronapoli.eventplanner.android.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryDark = Color(0xFFBB86FC)
 val SecondaryDark = Color(0xFF03DAC5)
 val TertiaryDark = Color(0xFF3700B3)
 
-val PrimaryLight = Color(0xFF6200EE)
 val SecondaryLight = Color(0xFF03DAC5)
 val TertiaryLight = Color(0xFF3700B3)
 
@@ -25,3 +23,4 @@ var Gray40 = Color(0xFFBABEC6)
 var Gray60 = Color(0xFFA3A8B3)
 var Gray80 = Color(0xFF8D92A0)
 var Gray100 = Color(0xFF767C8D)
+var GrayTitle = Color(0xFF434C62)

@@ -24,7 +24,7 @@ fun NButton(
     border: BorderStroke? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     text: String,
-    onClick: () -> Unit,
+    onClick:  () -> Unit,
 ) {
 
     Button(
@@ -43,7 +43,7 @@ fun NButton(
 }
 
 
-@Preview(showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewNButtonDark() {
     NPreview {
@@ -51,7 +51,8 @@ fun PreviewNButtonDark() {
         NButton(onClick = {}, text = "Hola", enabled = false)
     }
 }
-@Preview(showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewNButtonLight() {
     NPreview {
