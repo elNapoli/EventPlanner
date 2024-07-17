@@ -1,8 +1,8 @@
 package com.baldomeronapoli.eventplanner.android.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baldomeronapoli.eventplanner.android.theme.MyTheme
 
 @Composable
 fun NButton(
@@ -26,7 +25,7 @@ fun NButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     text: String,
     onClick: () -> Unit,
-    ) {
+) {
 
     Button(
         onClick = onClick,
@@ -43,14 +42,20 @@ fun NButton(
     )
 }
 
-@Preview
-@Composable
-fun PreviewNButton() {
-    MyTheme {
-        Column {
 
-            NButton(onClick = {}, text = "Hola")
-            NButton(onClick = {}, text = "Hola", enabled = false)
-        }
+@Preview(showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun PreviewNButtonDark() {
+    NPreview {
+        NButton(onClick = {}, text = "Hola")
+        NButton(onClick = {}, text = "Hola", enabled = false)
+    }
+}
+@Preview(showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewNButtonLight() {
+    NPreview {
+        NButton(onClick = {}, text = "Hola")
+        NButton(onClick = {}, text = "Hola", enabled = false)
     }
 }
