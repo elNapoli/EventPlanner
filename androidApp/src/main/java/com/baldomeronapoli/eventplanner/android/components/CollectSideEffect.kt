@@ -16,7 +16,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun <SideEffect : BaseEffect> CollectSideEffect(
-    sideEffect: Flow<SideEffect>,
+    sideEffect: Flow<SideEffect?>,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = Dispatchers.Main.immediate,
@@ -25,12 +25,21 @@ fun <SideEffect : BaseEffect> CollectSideEffect(
     LaunchedEffect(sideEffect, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
             if (context == EmptyCoroutineContext) {
-                sideEffect.collect { onSideEffect(it) }
+                sideEffect.collect { effect ->
+                    effect?.let {
+                        onSideEffect(it)
+                    }
+                }
             } else {
                 withContext(context) {
-                    sideEffect.collect { onSideEffect(it) }
+                    sideEffect.collect { effect ->
+                        effect?.let {
+                            onSideEffect(it)
+                        }
+                    }
                 }
             }
         }
     }
+
 }

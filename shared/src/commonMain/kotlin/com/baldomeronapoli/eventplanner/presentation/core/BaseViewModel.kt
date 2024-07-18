@@ -1,18 +1,17 @@
 package com.baldomeronapoli.eventplanner.presentation.core
 
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import com.rickclephas.kmp.observableviewmodel.MutableStateFlow
 import com.rickclephas.kmp.observableviewmodel.ViewModel
 import com.rickclephas.kmp.observableviewmodel.ViewModelScope
 import com.rickclephas.kmp.observableviewmodel.launch
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+
 
 interface BaseUiSate
 interface BaseUiIntent
 interface BaseEffect
-
 abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT : BaseEffect>(
     initialUiState: STATE
 ) : ViewModel() {
@@ -20,11 +19,15 @@ abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT :
     val scope: ViewModelScope
         get() = viewModelScope
 
-    private val _uiState = MutableStateFlow(initialUiState)
-    val uiState: StateFlow<STATE> = _uiState
+    private val _uiState = MutableStateFlow(viewModelScope, initialUiState)
 
-    private val _sideEffect = MutableSharedFlow<EFFECT>()
-    val sideEffect: SharedFlow<EFFECT> = _sideEffect
+    @NativeCoroutinesState
+    val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableStateFlow<EFFECT?>(viewModelScope, null)
+
+    @NativeCoroutinesState
+    val sideEffect = _sideEffect.asStateFlow()
 
     abstract fun handleIntent(uiIntent: INTENT)
 

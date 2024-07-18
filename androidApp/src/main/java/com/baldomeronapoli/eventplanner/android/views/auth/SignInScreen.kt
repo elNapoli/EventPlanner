@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.views.auth
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -43,15 +44,16 @@ import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
     onAction: (UiIntent) -> Unit,
-    sideEffect: Flow<Effect>,
+    effect: StateFlow<Effect?>,
 ) {
     var a by remember {
         mutableStateOf("")
@@ -189,10 +191,11 @@ fun SignInScreen(
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewSignInScreenLight(modifier: Modifier = Modifier) {
+    val effect: StateFlow<Effect?> = MutableStateFlow(null)
     NPreview {
         SignInScreen(
             uiState = UiState.initialUiState(),
-            sideEffect = flowOf(),
+            effect = effect,
             onAction = { }
         )
     }

@@ -10,11 +10,13 @@ kotlinxCoroutinesCore = "1.8.0"
 navigationCompose = "2.7.7"
 ktorClient = "2.3.7"
 kotlinxDatetime = "0.6.0"
-koin = "3.4.3"
+koin = "3.5.3"
 constraintlayout = "1.0.1"
 kmpSettings = "1.1.1"
-kmpViewModel = "1.0.0-BETA-3-kotlin-2.0.20-Beta1"
+kmpViewModel = "1.0.0-BETA-3"
 kermit = "2.0.4"
+nativecoroutines = "1.0.0-ALPHA-32-kotlin-2.0.20-Beta2"
+
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -53,3 +55,5 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "nativecoroutines" }
+

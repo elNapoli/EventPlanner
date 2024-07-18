@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
@@ -15,18 +13,18 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
-import com.baldomeronapoli.eventplanner.presentation.GreetingViewModel
-import kotlinx.coroutines.flow.Flow
-import org.koin.androidx.compose.koinViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
-    sideEffect: Flow<Effect>,
+    sideEffect: StateFlow<Effect?>,
     onAction: (UiIntent) -> Unit,
     goToTest: () -> Unit
 ) {
+
     CollectSideEffect(sideEffect) {
         when (it) {
             Effect.ShowCountCanNotBeNegativeToast -> {
@@ -60,11 +58,12 @@ fun HomeScreen(
 @Preview
 @Composable
 fun PreviewHomeScreen() {
-    val viewmodel: GreetingViewModel = koinViewModel()
-    val uiState by viewmodel.uiState.collectAsState()
+    val effect: StateFlow<Effect> =
+        MutableStateFlow(Effect.ShowCountCanNotBeNegativeToast)
+
     HomeScreen(
-        uiState = uiState,
-        sideEffect = viewmodel.sideEffect,
-        onAction = viewmodel::handleIntent
+        uiState = UiState.initialUiState(),
+        sideEffect = effect,
+        onAction = { }
     ) {}
 }
