@@ -2,4 +2,14 @@
 <resources>
     <string name="next">Siguiente</string>
     <string name="get_started">¡Comencemos!</string>
+    <string name="congrats">Felicitaciones</string>
+    <string name="congrats_description">Has completado exitosamente tu proceso de registro. Inicia sesión con tu cuenta.</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="login_description">Por favor, inicia sesión para continuar utilizando esta aplicación.</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="you_dont_have_an_account">¿No tienes una cuenta? Regístrate aquí</string>
+    <string name="or_login_with">O inicia sesión usando</string>
 </resources>

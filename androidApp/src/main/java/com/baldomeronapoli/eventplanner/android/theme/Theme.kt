@@ -26,8 +26,9 @@ fun MyTheme(
             error = Red,
             onError = Red,
             onErrorContainer = Red.copy(alpha = 0.20F),
-            onSurface = Red,
+            onSurface = GrayTitle,
             onBackground = Gray60,
+            onSurfaceVariant = Gray100
         )
     }
 

@@ -29,6 +29,8 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.lifecycle.viewmodel.ktx)
             implementation(libs.ktor.client.android)
+            implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
+            
         }
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
@@ -37,6 +39,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.koin.core)
+            implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
+
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

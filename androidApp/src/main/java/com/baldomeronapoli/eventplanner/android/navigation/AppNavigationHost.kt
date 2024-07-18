@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.baldomeronapoli.eventplanner.android.AppState
+import com.baldomeronapoli.eventplanner.android.navigation.auth.authGraph
 import com.baldomeronapoli.eventplanner.android.navigation.home.homeGraph
 import com.baldomeronapoli.eventplanner.android.navigation.onboard.onboardGraph
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
@@ -17,9 +18,10 @@ fun AppNavigationHost(
     val navController = appState.navController
     NavHost(
         modifier = modifier,
-        navController = navController, startDestination = MainRoute.Onboard.path
+        navController = navController, startDestination = MainRoute.Auth.path
     ) {
         homeGraph(onNavigationEvent = navigationViewModel::onEvent)
         onboardGraph(onNavigationEvent = navigationViewModel::onEvent)
+        authGraph(onNavigationEvent = navigationViewModel::onEvent)
     }
 }

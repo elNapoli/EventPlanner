@@ -11,6 +11,7 @@ navigationCompose = "2.7.7"
 ktorClient = "2.3.7"
 kotlinxDatetime = "0.6.0"
 koin = "3.4.3"
+constraintlayout = "1.0.1"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
@@ -35,6 +36,7 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

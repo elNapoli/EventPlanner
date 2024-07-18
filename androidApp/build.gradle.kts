@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.constraintlayout)
     debugImplementation(libs.compose.ui.tooling)
 
     implementation(libs.koin.android)
@@ -51,5 +52,8 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.core.splashscreen)
+
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
 
 }
