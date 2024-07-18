@@ -2,9 +2,9 @@ package com.baldomeronapoli.eventplanner.presentation.auth
 
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
-import com.baldomeronapoli.eventplanner.presentation.BaseEffect
-import com.baldomeronapoli.eventplanner.presentation.BaseUiIntent
-import com.baldomeronapoli.eventplanner.presentation.BaseUiSate
+import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
 
 interface AuthContract {
     data class UiState(

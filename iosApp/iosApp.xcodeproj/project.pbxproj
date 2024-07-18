@@ -74,6 +74,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		578E69DA2C49C106009EEB68 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
 		57D5BEFA2C485413001CBAFD /* models */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +164,7 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				578E69DA2C49C106009EEB68 /* utils */,
 				57D5BF112C4866FF001CBAFD /* extensions */,
 				57D5BF052C485451001CBAFD /* screens */,
 				57D5BF0E2C48548A001CBAFD /* theme */,

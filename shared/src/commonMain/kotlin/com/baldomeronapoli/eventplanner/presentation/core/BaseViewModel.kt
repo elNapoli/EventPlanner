@@ -1,12 +1,13 @@
-package com.baldomeronapoli.eventplanner.presentation
+package com.baldomeronapoli.eventplanner.presentation.core
 
-import com.baldomeronapoli.eventplanner.utils.KmmViewModel
+import com.rickclephas.kmp.observableviewmodel.ViewModel
+import com.rickclephas.kmp.observableviewmodel.ViewModelScope
+import com.rickclephas.kmp.observableviewmodel.launch
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 interface BaseUiSate
 interface BaseUiIntent
@@ -14,7 +15,10 @@ interface BaseEffect
 
 abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT : BaseEffect>(
     initialUiState: STATE
-) : KmmViewModel() {
+) : ViewModel() {
+
+    val scope: ViewModelScope
+        get() = viewModelScope
 
     private val _uiState = MutableStateFlow(initialUiState)
     val uiState: StateFlow<STATE> = _uiState

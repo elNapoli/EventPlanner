@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.baldomeronapoli.eventplanner.presentation.BaseEffect
+import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

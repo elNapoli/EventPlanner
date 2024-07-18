@@ -5,6 +5,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 
 class GreetingViewModel(
     private val getGreetingUseCase: GetGreetingUseCase,
@@ -13,7 +14,7 @@ class GreetingViewModel(
 ) {
 
     private fun getGreeting() = scope.useCaseRunner(
-        loadingUpdater = { value -> updateUiState { copy(isLoading = value) } },
+        loadingUpdater = { value -> updateUiState { loading(value) } },
         onError = { sendEffect(Effect.ShowCountCanNotBeNegativeToast) },
         onSuccess = { data ->
             sendEffect(Effect.ShowCountCanNotBeNegativeToast)

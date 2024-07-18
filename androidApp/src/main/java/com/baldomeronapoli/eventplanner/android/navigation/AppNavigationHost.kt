@@ -18,7 +18,7 @@ fun AppNavigationHost(
     val navController = appState.navController
     NavHost(
         modifier = modifier,
-        navController = navController, startDestination = MainRoute.Auth.path
+        navController = navController, startDestination = MainRoute.Home.path
     ) {
         homeGraph(onNavigationEvent = navigationViewModel::onEvent)
         onboardGraph(onNavigationEvent = navigationViewModel::onEvent)

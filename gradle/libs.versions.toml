@@ -12,10 +12,14 @@ ktorClient = "2.3.7"
 kotlinxDatetime = "0.6.0"
 koin = "3.4.3"
 constraintlayout = "1.0.1"
+kmpSettings = "1.1.1"
+kmpViewModel = "1.0.0-BETA-3-kotlin-2.0.20-Beta1"
+kermit = "2.0.4"
 
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelKtx" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
@@ -33,9 +37,13 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClient" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
+kmp-settings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "kmpSettings" }
+kmp-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+kmp-viewmodel = { group = "com.rickclephas.kmp", name = "kmp-observableviewmodel-core", version.ref = "kmpViewModel" }
+kmp-koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koin" }
+kmp-kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
+
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
-koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout" }
 
 [plugins]

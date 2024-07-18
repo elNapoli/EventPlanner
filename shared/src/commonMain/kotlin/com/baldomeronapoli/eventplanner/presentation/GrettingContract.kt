@@ -1,5 +1,9 @@
 package com.baldomeronapoli.eventplanner.presentation
 
+import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
+
 interface GreetingContract {
     data class UiState(
         val data: String,
@@ -13,6 +17,8 @@ interface GreetingContract {
                 errorMessage = null
             )
         }
+
+        fun loading(value: Boolean) = copy(isLoading = value)
     }
 
     sealed interface UiIntent : BaseUiIntent {

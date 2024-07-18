@@ -8,7 +8,7 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "1.8"
+                jvmTarget = "11"
             }
         }
     }
@@ -26,24 +26,27 @@ kotlin {
     }
 
     sourceSets {
+        all {
+            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+        }
         androidMain.dependencies {
-            implementation(libs.androidx.lifecycle.viewmodel.ktx)
-            implementation(libs.ktor.client.android)
-            implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
-            
+            implementation(libs.kotlin.reflect)
+            implementation(libs.kmp.koin.android)
+
         }
         commonMain.dependencies {
-            implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.datetime)
-            implementation(libs.koin.core)
-            implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
+
+            implementation(libs.kotlin.reflect)
+
+            implementation(libs.kmp.settings)
+            api(libs.kmp.viewmodel)
+            api(libs.kmp.koin.core)
+            api(libs.kmp.kermit)
 
         }
         iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -55,10 +58,10 @@ android {
     namespace = "com.baldomeronapoli.eventplanner"
     compileSdk = 34
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
