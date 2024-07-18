@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeGraph(
             HomeScreen(
                 uiState = uiState.value,
                 sideEffect = viewmodel.sideEffect,
-                onAction = viewmodel::onAction,
+                onAction = viewmodel::handleIntent,
             ) {
                 onNavigationEvent(NavigationEvent.OnNavigateToScreen(HomeRoute.Test))
 

@@ -5,48 +5,15 @@ extension ContentView {
     @MainActor
     class GreetingViewModelWrapper: ObservableObject {
         @Published var uiState = GreetingContractUiState.companion.initialUiState()
-        @Published var sideEffect: GreetingContractSideEffect?
+        @Published var effect: GreetingContractEffect?
         private let viewModel: GreetingViewModel
-        private var stateSubscription: KmmSubscription!
-        private var sideEffectSubscription: KmmSubscription!
 
         init() {
-            viewModel = ViewModelInjector().greetingViewModel
-            subscribeState()
-            subscribeSideEffect()
+            viewModel = KoinViewModel().greetingViewModel
         }
 
-        func sendEvent(event: GreetingContractUiAction) {
-            viewModel.onAction(uiAction: event)
-        }
-
-        private func subscribeState() {
-            stateSubscription = viewModel.uiState.subscribe(
-                onEach: { state in
-                    self.uiState = state!
-                },
-                onCompletion: { error in
-                    if let error = error {
-                        print(error)
-                    }
-                }
-            )
-        }
-
-        private func subscribeSideEffect() {
-            sideEffectSubscription = viewModel.sideEffect.subscribe(
-                onEach: { effect in
-                    if let effect = effect {
-                        // Llamar al método handleSideEffect en ContentView para manejar el side effect
-                        ContentView.handleSideEffect(effect)
-                    }
-                },
-                onCompletion: { error in
-                    if let error = error {
-                        print(error)
-                    }
-                }
-            )
+        func handleIntent(intent: GreetingContractUiIntent) {
+            viewModel.handleIntent(uiIntent: intent)
         }
     }
 }
@@ -63,16 +30,16 @@ struct ContentView: View {
             }
 
             Button(action: {
-                viewModel.sendEvent(event: GreetingContractUiActionLoadGreeting())
+                viewModel.handleIntent(intent: GreetingContractUiIntentLoadGreeting())
             }) {
                 Text("Load Data")
             }
         }
     }
 
-    static func handleSideEffect(_ sideEffect: GreetingContractSideEffect) {
+    static func handleSideEffect(_ sideEffect: GreetingContractEffect) {
         switch sideEffect {
-        case is GreetingContractSideEffectShowCountCanNotBeNegativeToast:
+        case is GreetingContractEffectShowCountCanNotBeNegativeToast:
             print("ShowCountCanNotBeNegativeToast")
         // Aquí puedes mostrar una alerta, mensaje o tomar otra acción según el side effect
         default:

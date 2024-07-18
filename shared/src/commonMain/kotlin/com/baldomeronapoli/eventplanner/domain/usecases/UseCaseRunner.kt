@@ -1,5 +1,6 @@
-package com.baldomeronapoli.eventplanner.utils
+package com.baldomeronapoli.eventplanner.domain.usecases
 
+import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

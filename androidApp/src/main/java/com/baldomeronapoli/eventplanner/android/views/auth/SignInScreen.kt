@@ -40,8 +40,8 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Purple
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.SideEffect
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiAction
+import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -50,8 +50,8 @@ import kotlinx.coroutines.flow.flowOf
 fun SignInScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
-    onAction: (UiAction) -> Unit,
-    sideEffect: Flow<SideEffect>,
+    onAction: (UiIntent) -> Unit,
+    sideEffect: Flow<Effect>,
 ) {
     var a by remember {
         mutableStateOf("")
@@ -87,7 +87,7 @@ fun SignInScreen(
                     modifier = Modifier
                         .padding(top = 32.dp),
                     value = uiState.email,
-                    onValueChange = { onAction(UiAction.SaveEmail(it)) },
+                    onValueChange = { onAction(UiIntent.SaveEmail(it)) },
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
@@ -102,14 +102,14 @@ fun SignInScreen(
                 NOutlinedTextField(
                     value = uiState.password,
                     onValueChange = {
-                        onAction(UiAction.SavePassword(it))
+                        onAction(UiIntent.SavePassword(it))
                     },
                     trailingIcon = {
                         val image = if (uiState.passwordVisible)
                             Icons.Filled.Visibility
                         else Icons.Filled.VisibilityOff
 
-                        IconButton(onClick = { onAction(UiAction.ToggleVisualTransformation) }) {
+                        IconButton(onClick = { onAction(UiIntent.ToggleVisualTransformation) }) {
                             Icon(imageVector = image, null)
                         }
                     },

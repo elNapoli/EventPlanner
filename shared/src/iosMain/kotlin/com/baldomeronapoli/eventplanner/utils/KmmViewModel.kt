@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.mvi
+package com.baldomeronapoli.eventplanner.utils
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

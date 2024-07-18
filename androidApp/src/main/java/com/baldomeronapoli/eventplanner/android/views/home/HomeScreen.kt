@@ -12,8 +12,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
-import com.baldomeronapoli.eventplanner.presentation.GreetingContract.SideEffect
-import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiAction
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.GreetingViewModel
 import kotlinx.coroutines.flow.Flow
@@ -23,13 +23,13 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
-    sideEffect: Flow<SideEffect>,
-    onAction: (UiAction) -> Unit,
+    sideEffect: Flow<Effect>,
+    onAction: (UiIntent) -> Unit,
     goToTest: () -> Unit
 ) {
     CollectSideEffect(sideEffect) {
         when (it) {
-            SideEffect.ShowCountCanNotBeNegativeToast -> {
+            Effect.ShowCountCanNotBeNegativeToast -> {
                 Log.e("TAG", "HomeScreen: ")
             }
         }
@@ -44,7 +44,7 @@ fun HomeScreen(
 
         NButton(
             enabled = true,
-            onClick = { onAction(UiAction.LoadGreeting) },
+            onClick = { onAction(UiIntent.LoadGreeting) },
             text = "Buscar datos"
         )
 
@@ -65,6 +65,6 @@ fun PreviewHomeScreen() {
     HomeScreen(
         uiState = uiState,
         sideEffect = viewmodel.sideEffect,
-        onAction = viewmodel::onAction
+        onAction = viewmodel::handleIntent
     ) {}
 }

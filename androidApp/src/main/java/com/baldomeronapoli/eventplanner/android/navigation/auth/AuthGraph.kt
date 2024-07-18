@@ -25,7 +25,7 @@ fun NavGraphBuilder.authGraph(
             SignInScreen(
                 uiState = uiState.value,
                 sideEffect = viewmodel.sideEffect,
-                onAction = viewmodel::onAction,
+                onAction = viewmodel::handleIntent,
             )
         }
 
