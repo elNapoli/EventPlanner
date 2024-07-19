@@ -14,21 +14,13 @@ struct ContentView: View {
             } else {
                 Text(state.data)
             }
-
+            Text("\(effect)")
             Button(action: {
                 viewModel.handleIntent(uiIntent: GreetingContractUiIntentLoadGreeting())
             }) {
                 Text("Load Data")
             }
         }
-    }
-
-    // Función para manejar los efectos
-    private func handleEffect(_ effect: GreetingContractEffect) {
-        // Maneja el efecto aquí
-        // Por ejemplo, podrías usar un `alert` para mostrar un mensaje
-        print("Efecto recibido: \(effect)")
-        // Puedes agregar lógica para manejar diferentes tipos de efectos aquí
     }
 }
 

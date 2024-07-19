@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import com.baldomeronapoli.eventplanner.android.di.appCoreMode
 import com.baldomeronapoli.eventplanner.di.DependencyInjection
-import com.baldomeronapoli.eventplanner.di.sharedPrefs
+import com.baldomeronapoli.eventplanner.utils.sharedPrefs
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 
