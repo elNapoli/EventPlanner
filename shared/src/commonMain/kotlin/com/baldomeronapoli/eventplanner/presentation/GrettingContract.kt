@@ -3,8 +3,10 @@ package com.baldomeronapoli.eventplanner.presentation
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
+import kotlinx.serialization.Serializable
 
 interface GreetingContract {
+    @Serializable
     data class UiState(
         val data: String,
         val isLoading: Boolean,

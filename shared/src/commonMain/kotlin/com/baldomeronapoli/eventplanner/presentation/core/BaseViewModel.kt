@@ -24,10 +24,10 @@ abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT :
     @NativeCoroutinesState
     val uiState = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableStateFlow<EFFECT?>(viewModelScope, null)
+    private val _effect = MutableStateFlow<EFFECT?>(viewModelScope, null)
 
     @NativeCoroutinesState
-    val sideEffect = _sideEffect.asStateFlow()
+    val effect = _effect.asStateFlow()
 
     abstract fun handleIntent(uiIntent: INTENT)
 
@@ -35,9 +35,9 @@ abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT :
         _uiState.update(block)
     }
 
-    protected fun sendEffect(sideEffect: EFFECT) {
+    protected fun sendEffect(effect: EFFECT) {
         scope.launch {
-            _sideEffect.emit(sideEffect)
+            _effect.emit(effect)
         }
     }
 }

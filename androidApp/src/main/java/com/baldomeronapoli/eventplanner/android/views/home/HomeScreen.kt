@@ -7,7 +7,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.baldomeronapoli.eventplanner.android.components.CollectSideEffect
+import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.Effect
@@ -20,12 +20,12 @@ import kotlinx.coroutines.flow.StateFlow
 fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
-    sideEffect: StateFlow<Effect?>,
+    effect: StateFlow<Effect?>,
     onAction: (UiIntent) -> Unit,
     goToTest: () -> Unit
 ) {
 
-    CollectSideEffect(sideEffect) {
+    CollectEffect(effect) {
         when (it) {
             Effect.ShowCountCanNotBeNegativeToast -> {
                 Log.e("TAG", "HomeScreen: ")
@@ -63,7 +63,7 @@ fun PreviewHomeScreen() {
 
     HomeScreen(
         uiState = UiState.initialUiState(),
-        sideEffect = effect,
+        effect = effect,
         onAction = { }
     ) {}
 }

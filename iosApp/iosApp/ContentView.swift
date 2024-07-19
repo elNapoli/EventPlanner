@@ -1,55 +1,39 @@
+import KMPObservableViewModelSwiftUI
 import shared
 import SwiftUI
 
-extension ContentView {
-    @MainActor
-    class GreetingViewModelWrapper: ObservableObject {
-        @Published var uiState = GreetingContractUiState.companion.initialUiState()
-        @Published var effect: GreetingContractEffect?
-        private let viewModel: GreetingViewModel
-
-        init() {
-            viewModel = KoinViewModel().greetingViewModel
-        }
-
-        func handleIntent(intent: GreetingContractUiIntent) {
-            viewModel.handleIntent(uiIntent: intent)
-        }
-    }
-}
-
 struct ContentView: View {
-    @ObservedObject private(set) var viewModel: GreetingViewModelWrapper
+    @StateViewModel private var viewModel = ViewModels().greetingViewModel()
 
     var body: some View {
         VStack {
-            if viewModel.uiState.isLoading {
-                Text("Cargando...")
+            let state = viewModel.uiState as! GreetingContractUiState
+            let effect = viewModel.effect as? GreetingContractEffect
+            if state.isLoading {
+                Text("Cargando.....")
             } else {
-                Text(viewModel.uiState.data)
+                Text(state.data)
             }
 
             Button(action: {
-                viewModel.handleIntent(intent: GreetingContractUiIntentLoadGreeting())
+                viewModel.handleIntent(uiIntent: GreetingContractUiIntentLoadGreeting())
             }) {
                 Text("Load Data")
             }
         }
     }
 
-    static func handleSideEffect(_ sideEffect: GreetingContractEffect) {
-        switch sideEffect {
-        case is GreetingContractEffectShowCountCanNotBeNegativeToast:
-            print("ShowCountCanNotBeNegativeToast")
-        // Aquí puedes mostrar una alerta, mensaje o tomar otra acción según el side effect
-        default:
-            break
-        }
+    // Función para manejar los efectos
+    private func handleEffect(_ effect: GreetingContractEffect) {
+        // Maneja el efecto aquí
+        // Por ejemplo, podrías usar un `alert` para mostrar un mensaje
+        print("Efecto recibido: \(effect)")
+        // Puedes agregar lógica para manejar diferentes tipos de efectos aquí
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(viewModel: .init())
+        ContentView()
     }
 }

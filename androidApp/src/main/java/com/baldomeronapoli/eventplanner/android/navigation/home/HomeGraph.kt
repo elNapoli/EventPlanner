@@ -23,7 +23,7 @@ fun NavGraphBuilder.homeGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             HomeScreen(
                 uiState = uiState.value,
-                sideEffect = viewmodel.sideEffect,
+                effect = viewmodel.effect,
                 onAction = viewmodel::handleIntent,
             ) {
                 onNavigationEvent(NavigationEvent.OnNavigateToScreen(HomeRoute.Test))

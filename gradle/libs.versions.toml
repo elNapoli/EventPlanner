@@ -6,16 +6,17 @@ compose = "1.6.8"
 compose-material3 = "1.2.1"
 androidx-activityCompose = "1.9.0"
 lifecycleViewmodelKtx = "2.8.3"
-kotlinxCoroutinesCore = "1.8.0"
 navigationCompose = "2.7.7"
-ktorClient = "2.3.7"
 kotlinxDatetime = "0.6.0"
+kotlinxSerialization = "1.7.1"
 koin = "3.5.3"
 constraintlayout = "1.0.1"
 kmpSettings = "1.1.1"
 kmpViewModel = "1.0.0-BETA-3"
 kermit = "2.0.4"
 nativecoroutines = "1.0.0-ALPHA-32-kotlin-2.0.20-Beta2"
+kotlinxCoroutines = "1.9.0-RC"
+ksp = "2.0.0-1.0.23"
 
 
 [libraries]
@@ -27,17 +28,9 @@ androidx-activity-compose = { module = "androidx.activity:activity-compose", ver
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
-androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
-kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClient" }
-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClient" }
-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClient" }
-ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClient" }
-ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorClient" }
-kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 
 kmp-settings = { group = "com.russhwolf", name = "multiplatform-settings", version.ref = "kmpSettings" }
 kmp-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
@@ -47,13 +40,15 @@ kmp-kermit = { group = "co.touchlab", name = "kermit", version.ref = "kermit" }
 
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayout" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "nativecoroutines" }
+kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

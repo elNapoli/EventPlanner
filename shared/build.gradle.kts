@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.nativecoroutines)
-    id("co.touchlab.skie") version "0.8.2"
+    alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.google.ksp)
 }
 
 kotlin {
@@ -28,7 +29,10 @@ kotlin {
 
     sourceSets {
         all {
-            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+            languageSettings.apply {
+                optIn("kotlinx.cinterop.ExperimentalForeignApi")
+                optIn("kotlin.experimental.ExperimentalObjCName")
+            }
         }
         androidMain.dependencies {
             implementation(libs.kotlin.reflect)
@@ -36,11 +40,12 @@ kotlin {
 
         }
         commonMain.dependencies {
-            implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.kotlin.reflect)
-
+            implementation(libs.kotlinx.serialization)
             implementation(libs.kmp.settings)
+
             api(libs.kmp.viewmodel)
             api(libs.kmp.koin.core)
             api(libs.kmp.kermit)
