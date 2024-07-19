@@ -24,8 +24,8 @@ fun NavGraphBuilder.authGraph(
             val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             SignInScreen(
                 uiState = uiState.value,
-                sideEffect = viewmodel.sideEffect,
-                onAction = viewmodel::onAction,
+                effect = viewmodel.effect,
+                onAction = viewmodel::handleIntent,
             )
         }
 

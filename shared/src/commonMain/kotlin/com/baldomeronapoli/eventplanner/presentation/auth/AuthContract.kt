@@ -2,9 +2,9 @@ package com.baldomeronapoli.eventplanner.presentation.auth
 
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
-import com.baldomeronapoli.eventplanner.mvi.BaseSideEffect
-import com.baldomeronapoli.eventplanner.mvi.BaseUiAction
-import com.baldomeronapoli.eventplanner.mvi.BaseUiSate
+import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
 
 interface AuthContract {
     data class UiState(
@@ -23,14 +23,14 @@ interface AuthContract {
         }
     }
 
-    sealed interface UiAction : BaseUiAction {
-        data object ToggleVisualTransformation : UiAction
-        data class SaveEmail(val email: String) : UiAction
-        data class SavePassword(val password: String) : UiAction
+    sealed interface UiIntent : BaseUiIntent {
+        data object ToggleVisualTransformation : UiIntent
+        data class SaveEmail(val email: String) : UiIntent
+        data class SavePassword(val password: String) : UiIntent
     }
 
-    sealed interface SideEffect : BaseSideEffect {
-        data object ShowCountCanNotBeNegativeToast : SideEffect
+    sealed interface Effect : BaseEffect {
+        data object ShowCountCanNotBeNegativeToast : Effect
     }
 }
 

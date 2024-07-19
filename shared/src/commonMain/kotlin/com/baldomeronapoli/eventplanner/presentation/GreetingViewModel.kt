@@ -1,32 +1,32 @@
 package com.baldomeronapoli.eventplanner.presentation
 
 import com.baldomeronapoli.eventplanner.domain.usecases.GetGreetingUseCase
-import com.baldomeronapoli.eventplanner.mvi.BaseViewModel
-import com.baldomeronapoli.eventplanner.presentation.GreetingContract.SideEffect
-import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiAction
+import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.GreetingContract.UiState
-import com.baldomeronapoli.eventplanner.utils.useCaseRunner
+import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 
 class GreetingViewModel(
     private val getGreetingUseCase: GetGreetingUseCase,
-) : BaseViewModel<UiState, UiAction, SideEffect>(
+) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState.initialUiState()
 ) {
 
     private fun getGreeting() = scope.useCaseRunner(
-        loadingUpdater = { value -> updateUiState { copy(isLoading = value) } },
-        onError = { emitSideEffect(SideEffect.ShowCountCanNotBeNegativeToast) },
+        loadingUpdater = { value -> updateUiState { loading(value) } },
+        onError = { sendEffect(Effect.ShowCountCanNotBeNegativeToast) },
         onSuccess = { data ->
-            emitSideEffect(SideEffect.ShowCountCanNotBeNegativeToast)
+            sendEffect(Effect.ShowCountCanNotBeNegativeToast)
             updateUiState { copy(data = data) }
         },
         useCase = { getGreetingUseCase() }
     )
 
-    override fun onAction(uiAction: UiAction) {
-        when (uiAction) {
-            UiAction.OnDecreaseCountClick -> {}
-            UiAction.LoadGreeting -> getGreeting()
+    override fun handleIntent(uiIntent: UiIntent) {
+        when (uiIntent) {
+            UiIntent.OnDecreaseCountClick -> {}
+            UiIntent.LoadGreeting -> getGreeting()
         }
     }
 }

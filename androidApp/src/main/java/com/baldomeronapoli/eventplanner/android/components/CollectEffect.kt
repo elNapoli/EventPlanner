@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import com.baldomeronapoli.eventplanner.mvi.BaseSideEffect
+import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -15,22 +15,31 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
-fun <SideEffect : BaseSideEffect> CollectSideEffect(
-    sideEffect: Flow<SideEffect>,
+fun <EFFECT : BaseEffect> CollectEffect(
+    effect: Flow<EFFECT?>,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = Dispatchers.Main.immediate,
-    onSideEffect: suspend CoroutineScope.(effect: SideEffect) -> Unit,
+    onEffect: suspend CoroutineScope.(effect: EFFECT) -> Unit,
 ) {
-    LaunchedEffect(sideEffect, lifecycleOwner) {
+    LaunchedEffect(effect, lifecycleOwner) {
         lifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
             if (context == EmptyCoroutineContext) {
-                sideEffect.collect { onSideEffect(it) }
+                effect.collect { effect ->
+                    effect?.let {
+                        onEffect(it)
+                    }
+                }
             } else {
                 withContext(context) {
-                    sideEffect.collect { onSideEffect(it) }
+                    effect.collect { effect ->
+                        effect?.let {
+                            onEffect(it)
+                        }
+                    }
                 }
             }
         }
     }
+
 }

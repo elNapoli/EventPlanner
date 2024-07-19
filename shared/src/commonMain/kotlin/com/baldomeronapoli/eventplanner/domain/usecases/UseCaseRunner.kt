@@ -1,10 +1,12 @@
-package com.baldomeronapoli.eventplanner.utils
+package com.baldomeronapoli.eventplanner.domain.usecases
 
-import kotlinx.coroutines.CoroutineScope
+import com.baldomeronapoli.eventplanner.utils.NetworkResult
+import com.rickclephas.kmp.observableviewmodel.ViewModelScope
+import com.rickclephas.kmp.observableviewmodel.launch
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 
-fun <T> CoroutineScope.useCaseRunner(
+
+fun <T> ViewModelScope.useCaseRunner(
     loadingUpdater: ((Boolean) -> Unit)? = null,
     onError: ((Throwable) -> Unit)? = null,
     onSuccess: ((data: T) -> Unit),

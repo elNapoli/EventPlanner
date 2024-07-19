@@ -1,26 +1,26 @@
 package com.baldomeronapoli.eventplanner.android
 
 import android.app.Application
+import android.content.Context
 import com.baldomeronapoli.eventplanner.android.di.appCoreMode
-import com.baldomeronapoli.eventplanner.di.repositoryModule
-import com.baldomeronapoli.eventplanner.di.useCaseModule
-import com.baldomeronapoli.eventplanner.di.viewModelModule
+import com.baldomeronapoli.eventplanner.di.DependencyInjection
+import com.baldomeronapoli.eventplanner.utils.sharedPrefs
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.context.startKoin
+import org.koin.android.ext.koin.androidLogger
 
 class MyApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        initKoin()
-    }
-
-    private fun initKoin() {
-        val modules = repositoryModule + viewModelModule + useCaseModule + appCoreMode
-
-        startKoin {
+        sharedPrefs = applicationContext.getSharedPreferences(
+            applicationContext.packageName,
+            Context.MODE_PRIVATE
+        )
+        val a = DependencyInjection.initKoinAndReturnInstance {
+            androidLogger()
             androidContext(this@MyApp)
-            modules(modules)
         }
+        //TODO: ver si se puede injectar este modulo de manera mas bonita
+        a.loadModules(listOf(appCoreMode))
     }
 }
