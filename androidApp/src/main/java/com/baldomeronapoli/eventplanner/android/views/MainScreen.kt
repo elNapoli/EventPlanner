@@ -16,7 +16,7 @@ fun MainScreen(modifier: Modifier = Modifier, appState: AppState) {
         NavigationEvent.OnSetContent(
             activityNavController = appState.navController,
         ) {
-            // no tengo idea que colocar aca
+            appState.navController.popBackStack()
         })
     MyTheme {
         AppNavigationHost(

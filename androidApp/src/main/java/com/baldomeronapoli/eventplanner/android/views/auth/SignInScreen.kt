@@ -2,8 +2,10 @@ package com.baldomeronapoli.eventplanner.android.views.auth
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +15,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.outlined.Facebook
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -26,6 +29,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -35,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.baldomeronapoli.eventplanner.android.R
+import com.baldomeronapoli.eventplanner.android.components.DividerWithText
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
@@ -54,6 +61,7 @@ fun SignInScreen(
     uiState: UiState,
     onAction: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
+    goToSignUp: () -> Unit
 ) {
     var a by remember {
         mutableStateOf("")
@@ -90,6 +98,7 @@ fun SignInScreen(
                         .padding(top = 32.dp),
                     value = uiState.email,
                     onValueChange = { onAction(UiIntent.SaveEmail(it)) },
+                    maxLines = 1,
                     trailingIcon = {
                         Icon(
                             imageVector = Icons.Default.Email,
@@ -123,7 +132,9 @@ fun SignInScreen(
                         .clickable(
                             indication = null,
                             interactionSource = MutableInteractionSource(),
-                        ) {}
+                        ) {
+
+                        }
                         .fillMaxWidth(),
                     textAlign = TextAlign.End,
                     color = Purple,
@@ -142,43 +153,29 @@ fun SignInScreen(
                     }, horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 NButton(
+                    enabled = uiState.error == null,
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(id = R.string.login)
                 ) {
 
                 }
-                Row(
+                DividerWithText(
                     modifier = Modifier
                         .padding(vertical = 32.dp)
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // Línea horizontal izquierda
-                    HorizontalDivider(
-                        modifier = Modifier.weight(1f),
-                        color = Color.Gray
-                    )
-
-                    // Espacio y texto
-                    Text(
-                        text = stringResource(id = R.string.or_login_with),
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        color = Color.Gray
-                    )
-
-                    // Línea horizontal derecha
-                    HorizontalDivider(
-                        modifier = Modifier.weight(1f),
-                        color = Color.Gray
-                    )
-                }
-                Row {
-
-                    Text(text = "asdf")
-                    Text(text = "asdf")
+                        .fillMaxWidth(), text = stringResource(id = R.string.or_login_with)
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    ButtonSocialNetwork(rememberVectorPainter(Icons.Outlined.Facebook)) {
+                        // onAction(UiIntent.LoginWithFacebook)
+                    }
+                    ButtonSocialNetwork(painterResource(R.drawable.google)) {
+                        // onAction(UiIntent.LoginWithGoogle)
+                    }
                 }
                 Text(
-                    modifier = Modifier.padding(top = 45.dp, bottom = 32.dp),
+                    modifier = Modifier
+                        .padding(top = 45.dp, bottom = 32.dp)
+                        .clickable { goToSignUp() },
                     text = stringResource(id = R.string.you_dont_have_an_account),
                     style = MaterialTheme.typography.bodyLarge,
                 )
@@ -187,6 +184,18 @@ fun SignInScreen(
     }
 }
 
+@Composable
+fun ButtonSocialNetwork(painter: Painter, onClick: () -> Unit) {
+    Surface(
+        modifier = Modifier
+            .clickable { onClick() }
+            .border(1.dp, Color.Gray, MaterialTheme.shapes.small)
+            .padding(8.dp),
+        onClick = onClick
+    ) {
+        Icon(painter = painter, contentDescription = null)
+    }
+}
 
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
@@ -196,7 +205,8 @@ fun PreviewSignInScreenLight(modifier: Modifier = Modifier) {
         SignInScreen(
             uiState = UiState.initialUiState(),
             effect = effect,
-            onAction = { }
+            onAction = { },
+            goToSignUp = {}
         )
     }
 }

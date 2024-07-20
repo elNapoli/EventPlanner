@@ -12,4 +12,11 @@
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="you_dont_have_an_account">¿No tienes una cuenta? Regístrate aquí</string>
     <string name="or_login_with">O inicia sesión usando</string>
+    <string name="create_your_account">Crea gratis tu cuenta</string>
+    <string name="repeat_password">Reingrese la contraseña</string>
+    <string name="or">o</string>
+    <string name="login_with_google">Regístrate con Gmail</string>
+    <string name="login_with_facebook">Regístrate con facebook</string>
+    <string name="i_am_already_account">Ya tengo cuenta. Inicia sesión</string>
+    <string name="signup">Crear cuenta</string>
 </resources>

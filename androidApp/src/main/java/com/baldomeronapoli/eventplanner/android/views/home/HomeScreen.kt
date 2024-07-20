@@ -21,7 +21,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
     effect: StateFlow<Effect?>,
-    onAction: (UiIntent) -> Unit,
+    onIntent: (UiIntent) -> Unit,
     goToTest: () -> Unit
 ) {
 
@@ -42,7 +42,7 @@ fun HomeScreen(
 
         NButton(
             enabled = true,
-            onClick = { onAction(UiIntent.LoadGreeting) },
+            onClick = { onIntent(UiIntent.LoadGreeting) },
             text = "Buscar datos"
         )
 
@@ -64,6 +64,6 @@ fun PreviewHomeScreen() {
     HomeScreen(
         uiState = UiState.initialUiState(),
         effect = effect,
-        onAction = { }
+        onIntent = { }
     ) {}
 }

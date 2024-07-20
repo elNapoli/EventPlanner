@@ -7,6 +7,8 @@ import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
 import com.baldomeronapoli.eventplanner.android.views.onboarding.OnboardScreen
+import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.onboardGraph(
     onNavigationEvent: (NavigationEvent) -> Unit,
@@ -15,9 +17,15 @@ fun NavGraphBuilder.onboardGraph(
         startDestination = OnboardRoute.Index.path,
         route = MainRoute.Onboard.path
     ) {
+
         composable(OnboardRoute.Index.path) {
+            val viewmodel: OnBoardViewModel = koinViewModel()
             EmptyScaffold {
-                OnboardScreen()
+                OnboardScreen(
+                    effect = viewmodel.effect,
+                    onIntent = viewmodel::handleIntent,
+                    goToAuth = { onNavigationEvent(NavigationEvent.OnNavigateToScreen(MainRoute.Auth)) }
+                )
             }
         }
     }

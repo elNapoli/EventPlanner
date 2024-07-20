@@ -8,14 +8,18 @@ import com.baldomeronapoli.eventplanner.android.components.NButton
 
 @Composable
 fun OnBoardNavButtonView(
-    modifier: Modifier = Modifier, currentPage: Int, noOfPages: Int, onNextClicked: () -> Unit
+    modifier: Modifier = Modifier,
+    currentPage: Int,
+    noOfPages: Int,
+    onNextClicked: () -> Unit,
+    finishOnboarding: () -> Unit
 ) {
     NButton(
         onClick = {
             if (currentPage < noOfPages - 1) {
                 onNextClicked()
             } else {
-                // Handle onboarding completion
+                finishOnboarding()
             }
         }, modifier = modifier,
         text = if (currentPage < noOfPages - 1) stringResource(id = R.string.next) else stringResource(
