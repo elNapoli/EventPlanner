@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.android.navigation
 
-import android.content.SharedPreferences
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -9,7 +8,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.auth.authGraph
 import com.baldomeronapoli.eventplanner.android.navigation.home.homeGraph
 import com.baldomeronapoli.eventplanner.android.navigation.onboard.onboardGraph
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
-import com.baldomeronapoli.eventplanner.constants.Preferences
+import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import org.koin.compose.koinInject
 
 @Composable
@@ -18,8 +17,8 @@ fun AppNavigationHost(
     appState: AppState,
     navigationViewModel: NavigationViewModel,
 ) {
-    val sharedPrefs = koinInject<SharedPreferences>()
-    val startDestination = if (sharedPrefs.getBoolean(Preferences.SHOW_ONBOARDING, true)) {
+    val sharedPrefs = koinInject<SharePreferences>()
+    val startDestination = if (sharedPrefs.getShownOnboarding()) {
         MainRoute.Onboard.path
     } else {
         MainRoute.Auth.path

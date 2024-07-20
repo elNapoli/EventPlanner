@@ -31,7 +31,7 @@ object DependencyInjection {
 
     private fun appModule() = module {
         single { Firebase.auth }
-        single { SharePreferences().getSettings() }
+        single { SharePreferences() }
     }
 
     private fun repositoryModule() = module {
