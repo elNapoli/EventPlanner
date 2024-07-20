@@ -4,7 +4,7 @@ import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
-import com.baldomeronapoli.eventplanner.utils.PlatformDependencies
+import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import org.koin.core.context.startKoin
@@ -31,7 +31,7 @@ object DependencyInjection {
 
     private fun appModule() = module {
         single { Firebase.auth }
-        single { PlatformDependencies().getSettings() }
+        single { SharePreferences().getSettings() }
     }
 
     private fun repositoryModule() = module {
