@@ -20,7 +20,14 @@ class NavigationViewModel : ViewModel() {
             is NavigationEvent.OnBack -> onBackPressed()
 
             is NavigationEvent.OnNavigateToScreen -> {
-                activityNavController.navigate(event.route.path)
+                activityNavController.navigate(event.route.path) {
+                    event.popUpToRoute?.let {
+                        popUpTo(it) {
+                            inclusive = event.inclusive
+                        }
+                    }
+
+                }
             }
 
         }

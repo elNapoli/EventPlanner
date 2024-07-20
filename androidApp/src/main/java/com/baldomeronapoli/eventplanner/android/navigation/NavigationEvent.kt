@@ -12,5 +12,10 @@ sealed interface NavigationEvent {
 
     data object OnBack : NavigationEvent
 
-    data class OnNavigateToScreen(val route: Route) : NavigationEvent
+    data class OnNavigateToScreen(
+        val route: Route,
+        val popUpToRoute: String? = null,
+        val inclusive: Boolean = false
+    ) :
+        NavigationEvent
 }

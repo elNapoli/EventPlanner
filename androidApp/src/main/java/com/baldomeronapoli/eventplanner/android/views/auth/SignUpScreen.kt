@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
@@ -41,6 +42,7 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
+import com.baldomeronapoli.eventplanner.domain.models.AlertType
 import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
@@ -53,7 +55,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
-    onAction: (UiIntent) -> Unit,
+    onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
     goBack: () -> Unit
 ) {
@@ -64,15 +66,24 @@ fun SignUpScreen(
                 is Effect.ShowAlert -> {
                     errorDialog = it.errorDialog
                 }
+
+                Effect.GoToHome -> {
+                    Logger.d("No se implementa en esta vista....")
+                }
+
             }
         }
         if (errorDialog != null) {
             AlertDialog(
-                onConfirmation = { goBack() },
+                onConfirmation = {
+                    if (errorDialog!!.type == AlertType.ERROR) errorDialog = null else goBack()
+                },
                 dialogTitle = errorDialog!!.title,
                 dialogText = errorDialog!!.message,
-                alertDialogType = errorDialog!!.type,
-                confirmText = stringResource(id = R.string.login_button),
+                alertType = errorDialog!!.type,
+                confirmText = if (errorDialog!!.type == AlertType.ERROR) stringResource(id = R.string.cancel) else stringResource(
+                    id = R.string.login_with_google
+                ),
             )
         }
 
@@ -123,7 +134,7 @@ fun SignUpScreen(
 
                     }
                     DividerWithText(
-                        modifier = Modifier.padding(34.dp),
+                        modifier = Modifier.padding(vertical = 12.dp),
                         text = stringResource(id = R.string.or)
                     )
                 }
@@ -137,11 +148,9 @@ fun SignUpScreen(
                         }, horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     NOutlinedTextField(
-                        modifier = Modifier
-                            .padding(top = 32.dp),
                         value = uiState.email,
                         maxLines = 1,
-                        onValueChange = { onAction(UiIntent.SaveEmail(it)) },
+                        onValueChange = { onIntent(UiIntent.SaveEmail(it)) },
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Email,
@@ -156,14 +165,14 @@ fun SignUpScreen(
                     NOutlinedTextField(
                         value = uiState.password,
                         onValueChange = {
-                            onAction(UiIntent.SavePassword(it))
+                            onIntent(UiIntent.SavePassword(it))
                         },
                         trailingIcon = {
                             val image = if (uiState.passwordVisible)
                                 Icons.Filled.Visibility
                             else Icons.Filled.VisibilityOff
 
-                            IconButton(onClick = { onAction(UiIntent.ToggleVisualTransformation) }) {
+                            IconButton(onClick = { onIntent(UiIntent.ToggleVisualTransformation) }) {
                                 Icon(imageVector = image, null)
                             }
                         },
@@ -173,7 +182,7 @@ fun SignUpScreen(
                     NOutlinedTextField(
                         value = uiState.repeatPassword,
                         onValueChange = {
-                            onAction(UiIntent.SaveRepeatPassword(it))
+                            onIntent(UiIntent.SaveRepeatPassword(it))
                         },
                         isError = uiState.error?.property == "repeatPassword",
                         textError = uiState.error?.message ?: "",
@@ -182,7 +191,7 @@ fun SignUpScreen(
                                 Icons.Filled.Visibility
                             else Icons.Filled.VisibilityOff
 
-                            IconButton(onClick = { onAction(UiIntent.ToggleVisualTransformation) }) {
+                            IconButton(onClick = { onIntent(UiIntent.ToggleVisualTransformation) }) {
                                 Icon(imageVector = image, null)
                             }
                         },
@@ -195,7 +204,7 @@ fun SignUpScreen(
                         enabled = uiState.error == null,
                         text = stringResource(id = R.string.signup)
                     ) {
-                        onAction(UiIntent.CreateUseWithEmailAndPassword)
+                        onIntent(UiIntent.CreateUseWithEmailAndPassword)
 
                     }
                     Text(
@@ -219,7 +228,7 @@ fun PreviewSignUpScreenLight(modifier: Modifier = Modifier) {
         SignUpScreen(
             uiState = UiState.initialUiState(),
             effect = effect,
-            onAction = { },
+            onIntent = { },
             goBack = {}
         )
     }

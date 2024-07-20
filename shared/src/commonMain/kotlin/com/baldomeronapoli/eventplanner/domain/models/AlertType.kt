@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
-enum class AlertDialogType {
+enum class AlertType {
     SUCCESS,
     ERROR,
     WARNING
@@ -10,7 +10,5 @@ enum class AlertDialogType {
 data class ErrorDialog(
     val title: String,
     val message: String,
-    val type: AlertDialogType,
-    val show: Boolean
-
+    val type: AlertType,
 )

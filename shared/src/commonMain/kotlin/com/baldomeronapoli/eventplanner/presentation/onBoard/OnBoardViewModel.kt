@@ -25,4 +25,8 @@ class OnBoardViewModel(
             UiIntent.CompleteOnboarding -> hideOnboarding()
         }
     }
+
+    override fun handleError(e: Throwable) {
+        
+    }
 }

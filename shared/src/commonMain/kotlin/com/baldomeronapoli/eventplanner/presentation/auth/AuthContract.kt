@@ -3,7 +3,6 @@ package com.baldomeronapoli.eventplanner.presentation.auth
 import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
-import com.baldomeronapoli.eventplanner.domain.properties.EqualsValidation
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
@@ -16,7 +15,7 @@ interface AuthContract {
         val email: String,
         val userId: String?,
         val password: String,
-        @property:EqualsValidation(otherProperty = "password")
+        //@property:EqualsValidation(otherProperty = "password") TODO: No funciona para el login, dado que en el login no hay nada para repeatPassword, por eso mismo hay que pensar una forma para separar dichas logicas
         val repeatPassword: String,
         val loading: Boolean,
         val error: ValidationError? = null
@@ -45,7 +44,7 @@ interface AuthContract {
         fun saveRepeatPassword(repeatPassword: String): UiState =
             copy(repeatPassword = repeatPassword)
 
-        fun toggleVisualTransformation(): UiState = copy(passwordVisible = !passwordVisible)
+        fun togglePasswordVisible(): UiState = copy(passwordVisible = !passwordVisible)
     }
 
     sealed interface UiIntent : BaseUiIntent {
@@ -54,10 +53,12 @@ interface AuthContract {
         data class SavePassword(val password: String) : UiIntent
         data class SaveRepeatPassword(val repeatPassword: String) : UiIntent
         data object CreateUseWithEmailAndPassword : UiIntent
+        data object SignInWithEmailAndPassword : UiIntent
     }
 
     sealed interface Effect : BaseEffect {
         data class ShowAlert(val errorDialog: ErrorDialog) : Effect
+        data object GoToHome : Effect
     }
 }
 

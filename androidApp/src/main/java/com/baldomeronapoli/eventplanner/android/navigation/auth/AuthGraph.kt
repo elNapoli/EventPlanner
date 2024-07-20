@@ -26,8 +26,17 @@ fun NavGraphBuilder.authGraph(
             SignInScreen(
                 uiState = uiState.value,
                 effect = viewmodel.effect,
-                onAction = viewmodel::handleIntent,
-                goToSignUp = { onNavigationEvent(NavigationEvent.OnNavigateToScreen(AuthRoute.SignUp)) }
+                onIntent = viewmodel::handleIntent,
+                goToSignUp = { onNavigationEvent(NavigationEvent.OnNavigateToScreen(AuthRoute.SignUp)) },
+                goToHome = {
+                    onNavigationEvent(
+                        NavigationEvent.OnNavigateToScreen(
+                            MainRoute.Home,
+                            popUpToRoute = MainRoute.Auth.path,
+                            inclusive = true
+                        )
+                    )
+                }
             )
         }
 
@@ -37,7 +46,7 @@ fun NavGraphBuilder.authGraph(
             SignUpScreen(
                 uiState = uiState.value,
                 effect = viewmodel.effect,
-                onAction = viewmodel::handleIntent,
+                onIntent = viewmodel::handleIntent,
                 goBack = { onNavigationEvent(NavigationEvent.OnBack) }
             )
         }

@@ -3,6 +3,7 @@ package com.baldomeronapoli.eventplanner.data.repositories
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import dev.gitlive.firebase.auth.FirebaseAuth
+import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -16,6 +17,21 @@ class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
         try {
             val result = auth.createUserWithEmailAndPassword(email, password)
             val userId = result.user!!.uid
+            auth.signOut()
+            emit(NetworkResult.Success(userId))
+        } catch (e: Exception) {
+            emit(NetworkResult.Error(exception = e, data = null))
+        }
+    }
+
+    override suspend fun signInWithEmailAndPassword(
+        email: String,
+        password: String
+    ): Flow<NetworkResult<FirebaseUser?>> = flow {
+        emit(NetworkResult.Loading(true))
+        try {
+            val result = auth.signInWithEmailAndPassword(email, password)
+            val userId = result.user!!
             auth.signOut()
             emit(NetworkResult.Success(userId))
         } catch (e: Exception) {

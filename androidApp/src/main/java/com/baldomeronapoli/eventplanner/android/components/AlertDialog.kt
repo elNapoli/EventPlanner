@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.components
 
+import android.content.res.Configuration
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.CheckCircle
@@ -8,22 +9,26 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.baldomeronapoli.eventplanner.domain.models.AlertDialogType
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import com.baldomeronapoli.eventplanner.android.R
+import com.baldomeronapoli.eventplanner.domain.models.AlertType
 
 @Composable
 fun AlertDialog(
     onDismissRequest: (() -> Unit)? = null,
     onConfirmation: () -> Unit,
-    alertDialogType: AlertDialogType = AlertDialogType.SUCCESS,
+    alertType: AlertType = AlertType.SUCCESS,
     confirmText: String,
     dismissText: String? = null,
     dialogTitle: String,
     dialogText: String,
 ) {
-    val icon = when (alertDialogType) {
-        AlertDialogType.SUCCESS -> Icons.Default.CheckCircle
-        AlertDialogType.ERROR -> Icons.Default.Cancel
-        AlertDialogType.WARNING -> Icons.Default.Info
+    val icon = when (alertType) {
+        AlertType.SUCCESS -> Icons.Default.CheckCircle
+        AlertType.ERROR -> Icons.Default.Cancel
+        AlertType.WARNING -> Icons.Default.Info
     }
     AlertDialog(
         icon = {
@@ -58,4 +63,19 @@ fun AlertDialog(
 
         }
     )
+}
+
+
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Composable
+fun PreviewAlertDialogLight(modifier: Modifier = Modifier) {
+    NPreview {
+
+        AlertDialog(
+            onConfirmation = { },
+            dialogTitle = "Titulo",
+            dialogText = "esto es un mensaje de feedback al usuario ",
+            confirmText = stringResource(id = R.string.login_button),
+        )
+    }
 }
