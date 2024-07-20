@@ -31,7 +31,7 @@ fun NavGraphBuilder.authGraph(
                 goToHome = {
                     onNavigationEvent(
                         NavigationEvent.OnNavigateToScreen(
-                            MainRoute.Home,
+                            route = MainRoute.Home,
                             popUpToRoute = MainRoute.Auth.path,
                             inclusive = true
                         )
