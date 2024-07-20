@@ -13,9 +13,7 @@ class OnBoardViewModel(
     ) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState.initialUiState(preferences.getShownOnboarding())
 ) {
-    //preferences.settings.getBoolean(Preferences.SHOW_ONBOARDING, true)
     private fun hideOnboarding() = scope.launch {
-        //preferences.settings.putBoolean(Preferences.SHOW_ONBOARDING, false)
         preferences.setShownOnboarding()
         sendEffect(Effect.GoToAuthGraph)
     }

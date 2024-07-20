@@ -20,21 +20,19 @@ fun NavGraphBuilder.onboardGraph(
 
         composable(OnboardRoute.Index.path) {
             val viewmodel: OnBoardViewModel = koinViewModel()
-            EmptyScaffold {
-                OnboardScreen(
-                    effect = viewmodel.effect,
-                    onIntent = viewmodel::handleIntent,
-                    goToAuth = {
-                        onNavigationEvent(
-                            NavigationEvent.OnNavigateToScreen(
-                                route = MainRoute.Auth,
-                                popUpToRoute = MainRoute.Onboard.path,
-                                inclusive = true
-                            )
+            OnboardScreen(
+                effect = viewmodel.effect,
+                onIntent = viewmodel::handleIntent,
+                goToAuth = {
+                    onNavigationEvent(
+                        NavigationEvent.OnNavigateToScreen(
+                            route = MainRoute.Auth,
+                            popUpToRoute = MainRoute.Onboard.path,
+                            inclusive = true
                         )
-                    }
-                )
-            }
+                    )
+                }
+            )
         }
     }
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
+import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiIntent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +40,6 @@ fun OnboardScreen(
     val pagerState = rememberPagerState(pageCount = { onboardPages.size })
     var targetPage by remember { mutableStateOf(pagerState.currentPage) }
 
-    // Update pager state in composable body
     LaunchedEffect(targetPage) {
         if (targetPage != pagerState.currentPage) {
             pagerState.scrollToPage(targetPage)
@@ -51,38 +51,40 @@ fun OnboardScreen(
             Effect.GoToAuthGraph -> goToAuth()
         }
     }
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F)
+    EmptyScaffold{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
         ) {
-            val currentPage = onboardPages[pagerState.currentPage]
-            OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
-        }
-        TabSelectorView(
-            modifier = Modifier.width(100.dp),
-            onboardPages = onboardPages,
-            currentPage = pagerState.currentPage
-        ) { index ->
-            targetPage = index
-        }
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1F)
+            ) {
+                val currentPage = onboardPages[pagerState.currentPage]
+                OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
+            }
+            TabSelectorView(
+                modifier = Modifier.width(100.dp),
+                onboardPages = onboardPages,
+                currentPage = pagerState.currentPage
+            ) { index ->
+                targetPage = index
+            }
 
-        OnBoardNavButtonView(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
-            currentPage = pagerState.currentPage,
-            noOfPages = onboardPages.size,
-            onNextClicked = { targetPage++ },
-            finishOnboarding = { onIntent(UiIntent.CompleteOnboarding) }
-        )
+            OnBoardNavButtonView(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
+                currentPage = pagerState.currentPage,
+                noOfPages = onboardPages.size,
+                onNextClicked = { targetPage++ },
+                finishOnboarding = { onIntent(UiIntent.CompleteOnboarding) }
+            )
+        }
     }
+
 
 }
 
