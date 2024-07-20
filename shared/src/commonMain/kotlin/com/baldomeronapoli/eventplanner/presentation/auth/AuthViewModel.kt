@@ -3,7 +3,7 @@ package com.baldomeronapoli.eventplanner.presentation.auth
 import com.baldomeronapoli.eventplanner.domain.models.AlertType
 import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPassword
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
@@ -12,7 +12,7 @@ import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 
 class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,
-    private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPassword
+    private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase
 ) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState.initialUiState()
 ) {
@@ -80,7 +80,7 @@ class AuthViewModel(
         },
         useCase = {
             signInWithEmailAndPasswordUseCase(
-                SignInWithEmailAndPassword.Params(
+                SignInWithEmailAndPasswordUseCase.Params(
                     email = uiState.value.email,
                     password = uiState.value.password
                 )

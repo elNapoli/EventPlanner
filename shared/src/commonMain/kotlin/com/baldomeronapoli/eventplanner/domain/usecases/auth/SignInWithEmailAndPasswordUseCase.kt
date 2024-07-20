@@ -6,7 +6,7 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import dev.gitlive.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 
-class SignInWithEmailAndPassword(
+class SignInWithEmailAndPasswordUseCase(
     private val repository: AuthRepository,
 ) {
     @NativeCoroutines

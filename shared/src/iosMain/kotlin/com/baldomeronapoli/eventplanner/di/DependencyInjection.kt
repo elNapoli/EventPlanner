@@ -3,7 +3,7 @@ package com.baldomeronapoli.eventplanner.di
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPassword
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
 import dev.gitlive.firebase.Firebase
@@ -22,7 +22,7 @@ actual fun platformModule() = module {
     //auth
     factory { AuthViewModel(get(), get()) }
     single { CreateUseWithEmailAndPasswordUseCase(get()) }
-    single { SignInWithEmailAndPassword(get()) }
+    single { SignInWithEmailAndPasswordUseCase(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }
 }
 
