@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
+import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.domain.models.AlertType
 import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
@@ -73,9 +74,16 @@ class AuthViewModel(
     )
 
     private fun signInWithEmailAndPassword() = scope.useCaseRunner(
-        loadingUpdater = { value -> updateUiState { loading(value) } },
-        onError = { handleError(it) },
+        loadingUpdater = { value ->
+            Logger.d("Loading", tag = "signInWithEmailAndPassword")
+            updateUiState { loading(value) }
+        },
+        onError = {
+            Logger.e("Error ${it}", tag = "signInWithEmailAndPassword")
+            handleError(it)
+        },
         onSuccess = { data ->
+            Logger.d("onSuccess ${data}", tag = "signInWithEmailAndPassword")
             sendEffect(Effect.GoToHome)
         },
         useCase = {

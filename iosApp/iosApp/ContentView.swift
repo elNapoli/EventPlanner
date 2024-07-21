@@ -3,20 +3,21 @@ import shared
 import SwiftUI
 
 struct ContentView: View {
-    @StateViewModel private var viewModel = ViewModels().greetingViewModel()
+    @StateViewModel private var viewModel = ViewModels().onBoardViewModel()
 
     var body: some View {
         VStack {
-            let state = viewModel.uiState as! GreetingContractUiState
-            let effect = viewModel.effect as? GreetingContractEffect
-            if state.isLoading {
-                Text("Cargando.....")
+            let state = viewModel.uiState as! OnboardContractUiState
+            let effect = viewModel.effect as? OnboardContractEffect
+
+            if state.showOnboarding {
+                Text("Mostrar onboarding")
             } else {
-                Text(state.data)
+                Text("No mostrar ")
             }
             Text("\(effect)")
             Button(action: {
-                viewModel.handleIntent(uiIntent: GreetingContractUiIntentLoadGreeting())
+                viewModel.handleIntent(uiIntent: OnboardContractUiIntentCompleteOnboarding())
             }) {
                 Text("Load Data")
             }

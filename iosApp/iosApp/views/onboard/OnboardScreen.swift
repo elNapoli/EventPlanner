@@ -11,6 +11,7 @@ import SwiftUI
 struct OnboardScreen: View {
     var onboardPages: [OnboardPage] = onboardPagesList
     @State private var currentPage = 1
+    let goToAuth: () -> Void
 
     var body: some View {
         TabView(selection: $currentPage) {
@@ -24,9 +25,8 @@ struct OnboardScreen: View {
             UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.primary)
             UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color.primary).withAlphaComponent(0.2)
         }
-    }
-}
 
-#Preview {
-    OnboardScreen()
+        // BUTTON: START
+        StartButtonView(currentPage: $currentPage, onClick: goToAuth, noOfPages: 3)
+    }
 }

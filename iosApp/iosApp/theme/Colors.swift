@@ -44,4 +44,5 @@ extension Color {
     static let gray80 = Color(hex: 0xFF8D_92A0)
     static let gray100 = Color(hex: 0xFF76_7C8D)
     static let grayTitle = Color(hex: 0xFF43_4C62)
+    static let grayText = Color(hex: 0xFFA3_A8B3)
 }

@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
 import com.baldomeronapoli.eventplanner.android.models.OnboardPage
-import com.baldomeronapoli.eventplanner.android.theme.Gray80
 
 
 @Composable
@@ -40,7 +39,8 @@ fun TabSelectorView(
                     .size(8.dp)
                     .background(
                         color = if (index == currentPage) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.primary.copy(alpha = 0.2F), shape = RoundedCornerShape(4.dp)
+                        else MaterialTheme.colorScheme.primary.copy(alpha = 0.2F),
+                        shape = RoundedCornerShape(4.dp)
                     )
             )
         }

@@ -36,8 +36,6 @@ struct OnboardPageView: View {
                     .padding(.horizontal, 16)
                     .frame(maxWidth: 480)
 
-                // BUTTON: START
-                StartButtonView(currentPage: $currentPage, noOfPages: onBoardPageSize)
             }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
         } //: ZSTACK
         .onAppear {

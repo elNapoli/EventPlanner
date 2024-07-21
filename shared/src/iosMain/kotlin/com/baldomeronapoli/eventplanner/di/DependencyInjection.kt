@@ -6,6 +6,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailA
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
+import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import org.koin.core.component.KoinComponent
@@ -30,4 +31,9 @@ actual fun platformModule() = module {
 object ViewModels : KoinComponent {
     fun authViewModel() = get<AuthViewModel>()
     fun onBoardViewModel() = get<OnBoardViewModel>()
+}
+
+@Suppress("unused")
+object AppDependencies : KoinComponent {
+    fun sharePreferences() = get<SharePreferences>()
 }
