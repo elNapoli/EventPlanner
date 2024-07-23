@@ -13,7 +13,7 @@ struct PrimaryButtonStyle: ViewModifier {
         content
             .padding(.horizontal, 32)
             .padding(.vertical, 14)
-            .background(Color.primary)
+            .background(Color("NOrange"))
             .cornerRadius(8)
             .accentColor(Color.white)
     }

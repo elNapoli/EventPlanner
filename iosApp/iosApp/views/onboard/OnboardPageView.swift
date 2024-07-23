@@ -24,13 +24,13 @@ struct OnboardPageView: View {
                     .scaleEffect(isAnimating ? 1.0 : 0.6)
 
                 Text(onboardPage.title)
-                    .foregroundColor(Color.grayTitle)
+                    .foregroundColor(Color("NGrayTitle"))
                     .font(.title2)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
 
                 Text(onboardPage.description)
-                    .foregroundColor(Color.gray60)
+                    .foregroundColor(Color("NGray60"))
                     .font(.subheadline)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 16)

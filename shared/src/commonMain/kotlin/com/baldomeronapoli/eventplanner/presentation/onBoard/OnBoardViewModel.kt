@@ -11,7 +11,7 @@ class OnBoardViewModel(
     private val preferences: SharePreferences,
 
     ) : BaseViewModel<UiState, UiIntent, Effect>(
-    UiState.initialUiState(preferences.getShownOnboarding())
+    UiState(preferences.getShownOnboarding())
 ) {
     private fun hideOnboarding() = scope.launch {
         preferences.setShownOnboarding()
@@ -19,7 +19,7 @@ class OnBoardViewModel(
     }
 
 
-    override fun handleIntent(uiIntent: UiIntent) {
+    override fun sendIntent(uiIntent: UiIntent) {
         when (uiIntent) {
             UiIntent.CompleteOnboarding -> hideOnboarding()
         }

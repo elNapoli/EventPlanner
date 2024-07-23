@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 
-interface BaseUiSate
+abstract class BaseUiState
+
+
 interface BaseUiIntent
 interface BaseEffect
-abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT : BaseEffect>(
+abstract class BaseViewModel<STATE : BaseUiState, INTENT : BaseUiIntent, EFFECT : BaseEffect>(
     initialUiState: STATE
 ) : ViewModel() {
 
@@ -29,7 +31,7 @@ abstract class BaseViewModel<STATE : BaseUiSate, INTENT : BaseUiIntent, EFFECT :
     @NativeCoroutinesState
     val effect = _effect.asStateFlow()
 
-    abstract fun handleIntent(uiIntent: INTENT)
+    abstract fun sendIntent(uiIntent: INTENT)
 
     fun updateUiState(block: STATE.() -> STATE) {
         _uiState.update(block)

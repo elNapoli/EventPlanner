@@ -77,6 +77,7 @@ fun SignInScreen(
             }
 
             Effect.GoToHome -> goToHome()
+            Effect.None -> TODO()
         }
     }
     EmptyScaffold {
@@ -230,7 +231,7 @@ fun PreviewSignInScreenLight(modifier: Modifier = Modifier) {
     val effect: StateFlow<Effect?> = MutableStateFlow(null)
     NPreview {
         SignInScreen(
-            uiState = UiState.initialUiState(),
+            uiState = UiState(),
             effect = effect,
             onIntent = { },
             goToSignUp = {},

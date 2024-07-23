@@ -6,52 +6,66 @@
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
+import Combine
+import KMPNativeCoroutinesCombine
 import shared
 import SwiftUI
 
 struct SignInView: View {
-    var uiState: AuthContractUiState
-    var effect: AuthContractEffect?
-    let onIntent: (AuthContractUiIntent) -> Void
+    @StateObject private var viewModel: AuthViewModelWrapper
 
-    private var emailBinding: Binding<String> {
-        Binding(
-            get: { uiState.email },
-            set: { newValue in
-                onIntent(AuthContractUiIntentSaveEmail(email: newValue))
-            }
-        )
-    }
-
-    private var passwordBinding: Binding<String> {
-        Binding(
-            get: { uiState.password },
-            set: { newValue in
-                onIntent(AuthContractUiIntentSavePassword(password: newValue))
-            }
-        )
+    init(viewModel: AuthViewModelWrapper) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
-        Form {
-            TextInputField("Correo electrónico", text: emailBinding)
-            TextInputField("Contraseña", text: passwordBinding, isSecureField: true)
+        ZStack(alignment: .top) {
+            Color("NWhite").ignoresSafeArea()
 
-            Button(action: {
-                print("asdfasdf")
-                onIntent(AuthContractUiIntentSignInWithEmailAndPassword())
-            }, label: {
-                Text("Iniciar sesión")
-            }).primary()
+            VStack(alignment: .leading) {
+                Text("Por favor, inicia sesión para continuar utilizando esta aplicación.").font(.footnote)
+                if let dialog = viewModel.dialog {
+                    AlertSticky(alertType: dialog.type, text: dialog.message)
+                        .transition(.opacity)
+                        .animation(.easeInOut, value: dialog)
+                }
+
+                TextInputField(title: "Correo electrónico", text: $viewModel.state.email, isSecureField: false)
+                TextInputField(title: "Contraseña", text: $viewModel.state.password, isSecureField: true)
+
+                HStack {
+                    Spacer() // Esto empuja el texto hacia la derecha
+                    Text("¿Olvidaste tu contraseña?")
+                        .font(.callout)
+                        .foregroundColor(Color("NPurple"))
+                        .underline()
+                        .onTapGesture(perform: {})
+                }
+                .padding(.top, 16)
+
+                Spacer()
+                Button(action: {
+                    viewModel.sendIntent(AuthContractUiIntentSignInWithEmailAndPassword())
+                }, label: {
+                    Text("Iniciar sesión")
+                }).primary().frame(maxWidth: .infinity).padding(.top, 72)
+
+                TextWithDivider(text: "O inicia sesión usando")
+                VStack(alignment: .center) {
+                    HStack(spacing: 16) {
+                        ButtonSocialNetwork(imageName: "wind.snow", action: {})
+                        ButtonSocialNetwork(imageName: "wind.snow", action: {})
+                    }.padding(.vertical, 32)
+                    Text("¿No tienes una cuenta? Regístrate aquí")
+                        .font(.callout)
+                }.frame(maxWidth: .infinity)
+            }.padding()
         }
-        .navigationBarTitle("Iniciar sesión")
     }
 }
 
-extension UINavigationBar {
-    static func configureAppearance() {
-        let appearance = UINavigationBarAppearance()
-
-        appearance.titleTextAttributes = [.foregroundColor: UIColor(Color.grayTitle)] // Cambia el color del título
+#Preview {
+    NavigationStack {
+        SignInView(viewModel: AuthViewModelWrapper(viewModel: ViewModels().authViewModel()))
     }
 }

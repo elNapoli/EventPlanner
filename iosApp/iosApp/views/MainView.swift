@@ -5,11 +5,14 @@
 //  Created by Baldomero Aguila on 16-07-24.
 //  Copyright © 2024 orgName. All rights reserved.
 //
+import KMPNativeCoroutinesCombine
+import KMPObservableViewModelSwiftUI
 import shared
 import SwiftUI
 
 struct MainView: View {
     @StateObject private var navigationViewModel = NavigationViewModel()
+
     let prefs = AppDependencies().sharePreferences()
 
     var body: some View {
@@ -21,17 +24,24 @@ struct MainView: View {
                         navigationViewModel.navigateToRoot()
                     }
                 } else {
-                    Button(action: {
-                               navigationViewModel.navigateTo(AuthRoute.signIn)
-                           },
-                           label: {
-                               /*@START_MENU_TOKEN@*/Text("Button")/*@END_MENU_TOKEN@*/
-                           })
+                    SignInView(viewModel: AuthViewModelWrapper(viewModel: ViewModels().authViewModel()))
                 }
             }
             .navigationDestination(for: AuthRoute.self) { route in
-                // Aplicar el título en el cuerpo de cada vista
-                AuthGraphView(route: route, navigationViewModel: navigationViewModel)
+                switch route {
+                case .signIn:
+                    SignInView(viewModel: AuthViewModelWrapper(viewModel: ViewModels().authViewModel())){
+                        navigationViewModel.navigateTo(<#T##route: any Route##any Route#>)
+                    }
+                case .signUp:
+                    SignInView(viewModel: AuthViewModelWrapper(viewModel: ViewModels().authViewModel()))
+                case .validateEmail:
+                    ValidateEmailView()
+                case .successfulSignUp:
+                    SuccessfulSignUpView {
+                        navigationViewModel.navigateTo(AuthRoute.signIn)
+                    }
+                }
             }
         }
     }

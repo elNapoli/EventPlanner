@@ -9,15 +9,9 @@
 import SwiftUI
 
 struct TextInputField: View {
-    private var title: String
-    @Binding private var text: String
-    var isSecureField: Bool
-
-    init(_ title: String, text: Binding<String>, isSecureField: Bool = false) {
-        self.title = title
-        _text = text
-        self.isSecureField = isSecureField
-    }
+    var title: String
+    @Binding var text: String
+    var isSecureField: Bool = false
 
     var body: some View {
         ZStack(alignment: .leading) {
@@ -31,7 +25,23 @@ struct TextInputField: View {
                 TextField("", text: $text)
             }
         }
-        .padding(.top, 15)
-        .animation(.default)
+        .padding(.top, 24)
+        .animation(.default, value: text)
+
+        Rectangle()
+            .fill(Color("NGray40"))
+            .frame(height: 1)
+    }
+}
+
+#Preview {
+    NavigationStack {
+        ZStack(alignment: .top) {
+            VStack {
+                @State var value = "adsfasdf"
+                TextInputField(title: "prueba", text: $value, isSecureField: false)
+                TextInputField(title: "prueba", text: $value, isSecureField: false)
+            }
+        }
     }
 }

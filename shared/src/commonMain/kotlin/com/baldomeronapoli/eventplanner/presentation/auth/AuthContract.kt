@@ -5,31 +5,30 @@ import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
-import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
 import com.baldomeronapoli.eventplanner.utils.ValidateState
 
 interface AuthContract {
     data class UiState(
-        val passwordVisible: Boolean,
+        var passwordVisible: Boolean,
         @property:EmailValidation
-        val email: String,
-        val userId: String?,
-        val password: String,
-        //@property:EqualsValidation(otherProperty = "password") TODO: No funciona para el login, dado que en el login no hay nada para repeatPassword, por eso mismo hay que pensar una forma para separar dichas logicas
-        val repeatPassword: String,
-        val loading: Boolean,
-        val error: ValidationError? = null
-    ) : BaseUiSate {
-        companion object {
-            fun initialUiState() = UiState(
-                email = "",
-                password = "",
-                repeatPassword = "",
-                passwordVisible = false,
-                loading = false,
-                userId = null
-            )
-        }
+        var email: String,
+        var userId: String?,
+        var password: String,
+        var repeatPassword: String,
+        var loading: Boolean,
+        var error: ValidationError?
+    ) : BaseUiState() {
+        // NOTE: de debe instanciar el constructor de esta forma para KMM
+        constructor() : this(
+            passwordVisible = false,
+            email = "",
+            userId = null,
+            password = "",
+            repeatPassword = "",
+            loading = false,
+            error = null
+        )
 
         fun validateProperties(): UiState {
             val stateValidator = ValidateState(UiState::class)
@@ -59,6 +58,7 @@ interface AuthContract {
     sealed interface Effect : BaseEffect {
         data class ShowAlert(val errorDialog: ErrorDialog) : Effect
         data object GoToHome : Effect
+        data object None : Effect
     }
 }
 

@@ -22,8 +22,8 @@ struct OnboardScreen: View {
         .tabViewStyle(PageTabViewStyle())
         .padding(.vertical, 20)
         .onAppear {
-            UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color.primary)
-            UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color.primary).withAlphaComponent(0.2)
+            UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color("NOrange"))
+            UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color("NOrange")).withAlphaComponent(0.2)
         }
 
         // BUTTON: START

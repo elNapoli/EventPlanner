@@ -30,39 +30,20 @@ fun AlertSticky(
     alertType: AlertType = AlertType.SUCCESS,
     text: String
 ) {
-    val icon: ImageVector
-    val color: Color
-    val backgroundColor: Color
-
-    // TODO: esto puede que se use mucho a si que extraerlo a una logica separada.
-    when (alertType) {
-        AlertType.SUCCESS -> {
-            icon = Icons.Default.CheckCircle
-            backgroundColor = Success.copy(0.2F)
-            color = Success
-        }
-
-        AlertType.ERROR -> {
-            icon = Icons.Default.Error
-            backgroundColor = MaterialTheme.colorScheme.error
-            color = MaterialTheme.colorScheme.onError
-        }
-
-        AlertType.WARNING -> {
-            icon = Icons.Default.Warning
-            backgroundColor = Warning.copy(0.2F)
-            color = Warning
-        }
+    val (icon, color, backgroundColor) = when (alertType) {
+        AlertType.SUCCESS -> Triple(Icons.Default.CheckCircle, Success, Success.copy(alpha = 0.2f))
+        AlertType.ERROR -> Triple(Icons.Default.Error, MaterialTheme.colorScheme.onError, MaterialTheme.colorScheme.error)
+        AlertType.WARNING -> Triple(Icons.Default.Warning, Warning, Warning.copy(alpha = 0.2f))
     }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = MaterialTheme.shapes.small)
+            .clip(MaterialTheme.shapes.small)
             .background(backgroundColor)
             .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-        ) {
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
@@ -74,6 +55,7 @@ fun AlertSticky(
         )
     }
 }
+
 
 
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)

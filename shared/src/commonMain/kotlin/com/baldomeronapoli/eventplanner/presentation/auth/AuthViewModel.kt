@@ -11,17 +11,18 @@ import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 
-class AuthViewModel(
+open class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,
     private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase
 ) : BaseViewModel<UiState, UiIntent, Effect>(
-    UiState.initialUiState()
+    UiState()
 ) {
 
-    override fun handleIntent(uiIntent: UiIntent) {
+    override fun sendIntent(uiIntent: UiIntent) {
         when (uiIntent) {
             UiIntent.ToggleVisualTransformation -> updateUiState { togglePasswordVisible() }
             is UiIntent.SaveEmail -> {
+                Logger.e("se guardo el siguiente valor ${uiIntent.email}")
                 updateUiState {
                     saveEmail(uiIntent.email)
                 }

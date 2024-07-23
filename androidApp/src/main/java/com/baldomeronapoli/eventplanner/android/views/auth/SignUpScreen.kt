@@ -71,6 +71,7 @@ fun SignUpScreen(
                     Logger.d("No se implementa en esta vista....")
                 }
 
+                Effect.None -> TODO()
             }
         }
         if (errorDialog != null) {
@@ -226,7 +227,7 @@ fun PreviewSignUpScreenLight(modifier: Modifier = Modifier) {
     val effect: StateFlow<Effect?> = MutableStateFlow(null)
     NPreview {
         SignUpScreen(
-            uiState = UiState.initialUiState(),
+            uiState = UiState(),
             effect = effect,
             onIntent = { },
             goBack = {}

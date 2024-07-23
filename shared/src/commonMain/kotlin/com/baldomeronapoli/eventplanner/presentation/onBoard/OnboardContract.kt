@@ -2,20 +2,14 @@ package com.baldomeronapoli.eventplanner.presentation.onBoard
 
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
-import com.baldomeronapoli.eventplanner.presentation.core.BaseUiSate
+import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
 import kotlinx.serialization.Serializable
 
 interface OnboardContract {
     @Serializable
     data class UiState(
-        val showOnboarding: Boolean,
-    ) : BaseUiSate {
-        companion object {
-            fun initialUiState(showOnboarding: Boolean) = UiState(
-                showOnboarding = showOnboarding,
-            )
-        }
-
+        val showOnboarding: Boolean = true,
+    ) : BaseUiState() {
         fun completeOnboarding(value: Boolean) = copy(showOnboarding = value)
     }
 
