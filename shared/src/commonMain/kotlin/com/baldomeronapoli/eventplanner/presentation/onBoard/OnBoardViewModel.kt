@@ -25,7 +25,4 @@ class OnBoardViewModel(
         }
     }
 
-    override fun handleError(e: Throwable) {
-
-    }
 }

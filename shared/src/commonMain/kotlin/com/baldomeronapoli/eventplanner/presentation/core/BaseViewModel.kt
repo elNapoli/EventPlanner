@@ -42,6 +42,4 @@ abstract class BaseViewModel<STATE : BaseUiState, INTENT : BaseUiIntent, EFFECT 
             _effect.emit(effect)
         }
     }
-
-    abstract fun handleError(e: Throwable)
 }

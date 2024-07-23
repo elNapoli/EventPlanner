@@ -16,9 +16,8 @@ fun NavGraphBuilder.homeGraph(
         route = MainRoute.Home.path
     ) {
         composable(HomeRoute.Index.path) {
-            HomeScreen() {
+            HomeScreen {
                 onNavigationEvent(NavigationEvent.OnNavigateToScreen(HomeRoute.Test))
-
             }
         }
 

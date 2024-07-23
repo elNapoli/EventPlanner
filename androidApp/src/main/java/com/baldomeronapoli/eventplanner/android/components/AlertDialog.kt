@@ -13,22 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.baldomeronapoli.eventplanner.android.R
-import com.baldomeronapoli.eventplanner.domain.models.AlertType
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 
 @Composable
 fun AlertDialog(
     onDismissRequest: (() -> Unit)? = null,
     onConfirmation: () -> Unit,
-    alertType: AlertType = AlertType.SUCCESS,
+    feedbackUIType: FeedbackUIType = FeedbackUIType.SUCCESS,
     confirmText: String,
     dismissText: String? = null,
     dialogTitle: String,
     dialogText: String,
 ) {
-    val icon = when (alertType) {
-        AlertType.SUCCESS -> Icons.Default.CheckCircle
-        AlertType.ERROR -> Icons.Default.Cancel
-        AlertType.WARNING -> Icons.Default.Info
+    val icon = when (feedbackUIType) {
+        FeedbackUIType.SUCCESS -> Icons.Default.CheckCircle
+        FeedbackUIType.ERROR -> Icons.Default.Cancel
+        FeedbackUIType.WARNING -> Icons.Default.Info
     }
     AlertDialog(
         icon = {

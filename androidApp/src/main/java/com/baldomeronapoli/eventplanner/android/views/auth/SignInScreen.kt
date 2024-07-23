@@ -22,10 +22,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -51,7 +47,6 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Purple
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
@@ -68,14 +63,9 @@ fun SignInScreen(
     goToSignUp: () -> Unit,
     goToHome: () -> Unit
 ) {
-    var errorDialog: ErrorDialog? by remember { mutableStateOf(null) }
 
     CollectEffect(effect) {
         when (it) {
-            is Effect.ShowAlert -> {
-                errorDialog = it.errorDialog
-            }
-
             Effect.GoToHome -> goToHome()
             Effect.None -> TODO()
         }
@@ -114,10 +104,10 @@ fun SignInScreen(
                         text = stringResource(id = R.string.login_description),
                         style = MaterialTheme.typography.titleSmall,
                     )
-                    if (errorDialog != null) AlertSticky(
+                    if (uiState.feedbackUI != null) AlertSticky(
                         modifier = Modifier.padding(top = 16.dp),
-                        text = errorDialog!!.message,
-                        alertType = errorDialog!!.type,
+                        text = uiState.feedbackUI!!.message,
+                        feedbackUIType = uiState.feedbackUI!!.type,
                     )
                     NOutlinedTextField(
                         modifier = Modifier
@@ -150,6 +140,7 @@ fun SignInScreen(
                                 Icon(imageVector = image, null)
                             }
                         },
+                        maxLines = 1,
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         label = { Text(stringResource(id = R.string.password)) })
                     Text(

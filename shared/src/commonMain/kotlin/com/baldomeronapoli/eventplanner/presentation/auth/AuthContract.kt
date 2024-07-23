@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
-import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
@@ -17,7 +17,8 @@ interface AuthContract {
         var password: String,
         var repeatPassword: String,
         var loading: Boolean,
-        var error: ValidationError?
+        var error: ValidationError?,
+        var feedbackUI: FeedbackUI?
     ) : BaseUiState() {
         // NOTE: de debe instanciar el constructor de esta forma para KMM
         constructor() : this(
@@ -27,7 +28,8 @@ interface AuthContract {
             password = "",
             repeatPassword = "",
             loading = false,
-            error = null
+            error = null,
+            feedbackUI = null
         )
 
         fun validateProperties(): UiState {
@@ -37,17 +39,20 @@ interface AuthContract {
         }
 
         fun loading(value: Boolean): UiState = copy(loading = value)
-        fun saveUserId(value: String): UiState = copy(userId = value)
         fun saveEmail(email: String): UiState = copy(email = email)
         fun savePassword(password: String): UiState = copy(password = password)
         fun saveRepeatPassword(repeatPassword: String): UiState =
             copy(repeatPassword = repeatPassword)
 
         fun togglePasswordVisible(): UiState = copy(passwordVisible = !passwordVisible)
+
+        fun handleCreateUseWithEmailAndPassword(userId: String, feedbackUI: FeedbackUI?): UiState =
+            copy(userId = userId, feedbackUI = feedbackUI)
     }
 
     sealed interface UiIntent : BaseUiIntent {
         data object ToggleVisualTransformation : UiIntent
+        data object ResetFeedbackUI : UiIntent
         data class SaveEmail(val email: String) : UiIntent
         data class SavePassword(val password: String) : UiIntent
         data class SaveRepeatPassword(val repeatPassword: String) : UiIntent
@@ -56,7 +61,6 @@ interface AuthContract {
     }
 
     sealed interface Effect : BaseEffect {
-        data class ShowAlert(val errorDialog: ErrorDialog) : Effect
         data object GoToHome : Effect
         data object None : Effect
     }

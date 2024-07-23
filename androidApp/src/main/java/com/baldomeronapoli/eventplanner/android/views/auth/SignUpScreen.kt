@@ -17,10 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -42,8 +38,7 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.domain.models.AlertType
-import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
@@ -59,14 +54,9 @@ fun SignUpScreen(
     effect: StateFlow<Effect?>,
     goBack: () -> Unit
 ) {
-    var errorDialog: ErrorDialog? by remember { mutableStateOf(null) }
     EmptyScaffold {
         CollectEffect(effect) {
             when (it) {
-                is Effect.ShowAlert -> {
-                    errorDialog = it.errorDialog
-                }
-
                 Effect.GoToHome -> {
                     Logger.d("No se implementa en esta vista....")
                 }
@@ -74,15 +64,17 @@ fun SignUpScreen(
                 Effect.None -> TODO()
             }
         }
-        if (errorDialog != null) {
+        if (uiState.feedbackUI != null) {
             AlertDialog(
                 onConfirmation = {
-                    if (errorDialog!!.type == AlertType.ERROR) errorDialog = null else goBack()
+                    if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) onIntent(UiIntent.ResetFeedbackUI) else goBack()
                 },
-                dialogTitle = errorDialog!!.title,
-                dialogText = errorDialog!!.message,
-                alertType = errorDialog!!.type,
-                confirmText = if (errorDialog!!.type == AlertType.ERROR) stringResource(id = R.string.cancel) else stringResource(
+                dialogTitle = uiState.feedbackUI!!.title,
+                dialogText = uiState.feedbackUI!!.message,
+                feedbackUIType = uiState.feedbackUI!!.type,
+                confirmText = if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) stringResource(
+                    id = R.string.cancel
+                ) else stringResource(
                     id = R.string.login_with_google
                 ),
             )

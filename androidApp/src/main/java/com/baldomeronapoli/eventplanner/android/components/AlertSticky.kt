@@ -16,24 +16,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.theme.Success
 import com.baldomeronapoli.eventplanner.android.theme.Warning
-import com.baldomeronapoli.eventplanner.domain.models.AlertType
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 
 @Composable
 fun AlertSticky(
     modifier: Modifier = Modifier,
-    alertType: AlertType = AlertType.SUCCESS,
+    feedbackUIType: FeedbackUIType = FeedbackUIType.SUCCESS,
     text: String
 ) {
-    val (icon, color, backgroundColor) = when (alertType) {
-        AlertType.SUCCESS -> Triple(Icons.Default.CheckCircle, Success, Success.copy(alpha = 0.2f))
-        AlertType.ERROR -> Triple(Icons.Default.Error, MaterialTheme.colorScheme.onError, MaterialTheme.colorScheme.error)
-        AlertType.WARNING -> Triple(Icons.Default.Warning, Warning, Warning.copy(alpha = 0.2f))
+    val (icon, color, backgroundColor) = when (feedbackUIType) {
+        FeedbackUIType.SUCCESS -> Triple(
+            Icons.Default.CheckCircle,
+            Success,
+            Success.copy(alpha = 0.2f)
+        )
+
+        FeedbackUIType.ERROR -> Triple(
+            Icons.Default.Error,
+            MaterialTheme.colorScheme.onError,
+            MaterialTheme.colorScheme.error
+        )
+
+        FeedbackUIType.WARNING -> Triple(Icons.Default.Warning, Warning, Warning.copy(alpha = 0.2f))
     }
 
     Row(
@@ -57,24 +65,23 @@ fun AlertSticky(
 }
 
 
-
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewAlertStickyLight(modifier: Modifier = Modifier) {
     NPreview {
 
         AlertSticky(
-            alertType = AlertType.SUCCESS,
+            feedbackUIType = FeedbackUIType.SUCCESS,
             text = "esto es una psdfasdfasdf"
         )
         AlertSticky(
-            alertType = AlertType.WARNING,
+            feedbackUIType = FeedbackUIType.WARNING,
             text = "esto es una psdfasdfasdf"
 
 
         )
         AlertSticky(
-            alertType = AlertType.ERROR,
+            feedbackUIType = FeedbackUIType.ERROR,
             text = "esto es una psdfasdfazcadasdfasdfasdfasdfasdfsdf"
 
 

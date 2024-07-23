@@ -1,8 +1,8 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
 import co.touchlab.kermit.Logger
-import com.baldomeronapoli.eventplanner.domain.models.AlertType
-import com.baldomeronapoli.eventplanner.domain.models.ErrorDialog
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
@@ -40,29 +40,39 @@ open class AuthViewModel(
                 }
             }
 
-            is UiIntent.SaveRepeatPassword -> {
-                updateUiState { saveRepeatPassword(uiIntent.repeatPassword) }
-            }
+            is UiIntent.SaveRepeatPassword -> updateUiState { saveRepeatPassword(uiIntent.repeatPassword) }
 
             UiIntent.CreateUseWithEmailAndPassword -> createUseWithEmailAndPassword()
             UiIntent.SignInWithEmailAndPassword -> signInWithEmailAndPassword()
+            UiIntent.ResetFeedbackUI -> updateUiState { copy(feedbackUI = null) }
         }
     }
 
     private fun createUseWithEmailAndPassword() = scope.useCaseRunner(
         loadingUpdater = { value -> updateUiState { loading(value) } },
-        onError = { handleError(it) },
-        onSuccess = { data ->
-            updateUiState { saveUserId(data!!) }
-            sendEffect(
-                Effect.ShowAlert(
-                    ErrorDialog(
-                        "Cuenta creada",
-                        "Tu cuenta ha sido creada exitosamente, el usuario es ${data}",
-                        AlertType.SUCCESS,
+        onError = {
+            updateUiState {
+                handleCreateUseWithEmailAndPassword(
+                    userId = "", feedbackUI = FeedbackUI(
+                        title = "Error",
+                        message = it.cause?.message ?: "Error desconocido",
+                        type = FeedbackUIType.ERROR,
+                        show = true
                     )
                 )
-            )
+            }
+        },
+        onSuccess = { data ->
+            updateUiState {
+                handleCreateUseWithEmailAndPassword(
+                    userId = data!!, feedbackUI = FeedbackUI(
+                        title = "Cuenta creada",
+                        message = "Tu cuenta ha sido creada exitosamente, el usuario es ${data}",
+                        type = FeedbackUIType.SUCCESS,
+                        show = true
+                    )
+                )
+            }
         },
         useCase = {
             createUseWithEmailAndPasswordUseCase(
@@ -81,10 +91,9 @@ open class AuthViewModel(
         },
         onError = {
             Logger.e("Error ${it}", tag = "signInWithEmailAndPassword")
-            handleError(it)
+
         },
         onSuccess = { data ->
-            Logger.d("onSuccess ${data}", tag = "signInWithEmailAndPassword")
             sendEffect(Effect.GoToHome)
         },
         useCase = {
@@ -96,16 +105,4 @@ open class AuthViewModel(
             )
         }
     )
-
-    override fun handleError(e: Throwable) {
-        sendEffect(
-            Effect.ShowAlert(
-                ErrorDialog(
-                    "Error",
-                    e.message!!,
-                    AlertType.ERROR,
-                )
-            )
-        )
-    }
 }

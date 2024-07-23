@@ -3,11 +3,11 @@ package com.baldomeronapoli.eventplanner.android.navigation
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
 
-class NavigationViewModel : ViewModel() {
+open class NavigationViewModel : ViewModel() {
 
     private lateinit var onBackPressed: () -> Unit
 
-    private lateinit var activityNavController: NavHostController
+    lateinit var activityNavController: NavHostController
 
     fun onEvent(event: NavigationEvent) {
         when (event) {
