@@ -32,7 +32,7 @@ fun NOutlinedTextField(
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
@@ -61,7 +61,11 @@ fun NOutlinedTextField(
             readOnly = readOnly,
             textStyle = textStyle,
             label = label,
-            placeholder = placeholder,
+            placeholder = if (placeholder !== null) {
+                {
+                   Text(placeholder) }
+
+            } else null,
             leadingIcon = leadingIcon,
             shape = shape,
             isError = isError,

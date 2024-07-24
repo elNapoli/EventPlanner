@@ -6,6 +6,9 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.baldomeronapoli.eventplanner.android.models.BottomRoute
@@ -17,16 +20,25 @@ fun NAppBottomNavigation(
 ) {
     BottomAppBar {
         NavigationBar {
-            items.forEach {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+            val currentDestination = navBackStackEntry?.destination
+            items.forEach { screen ->
                 NavigationBarItem(
-                    selected = navController.currentBackStackEntryAsState().value?.destination?.route == it.route,
+                    selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                     onClick = {
-                        navController.navigate(it.route)
+                        navController.navigate(screen.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     },
                     icon = {
-                        Icon(imageVector = it.icon, contentDescription = it.label)
+                        Icon(imageVector = screen.icon, contentDescription = screen.label)
                     },
-                    label = { Text(it.label) })
+                    label = { Text(screen.label) })
             }
 
         }

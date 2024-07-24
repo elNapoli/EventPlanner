@@ -20,4 +20,12 @@
     <string name="i_am_already_account">Ya tengo cuenta. Inicia sesión</string>
     <string name="signup">Crear cuenta</string>
     <string name="cancel">Cancelar</string>
+    <string name="nearby_event">Eventos cercanos</string>
+    <string name="view_all">Ver todos</string>
+    <string name="find_an_event_around_you">Encuentra un evento interesante cerca de ti</string>
+    <string name="my_location">Mi ubicación</string>
+    <string name="search_your_event">Busca tu evento aquí</string>
+    <string name="my_events">Mis eventos</string>
+    <string name="oops_empty_list_event">¡Oops! No tienes eventos</string>
+    <string name="empty_event_description">Revisa nuestro evento recomendado y encuentra algo para ti.</string>
 </resources>

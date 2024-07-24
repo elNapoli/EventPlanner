@@ -123,7 +123,7 @@ fun SignInScreen(
                         },
                         isError = uiState.error?.property == "email",
                         textError = uiState.error?.message ?: "",
-                        placeholder = { Text(text = "prueba@gmail.com") },
+                        placeholder = "prueba@gmail.com",
                         label = { Text(stringResource(id = R.string.email)) })
 
                     NOutlinedTextField(
