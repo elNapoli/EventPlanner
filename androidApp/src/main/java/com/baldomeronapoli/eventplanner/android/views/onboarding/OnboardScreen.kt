@@ -19,63 +19,83 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.baldomeronapoli.eventplanner.android.components.NPreview
+import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
+import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
+import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiIntent
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnboardScreen() {
+fun OnboardScreen(
+    modifier: Modifier = Modifier,
+    effect: StateFlow<Effect?>,
+    onIntent: (UiIntent) -> Unit,
+    goToAuth: () -> Unit
+) {
     val onboardPages = onboardPagesList
     val pagerState = rememberPagerState(pageCount = { onboardPages.size })
     var targetPage by remember { mutableStateOf(pagerState.currentPage) }
 
-    // Update pager state in composable body
     LaunchedEffect(targetPage) {
         if (targetPage != pagerState.currentPage) {
             pagerState.scrollToPage(targetPage)
         }
     }
 
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1F)
-        ) {
-            val currentPage = onboardPages[pagerState.currentPage]
-            OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
-        }
-        TabSelectorView(
-            modifier = Modifier.width(100.dp),
-            onboardPages = onboardPages,
-            currentPage = pagerState.currentPage
-        ) { index ->
-            targetPage = index
-        }
-
-        OnBoardNavButtonView(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 16.dp),
-            currentPage = pagerState.currentPage,
-            noOfPages = onboardPages.size
-        ) {
-            targetPage++
+    CollectEffect(effect) {
+        when (it) {
+            Effect.GoToAuthGraph -> goToAuth()
         }
     }
+    EmptyScaffold{
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1F)
+            ) {
+                val currentPage = onboardPages[pagerState.currentPage]
+                OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
+            }
+            TabSelectorView(
+                modifier = Modifier.width(100.dp),
+                onboardPages = onboardPages,
+                currentPage = pagerState.currentPage
+            ) { index ->
+                targetPage = index
+            }
+
+            OnBoardNavButtonView(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(top = 16.dp),
+                currentPage = pagerState.currentPage,
+                noOfPages = onboardPages.size,
+                onNextClicked = { targetPage++ },
+                finishOnboarding = { onIntent(UiIntent.CompleteOnboarding) }
+            )
+        }
+    }
+
 
 }
 
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewOnboardScreenLight(modifier: Modifier = Modifier) {
-    NPreview {
-        OnboardScreen()
-    }
+    val effect: StateFlow<Effect> =
+        MutableStateFlow(Effect.GoToAuthGraph)
+
+    OnboardScreen(
+        effect = effect,
+        onIntent = { }
+    ) {}
 }

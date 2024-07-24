@@ -1,11 +1,9 @@
 package com.baldomeronapoli.eventplanner.android.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -15,7 +13,6 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -24,9 +21,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.theme.Gray40
-import com.baldomeronapoli.eventplanner.android.theme.MyTheme
 
 @Composable
 fun NOutlinedTextField(
@@ -37,7 +32,7 @@ fun NOutlinedTextField(
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
     label: @Composable (() -> Unit)? = null,
-    placeholder: @Composable (() -> Unit)? = null,
+    placeholder: String? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
     prefix: @Composable (() -> Unit)? = null,
@@ -66,7 +61,11 @@ fun NOutlinedTextField(
             readOnly = readOnly,
             textStyle = textStyle,
             label = label,
-            placeholder = placeholder,
+            placeholder = if (placeholder !== null) {
+                {
+                   Text(placeholder) }
+
+            } else null,
             leadingIcon = leadingIcon,
             shape = shape,
             isError = isError,
@@ -91,6 +90,12 @@ fun NOutlinedTextField(
             colors = OutlinedTextFieldDefaults.colors().copy(
                 unfocusedLabelColor = Gray40,
                 focusedPlaceholderColor = Gray40,
+                errorTextColor = MaterialTheme.colorScheme.onError,
+                errorLeadingIconColor = MaterialTheme.colorScheme.onError,
+                errorTrailingIconColor = MaterialTheme.colorScheme.onError,
+                errorLabelColor = MaterialTheme.colorScheme.onError,
+                errorIndicatorColor = MaterialTheme.colorScheme.onError
+
             ),
             minLines = minLines,
         )
@@ -98,7 +103,7 @@ fun NOutlinedTextField(
             textError?.let {
                 Text(
                     text = it,
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.onError
                 )
             }
 
@@ -106,26 +111,22 @@ fun NOutlinedTextField(
     }
 }
 
-@Preview(showBackground = true)
+
+@Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewNOutlinedTextField() {
-    MyTheme {
-        Surface {
-            Column(modifier = Modifier.padding(16.dp)) {
-                NOutlinedTextField(
-                    value = "prueba ",
-                    onValueChange = {},
-                    isError = false,
-                    textError = "asdf"
-                )
-                NOutlinedTextField(
-                    value = "prueba ",
-                    onValueChange = {},
-                    isError = true,
-                    textError = "asdf"
-                )
-            }
-        }
-
+    NPreview {
+        NOutlinedTextField(
+            value = "prueba ",
+            onValueChange = {},
+            isError = false,
+            textError = "asdf"
+        )
+        NOutlinedTextField(
+            value = "prueba ",
+            onValueChange = {},
+            isError = true,
+            textError = "asdf"
+        )
     }
 }

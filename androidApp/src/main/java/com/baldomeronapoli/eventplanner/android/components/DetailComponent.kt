@@ -46,6 +46,9 @@ fun DetailComponent(
 @Composable
 fun PreviewOnBoardDetailsLight(modifier: Modifier = Modifier) {
     NPreview {
-        DetailComponent(title = onboardPagesList[0].title, description = onboardPagesList[0].description)
+        DetailComponent(
+            title = onboardPagesList[0].title,
+            description = onboardPagesList[0].description
+        )
     }
 }

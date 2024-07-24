@@ -7,6 +7,7 @@ import androidx.navigation.navigation
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.views.auth.SignInScreen
+import com.baldomeronapoli.eventplanner.android.views.auth.SignUpScreen
 import com.baldomeronapoli.eventplanner.android.views.auth.SuccessfulSignUpScreen
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -25,11 +26,29 @@ fun NavGraphBuilder.authGraph(
             SignInScreen(
                 uiState = uiState.value,
                 effect = viewmodel.effect,
-                onAction = viewmodel::handleIntent,
+                onIntent = viewmodel::sendIntent,
+                goToSignUp = { onNavigationEvent(NavigationEvent.OnNavigateToScreen(AuthRoute.SignUp)) },
+                goToHome = {
+                    onNavigationEvent(
+                        NavigationEvent.OnNavigateToScreen(
+                            route = MainRoute.Home,
+                            popUpToRoute = MainRoute.Auth.path,
+                            inclusive = true
+                        )
+                    )
+                }
             )
         }
 
         composable(AuthRoute.SignUp.path) {
+            val viewmodel: AuthViewModel = koinViewModel()
+            val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
+            SignUpScreen(
+                uiState = uiState.value,
+                effect = viewmodel.effect,
+                onIntent = viewmodel::sendIntent,
+                goBack = { onNavigationEvent(NavigationEvent.OnBack) }
+            )
         }
 
         composable(AuthRoute.ValidateEmail.path) {

@@ -50,6 +50,9 @@ kotlin {
             api(libs.kmp.koin.core)
             api(libs.kmp.kermit)
 
+            implementation("dev.gitlive:firebase-auth:1.13.0")
+
+
         }
         iosMain.dependencies {
 
@@ -70,4 +73,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+dependencies {
+    implementation(libs.firebase.auth.ktx)
 }

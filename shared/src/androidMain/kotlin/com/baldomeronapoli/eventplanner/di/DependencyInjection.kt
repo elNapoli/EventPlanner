@@ -1,16 +1,23 @@
 package com.baldomeronapoli.eventplanner.di
 
-import com.baldomeronapoli.eventplanner.data.repositories.GreetingRepositoryImpl
-import com.baldomeronapoli.eventplanner.domain.repositories.GreetingRepository
-import com.baldomeronapoli.eventplanner.domain.usecases.GetGreetingUseCase
-import com.baldomeronapoli.eventplanner.presentation.GreetingViewModel
+import android.content.Context
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
+import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 actual fun platformModule() = module {
-    single<GreetingRepository> { GreetingRepositoryImpl() }
-    single { GetGreetingUseCase(get()) }
-    viewModel { GreetingViewModel(get()) }
-    viewModel { AuthViewModel() }
+    single {
+        androidContext().getSharedPreferences(
+            androidContext().packageName,
+            Context.MODE_PRIVATE
+        )
+    }
+    // onboard
+    viewModel { OnBoardViewModel(get()) }
+
+    //auth
+    viewModel { AuthViewModel(get(), get()) }
+
 }

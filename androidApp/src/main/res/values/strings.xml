@@ -12,4 +12,20 @@
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="you_dont_have_an_account">¿No tienes una cuenta? Regístrate aquí</string>
     <string name="or_login_with">O inicia sesión usando</string>
+    <string name="create_your_account">Crea gratis tu cuenta</string>
+    <string name="repeat_password">Reingrese la contraseña</string>
+    <string name="or">o</string>
+    <string name="login_with_google">Regístrate con Gmail</string>
+    <string name="login_with_facebook">Regístrate con facebook</string>
+    <string name="i_am_already_account">Ya tengo cuenta. Inicia sesión</string>
+    <string name="signup">Crear cuenta</string>
+    <string name="cancel">Cancelar</string>
+    <string name="nearby_event">Eventos cercanos</string>
+    <string name="view_all">Ver todos</string>
+    <string name="find_an_event_around_you">Encuentra un evento interesante cerca de ti</string>
+    <string name="my_location">Mi ubicación</string>
+    <string name="search_your_event">Busca tu evento aquí</string>
+    <string name="my_events">Mis eventos</string>
+    <string name="oops_empty_list_event">¡Oops! No tienes eventos</string>
+    <string name="empty_event_description">Revisa nuestro evento recomendado y encuentra algo para ti.</string>
 </resources>

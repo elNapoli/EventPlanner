@@ -9,12 +9,13 @@ val SecondaryLight = Color(0xFF03DAC5)
 val TertiaryLight = Color(0xFF3700B3)
 
 var Orange = Color(0xFFFC7B32)
-var LightOrange = Color(0xFFFD955B)
 var Navy = Color(0xFF1A2541)
 var Purple = Color(0xFFB454E1)
-var LightPurple = Color(0xFFBD73F8)
 var Blue = Color(0xFF356CC2)
 var Red = Color(0xFFFB604B)
+
+var Success = Color(0xFFBD73F8)
+var Warning = Color(0xFFFD955B)
 
 var White = Color(0xFFFFFFFF)
 var Gray = Color(0xFFE8E9EC)

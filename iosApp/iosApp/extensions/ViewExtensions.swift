@@ -13,6 +13,10 @@ extension View {
         modifier(PrimaryButtonStyle())
     }
 
+    func titleSmall() -> some View {
+        modifier(TitleSmall())
+    }
+
     func heading() -> some View {
         modifier(Heading())
     }

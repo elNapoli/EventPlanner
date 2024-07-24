@@ -23,7 +23,7 @@ fun MyTheme(
             primary = Orange,
             secondary = SecondaryLight,
             tertiary = TertiaryLight,
-            error = Red,
+            error = Red.copy(alpha = 0.2F),
             onError = Red,
             onErrorContainer = Red.copy(alpha = 0.20F),
             onSurface = GrayTitle,
