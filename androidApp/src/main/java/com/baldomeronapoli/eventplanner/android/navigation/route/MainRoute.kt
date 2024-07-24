@@ -10,4 +10,5 @@ sealed class MainRoute(override val path: String, override val title: String) : 
     data object Profile : MainRoute("profile", "Perfil")
     data object Onboard : MainRoute("onboard", "Onboarding")
     data object Auth : MainRoute("auth", "Auth")
+    data object EventDetail : MainRoute("event-detail", "Auth")
 }

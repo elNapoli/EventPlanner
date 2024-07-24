@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
@@ -23,29 +22,29 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier) {
-   Column {
-       NOutlinedTextField(
-           leadingIcon = {
-               Icon(
-                   imageVector = Icons.Outlined.Search,
-                   contentDescription = null
-               )
-           },
-           value = "",
-           placeholder = stringResource(id = R.string.search_your_event),
-           onValueChange = {})
+fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: () -> Unit) {
+    Column {
+        NOutlinedTextField(
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = null
+                )
+            },
+            value = "",
+            placeholder = stringResource(id = R.string.search_your_event),
+            onValueChange = {})
 
-       CategoryFilter(modifier = Modifier.padding(vertical = 16.dp))
-       LazyColumn(
-           modifier = Modifier.padding(top = 24.dp),
-           verticalArrangement = Arrangement.spacedBy(8.dp)
-       ) {
-           items(List(20) { it }) { item ->
-               EventCard(modifier = Modifier.fillMaxWidth()) {}
-           }
-       }
-   }
+        CategoryFilter(modifier = Modifier.padding(vertical = 16.dp))
+        LazyColumn(
+            modifier = Modifier.padding(top = 24.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(List(20) { it }) { item ->
+                EventCard(modifier = Modifier.fillMaxWidth(), onClick = goToEventDetail)
+            }
+        }
+    }
 }
 
 
@@ -54,6 +53,6 @@ fun SearchScreen(modifier: Modifier = Modifier) {
 fun PreviewButtonTapLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        SearchScreen()
+        SearchScreen{}
     }
 }

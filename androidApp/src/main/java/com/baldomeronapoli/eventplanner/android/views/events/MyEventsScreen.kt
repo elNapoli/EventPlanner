@@ -1,23 +1,109 @@
 package com.baldomeronapoli.eventplanner.android.views.events
 
 import android.content.res.Configuration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import com.baldomeronapoli.eventplanner.android.R
+import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.NPreview
-import com.baldomeronapoli.eventplanner.android.views.onboarding.OnboardPageView
+import com.baldomeronapoli.eventplanner.android.theme.Blue
+import com.baldomeronapoli.eventplanner.android.theme.Gray40
+import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
+import com.baldomeronapoli.eventplanner.android.theme.Orange
+import com.baldomeronapoli.eventplanner.android.theme.White
+
 
 @Composable
-fun MyEventsScreen(modifier: Modifier = Modifier) {
-    Column {
-        OnboardPageView(
-            imageRes = R.drawable.empty_event,
-            title = stringResource(id = R.string.oops_empty_list_event),
-            description = stringResource(id = R.string.empty_event_description)
-        )
+fun MyEventsScreen(modifier: Modifier = Modifier, goToCreateEvent: () -> Unit) {
+    var tabIndex by remember { mutableIntStateOf(0) }
+
+    val tabs = listOf("Próximos", "Pasados", "Organizados")
+
+    Scaffold(
+        floatingActionButton = {
+            if (tabIndex == 2) { // Mostrar el botón flotante solo en la pestaña "Organizados"
+                FloatingActionButton(
+                    onClick = goToCreateEvent,
+                    containerColor = Orange // Color del botón flotante
+                ) {
+                    // Icono del botón flotante
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = null
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(innerPadding)
+        ) {
+            TabRow(
+                selectedTabIndex = tabIndex,
+                containerColor = Gray40,
+                contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                indicator = { tabPositions ->
+                    Box(
+                        modifier = Modifier
+                            .tabIndicatorOffset(tabPositions[tabIndex])
+                            .padding(5.dp)
+                            .background(
+                                color = White.copy(alpha = .3F),
+                                shape = RoundedCornerShape(4.dp) // Forma del indicador
+                            )
+                            .fillMaxSize()
+                    )
+                }
+            ) {
+                tabs.forEachIndexed { index, title ->
+                    Tab(
+                        text = {
+                            Text(
+                                text = title,
+                                maxLines = 1,
+                                style = MaterialTheme.typography.titleMedium,
+                                color = if (tabIndex == index) Blue else GrayTitle, // Color del texto
+                                fontWeight = if (tabIndex == index) FontWeight.Bold else FontWeight.Normal
+                            )
+                        },
+                        selected = tabIndex == index,
+                        onClick = { tabIndex = index },
+                    )
+                }
+            }
+
+            Column(Modifier.padding(16.dp)) {
+                when (tabIndex) {
+                    0 -> UpcomingEventTab()
+                    1 -> PastEventTab()
+                    2 -> OrganizedEventTab()
+                }
+            }
+        }
     }
 }
 
@@ -25,7 +111,6 @@ fun MyEventsScreen(modifier: Modifier = Modifier) {
 @Composable
 fun PreviewMyEventsScreenLight(modifier: Modifier = Modifier) {
     NPreview {
-
-        MyEventsScreen()
+        MyEventsScreen(){}
     }
 }

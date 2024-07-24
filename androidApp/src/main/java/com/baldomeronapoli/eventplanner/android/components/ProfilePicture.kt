@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.baldomeronapoli.eventplanner.android.theme.Orange
@@ -20,13 +21,14 @@ import com.baldomeronapoli.eventplanner.android.theme.Orange
 @Composable
 fun ProfilePicture(
     letter: String,
-    modifier: Modifier = Modifier,
+    size: Dp = 40.dp,
     backgroundColor: Color = Orange, // Naranja
     textColor: Color = Color.White,
     textStyle: TextStyle = TextStyle(fontSize = 24.sp)
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
+            .size(size)
             .background(color = backgroundColor, shape = CircleShape)
             .graphicsLayer { alpha = 1f },
         contentAlignment = Alignment.Center
@@ -46,9 +48,7 @@ fun PreviewAlertDialogLight() {
     NPreview {
 
         ProfilePicture(
-            letter = "A",
-            modifier = Modifier
-                .size(80.dp)
+            letter = "A"
         )
     }
 }

@@ -1,8 +1,12 @@
 package com.baldomeronapoli.eventplanner.android.navigation.myevents
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +20,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
+import com.baldomeronapoli.eventplanner.android.views.events.CreateEventScreen
 import com.baldomeronapoli.eventplanner.android.views.events.MyEventsScreen
 
 fun NavGraphBuilder.myEventGraph(
@@ -40,8 +45,30 @@ fun NavGraphBuilder.myEventGraph(
                     }
                 }
             ) {
-                MyEventsScreen()
+                MyEventsScreen(){
+                    onNavigationEvent(NavigationEvent.OnNavigateToScreen(MyEventsRoute.Create))
+                }
             }
+        }
+
+
+        composable(MyEventsRoute.Create.path) {
+            Scaffold(
+                topBar = {},
+            ) { innerPadding ->
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                ) {
+                    Column(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        CreateEventScreen()
+                    }
+                }
+            }
+
         }
 
     }

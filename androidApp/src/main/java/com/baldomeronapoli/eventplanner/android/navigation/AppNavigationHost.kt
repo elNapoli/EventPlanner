@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.baldomeronapoli.eventplanner.android.AppState
 import com.baldomeronapoli.eventplanner.android.navigation.auth.authGraph
+import com.baldomeronapoli.eventplanner.android.navigation.eventDetail.eventDetailGraph
 import com.baldomeronapoli.eventplanner.android.navigation.home.homeGraph
 import com.baldomeronapoli.eventplanner.android.navigation.myevents.myEventGraph
 import com.baldomeronapoli.eventplanner.android.navigation.onboard.onboardGraph
@@ -35,5 +36,7 @@ fun AppNavigationHost(
         authGraph(onNavigationEvent = navigationViewModel::onEvent)
         searchGraph(onNavigationEvent = navigationViewModel::onEvent)
         myEventGraph(onNavigationEvent = navigationViewModel::onEvent)
+        eventDetailGraph(onNavigationEvent = navigationViewModel::onEvent)
+
     }
 }

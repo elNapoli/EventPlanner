@@ -17,7 +17,7 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
 
 @Composable
-fun OnboardPageView(title: String, description: String, imageRes: Int) {
+fun InfoBlock(title: String, description: String, imageRes: Int) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,6 +46,6 @@ fun OnboardPageView(title: String, description: String, imageRes: Int) {
 fun PreviewOnboardScreenPageLight(modifier: Modifier = Modifier) {
     NPreview {
         val data = onboardPagesList[0]
-        OnboardPageView(data.title, data.description, data.imageRes)
+        InfoBlock(data.title, data.description, data.imageRes)
     }
 }

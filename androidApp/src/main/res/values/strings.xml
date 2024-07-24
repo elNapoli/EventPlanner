@@ -28,4 +28,10 @@
     <string name="my_events">Mis eventos</string>
     <string name="oops_empty_list_event">¡Oops! No tienes eventos</string>
     <string name="empty_event_description">Revisa nuestro evento recomendado y encuentra algo para ti.</string>
+    <string name="data_and_date">Fecha y hora</string>
+    <string name="description">Descripción</string>
+    <string name="event_organizer">Organizador</string>
+    <string name="location">Dirección</string>
+    <string name="chat">Chat</string>
+    <string name="booking_now">Reservar</string>
 </resources>

@@ -31,7 +31,7 @@ import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    goToTest: () -> Unit
+    goToEventDetail: () -> Unit
 ) {
     Column {
         Text(
@@ -50,7 +50,7 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(List(20) { it }) { item ->
-                EventCard(modifier = Modifier.width(260.dp)) {}
+                EventCard(modifier = Modifier.width(260.dp), onClick = goToEventDetail)
             }
         }
 
@@ -76,7 +76,7 @@ fun HomeScreen(
         CategoryFilter(modifier = Modifier.padding(vertical = 16.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(List(20) { it }) { item ->
-                EventCardWide {}
+                EventCardWide(onClick = goToEventDetail)
             }
         }
     }

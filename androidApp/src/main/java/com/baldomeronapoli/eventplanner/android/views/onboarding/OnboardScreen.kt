@@ -63,7 +63,7 @@ fun OnboardScreen(
                     .weight(1F)
             ) {
                 val currentPage = onboardPages[pagerState.currentPage]
-                OnboardPageView(currentPage.title, currentPage.description, currentPage.imageRes)
+                InfoBlock(currentPage.title, currentPage.description, currentPage.imageRes)
             }
             TabSelectorView(
                 modifier = Modifier.width(100.dp),

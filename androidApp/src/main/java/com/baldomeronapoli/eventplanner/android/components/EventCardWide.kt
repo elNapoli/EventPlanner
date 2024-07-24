@@ -69,18 +69,7 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Row(
-                modifier = Modifier.padding(start = 76.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ProfilePicture(
-                    letter = "A",
-                    modifier = Modifier
-                        .size(14.dp)
-                )
-                Text(text = "Microsoft")
-            }
+            OrganizerAvatar(modifier = Modifier.padding(start=76.dp),size = 20.dp)
 
             Text(
                 text = "$100",

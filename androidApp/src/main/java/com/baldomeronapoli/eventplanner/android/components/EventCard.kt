@@ -49,8 +49,7 @@ fun EventCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .fillMaxWidth().padding(bottom = 16.dp)) {
             Image(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(MaterialTheme.shapes.small), // Clip the image to the shape of the container
+                    .fillMaxWidth(),
                 painter = painterResource(id = R.drawable.empty_thumbnail_event),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth // Adjust the content scale as needed
