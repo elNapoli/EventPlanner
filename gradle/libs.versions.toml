@@ -1,6 +1,7 @@
 [versions]
 agp = "8.5.0"
 coreSplashscreen = "1.0.1"
+firebaseAuth = "1.13.0"
 firebaseBom = "33.1.2"
 kotlin = "2.0.0"
 compose = "1.6.8"
@@ -25,6 +26,7 @@ firebaseAuthKtx = "23.0.0"
 [libraries]
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelKtx" }
+firebase-auth = { module = "dev.gitlive:firebase-auth", version.ref = "firebaseAuth" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

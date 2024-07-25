@@ -93,7 +93,7 @@ fun SignInScreen(
                     }) {
                     Text(
 
-                        text = stringResource(id = R.string.login),
+                        text = stringResource(id = R.string.login_button),
                         style = MaterialTheme.typography.headlineLarge,
                         color = GrayTitle,
                         fontWeight = FontWeight.Bold
@@ -172,7 +172,7 @@ fun SignInScreen(
                     NButton(
                         enabled = uiState.error == null,
                         modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.login)
+                        text = stringResource(id = R.string.login_button)
                     ) {
                         onIntent(UiIntent.SignInWithEmailAndPassword)
 

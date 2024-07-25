@@ -10,11 +10,14 @@ interface AuthRepository {
     suspend fun createUseWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<NetworkResult<String?>>
+    ): Flow<NetworkResult<FirebaseUser?>>
 
     @NativeCoroutines
     suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
     ): Flow<NetworkResult<FirebaseUser?>>
+
+    @NativeCoroutines
+    suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<Boolean>>
 }

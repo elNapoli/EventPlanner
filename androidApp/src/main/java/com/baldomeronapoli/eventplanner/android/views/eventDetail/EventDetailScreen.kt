@@ -125,7 +125,7 @@ fun EventDetailScreen(modifier: Modifier = Modifier) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                OrganizerAvatar()
+                OrganizerAvatar(name="ban")
                 Text(
                     text = stringResource(id = R.string.chat),
                     color = Blue,

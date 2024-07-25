@@ -2,6 +2,7 @@ package com.baldomeronapoli.eventplanner.di
 
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
@@ -35,11 +36,12 @@ object DependencyInjection {
     }
 
     private fun repositoryModule() = module {
-        single<AuthRepository> { AuthRepositoryImpl(get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
     }
 
     private fun useCaseModule() = module {
         single { CreateUseWithEmailAndPasswordUseCase(get()) }
         single { SignInWithEmailAndPasswordUseCase(get()) }
+        single { CheckIsLoggedUserUseCase(get()) }
     }
 }

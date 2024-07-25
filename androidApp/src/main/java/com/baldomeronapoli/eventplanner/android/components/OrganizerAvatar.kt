@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun OrganizerAvatar(modifier :Modifier= Modifier, size: Dp = 40.dp) {
+fun OrganizerAvatar(modifier: Modifier = Modifier, size: Dp = 40.dp, name: String) {
     Row(
-        modifier=modifier,
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -22,7 +22,7 @@ fun OrganizerAvatar(modifier :Modifier= Modifier, size: Dp = 40.dp) {
             letter = "A",
             size = size
         )
-        Text(text = "Microsoft")
+        Text(text = name)
     }
 }
 
@@ -30,6 +30,6 @@ fun OrganizerAvatar(modifier :Modifier= Modifier, size: Dp = 40.dp) {
 @Composable
 fun PreviewOrganizerAvatarLight(modifier: Modifier = Modifier) {
     NPreview {
-        OrganizerAvatar()
+        OrganizerAvatar(name = "Baldomero")
     }
 }

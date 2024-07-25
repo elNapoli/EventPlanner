@@ -5,7 +5,6 @@
     <string name="congrats">Felicitaciones</string>
     <string name="congrats_description">Has completado exitosamente tu proceso de registro. Inicia sesión con tu cuenta.</string>
     <string name="login_button">Iniciar sesión</string>
-    <string name="login">Iniciar sesión</string>
     <string name="login_description">Por favor, inicia sesión para continuar utilizando esta aplicación.</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>

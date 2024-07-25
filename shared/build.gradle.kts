@@ -50,7 +50,7 @@ kotlin {
             api(libs.kmp.koin.core)
             api(libs.kmp.kermit)
 
-            implementation("dev.gitlive:firebase-auth:1.13.0")
+            api(libs.firebase.auth)
 
 
         }

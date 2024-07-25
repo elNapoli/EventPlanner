@@ -75,7 +75,7 @@ fun SignUpScreen(
                 confirmText = if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) stringResource(
                     id = R.string.cancel
                 ) else stringResource(
-                    id = R.string.login_with_google
+                    id = R.string.login_button
                 ),
             )
         }

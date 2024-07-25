@@ -16,6 +16,8 @@ import com.baldomeronapoli.eventplanner.android.navigation.eventDetail.EventDeta
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
 import com.baldomeronapoli.eventplanner.android.views.home.HomeScreen
+import com.baldomeronapoli.eventplanner.utils.SharePreferences
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.homeGraph(
@@ -26,13 +28,13 @@ fun NavGraphBuilder.homeGraph(
         route = MainRoute.Home.path
     ) {
         composable(HomeRoute.Index.path) {
-
+            val prefs: SharePreferences = koinInject()
             ScaffoldWithBottomBarNavigation(
                 topBar = {
                     TopAppBar(
 
                         title = {
-                            OrganizerAvatar()
+                            OrganizerAvatar(name = prefs.getEmailCurrentUser()!!)
                         },
                         actions = {
                             IconButton(onClick = { }) {

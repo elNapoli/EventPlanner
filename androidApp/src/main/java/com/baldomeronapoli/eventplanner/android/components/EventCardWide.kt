@@ -69,7 +69,7 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            OrganizerAvatar(modifier = Modifier.padding(start=76.dp),size = 20.dp)
+            OrganizerAvatar(modifier = Modifier.padding(start = 76.dp), size = 20.dp, name = "ban")
 
             Text(
                 text = "$100",
@@ -87,6 +87,6 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
 fun PreviewEventCardWideLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        EventCardWide(){}
+        EventCardWide {}
     }
 }
