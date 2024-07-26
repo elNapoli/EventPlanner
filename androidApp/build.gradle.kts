@@ -54,8 +54,16 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.core.splashscreen)
 
-    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    implementation(libs.androidx.material.icons.extended)
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.0.0")
+    implementation(libs.accompanist.permissions)
+    implementation("io.coil-kt:coil:2.7.0")
+    implementation("com.mohamedrejeb.richeditor:richeditor-compose:1.0.0-rc05-k2")
+    implementation("com.google.maps.android:maps-compose:4.4.1")
+    // Otras dependencias
 
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.android.gms:play-services-location:21.0.0")
 
 }

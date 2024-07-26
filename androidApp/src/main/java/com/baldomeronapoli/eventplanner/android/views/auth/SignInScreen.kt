@@ -114,7 +114,7 @@ fun SignInScreen(
                             .padding(top = 32.dp),
                         value = uiState.email,
                         onValueChange = { onIntent(UiIntent.SaveEmail(it)) },
-                        maxLines = 1,
+                        singleLine = true,
                         trailingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Email,
@@ -124,7 +124,8 @@ fun SignInScreen(
                         isError = uiState.error?.property == "email",
                         textError = uiState.error?.message ?: "",
                         placeholder = "prueba@gmail.com",
-                        label = { Text(stringResource(id = R.string.email)) })
+                        label = stringResource(id = R.string.email)
+                    )
 
                     NOutlinedTextField(
                         value = uiState.password,
@@ -140,9 +141,9 @@ fun SignInScreen(
                                 Icon(imageVector = image, null)
                             }
                         },
-                        maxLines = 1,
+                        singleLine = true,
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        label = { Text(stringResource(id = R.string.password)) })
+                        label = stringResource(id = R.string.password))
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)

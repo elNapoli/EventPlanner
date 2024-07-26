@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Directorio de almacenamiento privado de la aplicación -->
+    <files-path name="my_images" path="." />
+    <!-- Directorio de almacenamiento externo (tarjeta SD) -->
+    <external-path name="external_files" path="." />
+    <!-- Directorio específico para las fotos de la cámara -->
+    <files-path name="camera_photos" path="camera_photos/" />
+</paths>

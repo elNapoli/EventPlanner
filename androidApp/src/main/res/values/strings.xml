@@ -33,4 +33,22 @@
     <string name="location">Dirección</string>
     <string name="chat">Chat</string>
     <string name="booking_now">Reservar</string>
+    <string name="permission_request">Solicitar permisos</string>
+    <string name="permission_rationale">permission_rationale</string>
+    <string name="permission_location_request">permission_location_request</string>
+    <string name="permission_camera_request">permission_camera_request</string>
+    <string name="denied_message">Los permisos han sido denegados. Para utilizar la aplicación correctamente, es necesario que otorgue los permisos requeridos desde la configuración de su dispositivo.</string>
+    <string name="open_settings">Abrir configuración</string>
+    <string name="relationale_message">Para utilizar todas las funcionalidades de esta aplicación, debes otorgarnos los permisos necesarios, como acceso a la ubicación, cámara, y galería de fotos.</string>
+    <string name="give_permission">Conceder permisos</string>
+    <string name="denied_title">Permisos denegados</string>
+    <string name="relationale_title">Solicitud de permisos</string>
+    <string name="create_event">Crear evento</string>
+    <string name="upload_thumbnail">Subir imagen del evento</string>
+    <string name="event_name">Nombre del evento</string>
+    <string name="event_description">Descripción del evento</string>
+    <string name="event_s_games">Juegos del evento</string>
+    <string name="event_slot_number">Número de Participantes (no incluye al anfitrión)</string>
+    <string name="event_price">Precio</string>
+    <string name="event_private">Es evento privado</string>
 </resources>

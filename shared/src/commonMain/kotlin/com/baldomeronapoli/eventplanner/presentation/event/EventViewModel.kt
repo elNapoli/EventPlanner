@@ -1,0 +1,3 @@
+package com.baldomeronapoli.eventplanner.presentation.event
+
+class EventViewModel

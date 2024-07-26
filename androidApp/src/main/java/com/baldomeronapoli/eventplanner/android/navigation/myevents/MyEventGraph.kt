@@ -16,6 +16,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.baldomeronapoli.eventplanner.android.R
+import com.baldomeronapoli.eventplanner.android.components.NTopBar
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
@@ -45,7 +46,7 @@ fun NavGraphBuilder.myEventGraph(
                     }
                 }
             ) {
-                MyEventsScreen(){
+                MyEventsScreen {
                     onNavigationEvent(NavigationEvent.OnNavigateToScreen(MyEventsRoute.Create))
                 }
             }
@@ -54,8 +55,13 @@ fun NavGraphBuilder.myEventGraph(
 
         composable(MyEventsRoute.Create.path) {
             Scaffold(
-                topBar = {},
-            ) { innerPadding ->
+                topBar = {
+                    NTopBar(title = stringResource(id = R.string.create_event)) {
+                        onNavigationEvent(NavigationEvent.OnBack)
+                    }
+                },
+
+                ) { innerPadding ->
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
