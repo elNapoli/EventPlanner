@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.kotlin.reflect)
             implementation(libs.kmp.koin.android)
 
+
         }
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
@@ -51,6 +52,18 @@ kotlin {
             api(libs.kmp.kermit)
 
             api(libs.firebase.auth)
+            api("dev.gitlive:firebase-firestore:1.13.0")
+            api("dev.gitlive:firebase-storage:1.13.0")
+            implementation(libs.compass.geocoder)
+            implementation(libs.compass.geocoder.mobile)
+            // Geolocation
+            implementation(libs.compass.geolocation)
+            implementation(libs.compass.geolocation.mobile)
+
+            implementation(libs.compass.autocomplete)
+            implementation(libs.compass.autocomplete.mobile)
+
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
 
 
         }

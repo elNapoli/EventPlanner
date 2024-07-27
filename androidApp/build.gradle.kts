@@ -66,4 +66,6 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("com.google.android.gms:play-services-location:21.0.0")
 
+    implementation("io.coil-kt:coil-compose:2.7.0")
+
 }

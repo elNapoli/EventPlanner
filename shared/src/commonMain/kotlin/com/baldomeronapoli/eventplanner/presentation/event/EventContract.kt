@@ -1,23 +1,42 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
+import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
+import dev.gitlive.firebase.storage.File
 
-class EventContract
-
-
-interface AuthContract {
+interface EventContract {
     data class UiState(
-        var event: Boolean,
+        var event: Event = Event(),
+        var queryAddress: String = "",
+        var isLoading: Boolean = false,
     ) : BaseUiState() {
-        // NOTE: de debe instanciar el constructor de esta forma para KMM
-        constructor() : this(
-            event = false,
-        )
+
+        fun validateProperties(propertyName: String, value: Any?): UiState {
+            return when (propertyName) {
+                "title" -> copy(event = event.copy(title = value.toString()))
+                "games" -> copy(event = event.copy(games = value.toString()))
+                "slots" -> {
+                    val slotValue = (value.toString()).takeIf { it.isNotEmpty() }?.toIntOrNull()
+                    copy(event = event.copy(slots = slotValue))
+                }
+
+                "date" -> copy(event = event.copy(date = value.toString()))
+                "description" -> copy(event = event.copy(description = value.toString()))
+                else -> this
+            }
+        }
     }
 
-    sealed interface UiIntent : BaseUiIntent
+    sealed interface UiIntent : BaseUiIntent {
+        data class SearchGeocode(val address: String) : UiIntent
+        data class UpdateProperty(val nameProperty: String, val value: Any?) : UiIntent
+        data class UpdatePlace(val address: String) : UiIntent
+        data class SetThumbnail(val file: File) : UiIntent
+        data object CreateEvent : UiIntent
+
+    }
 
     sealed interface Effect : BaseEffect
 }
