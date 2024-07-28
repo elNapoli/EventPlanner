@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +22,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import com.mohamedrejeb.richeditor.model.RichTextState
+import com.mohamedrejeb.richeditor.model.rememberRichTextState
 import com.mohamedrejeb.richeditor.ui.material3.RichTextEditor
 import com.mohamedrejeb.richeditor.ui.material3.RichTextEditorColors
 import com.mohamedrejeb.richeditor.ui.material3.RichTextEditorDefaults
@@ -29,7 +30,7 @@ import com.mohamedrejeb.richeditor.ui.material3.RichTextEditorDefaults
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NRichTextEditor(
-    modifier: Modifier = Modifier, state: RichTextState,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -53,10 +54,16 @@ fun NRichTextEditor(
             RichTextEditorDefaults.richTextEditorWithoutLabelPadding()
         } else {
             RichTextEditorDefaults.richTextEditorWithLabelPadding()
-        }
+        },
+    onTextChanged: (String) -> Unit = {}
 ) {
     val titleSize = MaterialTheme.typography.displaySmall.fontSize
     val subtitleSize = MaterialTheme.typography.titleLarge.fontSize
+    val state = rememberRichTextState()
+    LaunchedEffect(state.toHtml()) {
+        onTextChanged(state.toHtml())
+    }
+
     Column {
         EditorControls(
             onBoldClick = {

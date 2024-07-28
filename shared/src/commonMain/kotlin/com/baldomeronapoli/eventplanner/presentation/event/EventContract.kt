@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
+import com.baldomeronapoli.eventplanner.domain.models.BoardGame
 import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
@@ -10,6 +11,8 @@ interface EventContract {
     data class UiState(
         var event: Event = Event(),
         var queryAddress: String = "",
+        var queryGames: String = "",
+        var games: List<BoardGame> = emptyList(),
         var isLoading: Boolean = false,
     ) : BaseUiState() {
 
@@ -33,6 +36,7 @@ interface EventContract {
         data class SearchGeocode(val address: String) : UiIntent
         data class UpdateProperty(val nameProperty: String, val value: Any?) : UiIntent
         data class UpdatePlace(val address: String) : UiIntent
+        data class UpdateQuery(val query: String) : UiIntent
         data class SetThumbnail(val file: File) : UiIntent
         data object CreateEvent : UiIntent
 

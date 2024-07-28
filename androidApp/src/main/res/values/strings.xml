@@ -51,4 +51,12 @@
     <string name="event_slot_number">Número de Participantes (no incluye al anfitrión)</string>
     <string name="event_price">Precio</string>
     <string name="event_private">Es evento privado</string>
+    <string name="event_address">Dirección</string>
+    <string name="marker_for_searched_address">Marcador para la dirección buscada</string>
+    <string name="private_event">¿Evento privado?</string>
+    <string name="date_picker_dialog_confirm">Ok</string>
+    <string name="date_picker_dialog_cancel">Cancelar</string>
+    <string name="set_time">Hora</string>
+    <string name="select_date">Fecha</string>
+    <string name="search">Buscar...</string>
 </resources>

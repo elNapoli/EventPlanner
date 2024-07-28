@@ -10,7 +10,7 @@ androidx-activityCompose = "1.9.0"
 lifecycleViewmodelKtx = "2.8.3"
 materialIconsExtended = "1.6.8"
 navigationCompose = "2.7.7"
-kotlinxDatetime = "0.6.0"
+buildkonfigVersion = "0.15.1"
 kotlinxSerialization = "1.7.1"
 koin = "3.5.3"
 constraintlayout = "1.0.1"
@@ -66,4 +66,5 @@ nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = 
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 gms-googleService = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+buildkonfig = { id = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigVersion" }
 

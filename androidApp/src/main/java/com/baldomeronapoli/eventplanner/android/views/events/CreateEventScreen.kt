@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.views.events
 
+import AutoComplete
 import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -100,20 +101,18 @@ fun CreateEventContent(
         onResult = {
             it?.let { image ->
                 imageUri = image
-                // Realiza operaciones de I/O en segundo plano
                 onIntent(UiIntent.SetThumbnail(File(image)))
             }
         }
     )
 
-    // Usa AsyncImagePainter solo si la imagen es grande o remota
     val painter = rememberAsyncImagePainter(model = imageUri ?: R.drawable.empty_thumbnail_event_2)
     var showDatePickerDialog by remember { mutableStateOf(false) }
 
-    // Usa LazyColumn en lugar de Column con verticalScroll si hay muchos elementos
     LazyColumn(
         modifier = Modifier.fillMaxHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         item {
             Box {
@@ -187,13 +186,18 @@ fun CreateEventContent(
         }
 
         item {
-            NOutlinedTextField(
+            AutoComplete(
                 value = uiState.event.games,
+                query = uiState.queryGames,
+                items = uiState.games,
                 label = stringResource(id = R.string.event_s_games),
-                keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
                 onValueChange = {
                     onIntent(UiIntent.UpdateProperty("games", it))
+                },
+                onValueQueryChange = {
+                    onIntent(UiIntent.UpdateQuery(it))
                 }
+
             )
         }
 

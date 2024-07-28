@@ -3,6 +3,7 @@ package com.baldomeronapoli.eventplanner.presentation.event
 import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
 import com.baldomeronapoli.eventplanner.domain.models.NPlace
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
@@ -16,6 +17,7 @@ import dev.jordond.compass.geolocation.GeolocatorResult
 
 class EventViewModel(
     private val createEventUseCase: CreateEventUseCase,
+    private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
     private val geolocator: Geolocator
 ) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
 
@@ -33,15 +35,34 @@ class EventViewModel(
             is UiIntent.UpdatePlace -> updatePlace(uiIntent.address)
             UiIntent.CreateEvent -> saveEvent()
             is UiIntent.SetThumbnail -> updateUiState { copy(event = event.copy(thumbnail = uiIntent.file)) }
+            is UiIntent.UpdateQuery -> {
+                updateUiState {
+                    copy(queryGames = uiIntent.query)
+                }
+                searchBoardGamesByQuery(uiIntent.query)
+            }
         }
     }
+
+    private fun searchBoardGamesByQuery(query: String) = scope.useCaseRunner(
+        loadingUpdater = {},
+        onError = {},
+        onSuccess = {
+            updateUiState { copy(games = it) }
+        },
+        useCase = {
+            searchBoardGamesUseCase(query)
+        }
+    )
 
     private fun saveEvent() = scope.useCaseRunner(
         loadingUpdater = {
             updateUiState { copy(isLoading = it) }
         },
         onError = {},
-        onSuccess = {},
+        onSuccess = {
+
+        },
         useCase = {
             val param = CreateEventUseCase.Param(
                 id = uiState.value.event.id,

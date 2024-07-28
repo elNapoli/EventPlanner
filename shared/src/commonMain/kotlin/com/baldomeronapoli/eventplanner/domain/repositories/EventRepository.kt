@@ -1,11 +1,13 @@
 package com.baldomeronapoli.eventplanner.domain.repositories
 
+import com.baldomeronapoli.eventplanner.domain.models.BoardGame
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import dev.gitlive.firebase.storage.File
 import kotlinx.coroutines.flow.Flow
 
 interface EventRepository {
+
     @NativeCoroutines
     suspend fun createEvent(
         id: String,
@@ -19,4 +21,7 @@ interface EventRepository {
         lat: Double,
         lon: Double,
     ): Flow<NetworkResult<Boolean>>
+
+    @NativeCoroutines
+    suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>>>
 }
