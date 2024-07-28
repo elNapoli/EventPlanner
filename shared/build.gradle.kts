@@ -1,11 +1,26 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.nativecoroutines)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.google.ksp)
+    id("com.github.gmazzo.buildconfig") version "5.4.0"
 }
 
+// Cargar propiedades desde local.properties
+val localProperties = Properties().apply {
+    file("local.properties").inputStream().use { load(it) }
+}
+
+val algoliaApiKey: String = localProperties.getProperty("ALGOLIA_API_KEY", "")
+val algoliaApplicationId: String = localProperties.getProperty("ALGOLIA_APPLICATION_ID", "")
+
+buildConfig {
+    buildConfigField("ALGOLIA_API_KEY", algoliaApiKey)
+    buildConfigField("ALGOLIA_APPLICATION_ID", algoliaApplicationId)
+}
 kotlin {
     androidTarget {
         compilations.all {

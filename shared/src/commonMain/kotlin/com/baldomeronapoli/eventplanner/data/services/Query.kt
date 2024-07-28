@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.services
 
+import EventPlanner.shared.BuildConfig
 import com.baldomeronapoli.eventplanner.data.dto.HitDto
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FGames
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
@@ -22,7 +23,7 @@ class AlgoliaService(private val httpClient: HttpClient) {
         return try {
             val queryData = Query(query)
             val response =
-                httpClient.post("https://ALGOLIA_APPLICATION_ID-dsn.algolia.net/1/indexes/name/query") {
+                httpClient.post("https://${BuildConfig.ALGOLIA_APPLICATION_ID}-dsn.algolia.net/1/indexes/name/query") {
                     setBody(Json.encodeToString(queryData))
                 }
             val json = Json { ignoreUnknownKeys = true }

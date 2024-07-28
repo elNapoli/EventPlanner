@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
+import EventPlanner.shared.BuildConfig
 import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.data.dto.HitDto
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FEvent
@@ -80,7 +81,7 @@ class EventRepositoryImpl(
         flow {
             val queryData = Query(query)
             val a =
-                httpClient.post("https://ALGOLIA_APPLICATION_ID-dsn.algolia.net/1/indexes/name/query") {
+                httpClient.post("https://${BuildConfig.ALGOLIA_APPLICATION_ID}-dsn.algolia.net/1/indexes/name/query") {
                     setBody(Json.encodeToString(queryData))
                 }
             val json = Json {
