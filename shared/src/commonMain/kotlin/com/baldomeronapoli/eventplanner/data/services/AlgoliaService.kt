@@ -1,33 +1,33 @@
 package com.baldomeronapoli.eventplanner.data.services
 
-import com.baldomeronapoli.eventplanner.data.dto.HitDto
+import co.touchlab.kermit.Logger
+import com.baldomeronapoli.eventplanner.data.Constant
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FGames
-import com.baldomeronapoli.eventplanner.shared.MySecrets
+import com.baldomeronapoli.eventplanner.data.models.requetsDto.QueryRequestDto
+import com.baldomeronapoli.eventplanner.data.models.responsesDto.HitResponseDto
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-
-@Serializable
-data class Query(val query: String)
 
 class AlgoliaService(private val httpClient: HttpClient) {
 
     @NativeCoroutines
-    suspend fun searchBoardGames(query: String): NetworkResult<HitDto<FGames>> {
+    suspend fun searchBoardGames(query: String): NetworkResult<HitResponseDto<FGames>> {
         return try {
-            val queryData = Query(query)
+            val queryData = QueryRequestDto(query)
             val response =
-                httpClient.post("https://${MySecrets.ALGOLIA_APPLICATION_ID}-dsn.algolia.net/1/indexes/name/query") {
+                httpClient.post(Constant.ALGOLIA_URL) {
                     setBody(Json.encodeToString(queryData))
                 }
             val json = Json { ignoreUnknownKeys = true }
-            val hitsResponse: HitDto<FGames> = json.decodeFromString(response.bodyAsText())
+            val data = response.bodyAsText()
+            Logger.e(data)
+            val hitsResponse: HitResponseDto<FGames> = json.decodeFromString(data)
             NetworkResult.Success(hitsResponse)
         } catch (e: Throwable) {
             NetworkResult.Error(exception = e, data = null)

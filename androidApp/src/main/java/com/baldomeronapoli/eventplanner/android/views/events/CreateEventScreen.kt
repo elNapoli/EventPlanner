@@ -43,6 +43,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AddressMap
+import com.baldomeronapoli.eventplanner.android.components.AlertDialog
+import com.baldomeronapoli.eventplanner.android.components.AlertSticky
 import com.baldomeronapoli.eventplanner.android.components.MyDatePickerDialog
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
@@ -51,6 +53,7 @@ import com.baldomeronapoli.eventplanner.android.components.richText.NRichTextEdi
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
@@ -66,6 +69,7 @@ fun CreateEventScreen(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
+    goBack: () -> Unit,
 ) {
     RequestMultiplePermissions(
         getRequiredPermissions()
@@ -82,7 +86,8 @@ fun CreateEventScreen(
             CreateEventContent(
                 uiState = uiState,
                 onIntent = onIntent,
-                effect = effect
+                effect = effect,
+                goBack = goBack
             )
         }
 
@@ -94,6 +99,7 @@ fun CreateEventContent(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
+    goBack: () -> Unit,
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     val singlePhotoPicker = rememberLauncherForActivityResult(
@@ -108,7 +114,15 @@ fun CreateEventContent(
 
     val painter = rememberAsyncImagePainter(model = imageUri ?: R.drawable.empty_thumbnail_event_2)
     var showDatePickerDialog by remember { mutableStateOf(false) }
-
+    if (uiState.feedbackUI != null) {
+        AlertDialog(
+            onConfirmation = goBack,
+            dialogTitle = uiState.feedbackUI!!.title,
+            dialogText = uiState.feedbackUI!!.message,
+            feedbackUIType = uiState.feedbackUI!!.type,
+            confirmText = stringResource(id = R.string.confirm),
+        )
+    }
     LazyColumn(
         modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -186,6 +200,11 @@ fun CreateEventContent(
         }
 
         item {
+            AlertSticky(
+                modifier = Modifier.padding(vertical = 16.dp),
+                text = stringResource(id = R.string.develop_app),
+                feedbackUIType = FeedbackUIType.WARNING
+            )
             AutoComplete(
                 value = uiState.event.games,
                 query = uiState.queryGames,
@@ -243,6 +262,7 @@ fun PreviewCreateEventScreenLight(modifier: Modifier = Modifier) {
             uiState = UiState(),
             effect = effect,
             onIntent = { },
+            goBack = {}
         )
     }
 }

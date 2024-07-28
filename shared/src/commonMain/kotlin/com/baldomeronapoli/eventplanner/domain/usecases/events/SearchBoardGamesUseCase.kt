@@ -10,6 +10,6 @@ class SearchBoardGamesUseCase(
     private val repository: EventRepository,
 ) {
     @NativeCoroutines
-    suspend operator fun invoke(param: String): Flow<NetworkResult<List<BoardGame>>> =
+    suspend operator fun invoke(param: String): Flow<NetworkResult<List<BoardGame>?>> =
         repository.searchBoardGames(param)
 }

@@ -59,4 +59,6 @@
     <string name="set_time">Hora</string>
     <string name="select_date">Fecha</string>
     <string name="search">Buscar...</string>
+    <string name="develop_app">Aplicación en desarrollo, por lo que puede que más de un juego no este disponible, sin embargo si pegas la URL de la BGG acá se sincronizará inmediatamente.</string>
+    <string name="confirm">Aceptar</string>
 </resources>

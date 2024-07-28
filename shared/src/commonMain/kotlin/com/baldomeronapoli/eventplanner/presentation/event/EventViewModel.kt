@@ -1,5 +1,7 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
 import com.baldomeronapoli.eventplanner.domain.models.NPlace
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
@@ -39,7 +41,10 @@ class EventViewModel(
                 updateUiState {
                     copy(queryGames = uiIntent.query)
                 }
-                searchBoardGamesByQuery(uiIntent.query)
+                if (uiIntent.query.length >= 3) {
+                    searchBoardGamesByQuery(uiIntent.query)
+
+                }
             }
         }
     }
@@ -59,9 +64,29 @@ class EventViewModel(
         loadingUpdater = {
             updateUiState { copy(isLoading = it) }
         },
-        onError = {},
+        onError = {
+            updateUiState {
+                handleFeedbackUI(
+                    feedbackUI = FeedbackUI(
+                        title = "Error",
+                        message = it.message ?: "Error desconocido",
+                        type = FeedbackUIType.ERROR,
+                        show = true
+                    )
+                )
+            }
+        },
         onSuccess = {
-
+            updateUiState {
+                handleFeedbackUI(
+                    feedbackUI = FeedbackUI(
+                        title = "Evento creado",
+                        message = "Se ha creado el evento exitosamente!",
+                        type = FeedbackUIType.SUCCESS,
+                        show = true
+                    )
+                )
+            }
         },
         useCase = {
             val param = CreateEventUseCase.Param(

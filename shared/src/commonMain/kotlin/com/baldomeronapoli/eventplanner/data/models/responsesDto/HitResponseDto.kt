@@ -1,9 +1,9 @@
-package com.baldomeronapoli.eventplanner.data.dto
+package com.baldomeronapoli.eventplanner.data.models.responsesDto
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HitDto<T>(
+data class HitResponseDto<T>(
     val hits: List<T>,
     val page: Int,
     val nbHits: Int,

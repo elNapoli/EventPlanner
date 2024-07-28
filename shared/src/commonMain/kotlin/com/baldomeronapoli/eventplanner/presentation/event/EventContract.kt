@@ -2,6 +2,8 @@ package com.baldomeronapoli.eventplanner.presentation.event
 
 import com.baldomeronapoli.eventplanner.domain.models.BoardGame
 import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
@@ -12,9 +14,16 @@ interface EventContract {
         var event: Event = Event(),
         var queryAddress: String = "",
         var queryGames: String = "",
-        var games: List<BoardGame> = emptyList(),
+        var games: List<BoardGame>? = emptyList(),
         var isLoading: Boolean = false,
+        var feedbackUI: FeedbackUI? = null
+
     ) : BaseUiState() {
+
+        fun handleFeedbackUI(
+            feedbackUI: FeedbackUI?
+        ): UiState =
+            copy(feedbackUI = feedbackUI)
 
         fun validateProperties(propertyName: String, value: Any?): UiState {
             return when (propertyName) {

@@ -79,6 +79,9 @@ fun NavGraphBuilder.myEventGraph(
                             uiState = uiState.value,
                             effect = viewmodel.effect,
                             onIntent = viewmodel::sendIntent,
+                            goBack = {
+                                onNavigationEvent(NavigationEvent.OnBack)
+                            }
                         )
                     }
                 }

@@ -46,7 +46,7 @@ fun AutoComplete(
     value: String,
     query: String,
     label: String? = null,
-    items: List<BoardGame> = emptyList(),
+    items: List<BoardGame>? = emptyList(),
     onValueQueryChange: (String) -> Unit,
     onValueChange: (String) -> Unit,
 ) {
@@ -138,18 +138,7 @@ fun AutoComplete(
                     LazyColumn(
                         modifier = Modifier.heightIn(max = 150.dp),
                     ) {
-
-                        if (query.isNotEmpty()) {
-                            items(
-                                items
-                            ) {
-                                ItemsCategory(it) { title ->
-                                    onValueChange(title)
-                                    onValueQueryChange("")
-                                    expanded = false
-                                }
-                            }
-                        } else {
+                        items?.let {
                             items(
                                 items
                             ) {
@@ -160,6 +149,7 @@ fun AutoComplete(
                                 }
                             }
                         }
+
 
                     }
 

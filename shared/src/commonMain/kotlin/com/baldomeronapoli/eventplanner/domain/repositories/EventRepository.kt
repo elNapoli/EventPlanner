@@ -23,5 +23,5 @@ interface EventRepository {
     ): Flow<NetworkResult<Boolean>>
 
     @NativeCoroutines
-    suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>>>
+    suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>>
 }
