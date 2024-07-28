@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.algolia
 
-import EventPlanner.shared.BuildConfig
+import com.baldomeronapoli.eventplanner.shared.MySecrets
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -19,8 +19,8 @@ actual fun nHttpClient(): HttpClient {
         defaultRequest {
             headers {
                 append(HttpHeaders.ContentType, ContentType.Application.Json)
-                append("X-Algolia-API-Key", BuildConfig.ALGOLIA_API_KEY)
-                append("X-Algolia-Application-ID", BuildConfig.ALGOLIA_APPLICATION_ID)
+                append("X-Algolia-API-Key", MySecrets.ALGOLIA_API_KEY)
+                append("X-Algolia-Application-ID", MySecrets.ALGOLIA_APPLICATION_ID)
             }
         }
     }

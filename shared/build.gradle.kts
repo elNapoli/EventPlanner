@@ -18,6 +18,8 @@ val algoliaApiKey: String = localProperties.getProperty("ALGOLIA_API_KEY", "")
 val algoliaApplicationId: String = localProperties.getProperty("ALGOLIA_APPLICATION_ID", "")
 
 buildConfig {
+    className = "MySecrets"
+    packageName = "com.baldomeronapoli.eventplanner.shared"
     buildConfigField("ALGOLIA_API_KEY", algoliaApiKey)
     buildConfigField("ALGOLIA_APPLICATION_ID", algoliaApplicationId)
 }
