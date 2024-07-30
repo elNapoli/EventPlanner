@@ -1,11 +1,12 @@
-package com.baldomeronapoli.eventplanner.domain.models
+package com.baldomeronapoli.eventplanner.data.firebaseModels
 
-import com.baldomeronapoli.eventplanner.data.firebaseModels.FBoardGame
+import com.baldomeronapoli.eventplanner.domain.models.BoardGame
 import com.baldomeronapoli.eventplanner.mappers.Mappable
-import com.baldomeronapoli.eventplanner.utils.randomUUID
+import kotlinx.serialization.Serializable
 
-data class BoardGame(
-    override val id: String = randomUUID,
+@Serializable
+data class FBoardGame(
+    val id: Int,
     val boardgamepublisher: String?,
     var description: String?,
     var image: String?,
@@ -18,10 +19,10 @@ data class BoardGame(
     var playingtime: String?,
     var thumbnail: String?,
     var yearpublished: String?,
-) : BaseModel, Mappable<FBoardGame> {
-    override fun map(): FBoardGame =
-        FBoardGame(
-            id = id.toInt(),
+) : Mappable<BoardGame> {
+    override fun map(): BoardGame =
+        BoardGame(
+            id = id.toString(),
             boardgamepublisher = boardgamepublisher,
             description = description,
             image = image,
@@ -35,5 +36,4 @@ data class BoardGame(
             thumbnail = thumbnail,
             yearpublished = yearpublished
         )
-
 }

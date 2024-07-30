@@ -48,7 +48,7 @@ fun AutoComplete(
     label: String? = null,
     items: List<BoardGame>? = emptyList(),
     onValueQueryChange: (String) -> Unit,
-    onValueChange: (String) -> Unit,
+    onValueChange: (BoardGame) -> Unit,
 ) {
     var textFieldSize by remember {
         mutableStateOf(Size.Zero)
@@ -165,14 +165,14 @@ fun AutoComplete(
 @Composable
 fun ItemsCategory(
     boardGame: BoardGame,
-    onSelect: (String) -> Unit
+    onSelect: (BoardGame) -> Unit
 ) {
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
-                onSelect(boardGame.name)
+                onSelect(boardGame)
             }
             .padding(10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -182,7 +182,7 @@ fun ItemsCategory(
             model = boardGame.thumbnail,
             contentDescription = null,
         )
-        Text(text = boardGame.name, fontSize = 16.sp)
+        Text(text = boardGame.name ?: "", fontSize = 16.sp)
     }
 
 }

@@ -1,8 +1,7 @@
 package com.baldomeronapoli.eventplanner.data.services
 
-import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.data.Constant
-import com.baldomeronapoli.eventplanner.data.firebaseModels.FGames
+import com.baldomeronapoli.eventplanner.data.firebaseModels.FBoardGame
 import com.baldomeronapoli.eventplanner.data.models.requetsDto.QueryRequestDto
 import com.baldomeronapoli.eventplanner.data.models.responsesDto.HitResponseDto
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
@@ -17,7 +16,7 @@ import kotlinx.serialization.json.Json
 class AlgoliaService(private val httpClient: HttpClient) {
 
     @NativeCoroutines
-    suspend fun searchBoardGames(query: String): NetworkResult<HitResponseDto<FGames>> {
+    suspend fun searchBoardGames(query: String): NetworkResult<HitResponseDto<FBoardGame>> {
         return try {
             val queryData = QueryRequestDto(query)
             val response =
@@ -26,8 +25,7 @@ class AlgoliaService(private val httpClient: HttpClient) {
                 }
             val json = Json { ignoreUnknownKeys = true }
             val data = response.bodyAsText()
-            Logger.e(data)
-            val hitsResponse: HitResponseDto<FGames> = json.decodeFromString(data)
+            val hitsResponse: HitResponseDto<FBoardGame> = json.decodeFromString(data)
             NetworkResult.Success(hitsResponse)
         } catch (e: Throwable) {
             NetworkResult.Error(exception = e, data = null)

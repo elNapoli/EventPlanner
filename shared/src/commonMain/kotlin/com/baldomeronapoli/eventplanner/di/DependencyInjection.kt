@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.di
 
+import com.baldomeronapoli.eventplanner.data.managers.EventManager
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
@@ -9,6 +10,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUs
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
@@ -38,14 +40,26 @@ object DependencyInjection {
     fun initKoin(appDeclaration: KoinAppDeclaration = {}) {
         startKoin {
             appDeclaration()
-            modules(appModule(), repositoryModule(), useCaseModule(), platformModule())
+            modules(
+                appModule(),
+                repositoryModule(),
+                useCaseModule(),
+                platformModule(),
+                managersModuleO()
+            )
         }
     }
 
     fun initKoinAndReturnInstance(appDeclaration: KoinAppDeclaration = {}): org.koin.core.Koin =
         startKoin {
             appDeclaration()
-            modules(appModule(), repositoryModule(), useCaseModule(), platformModule())
+            modules(
+                appModule(),
+                repositoryModule(),
+                useCaseModule(),
+                platformModule(),
+                managersModuleO()
+            )
         }.koin
 
     private fun appModule() = module {
@@ -73,7 +87,11 @@ object DependencyInjection {
             }
         }
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<EventRepository> { EventRepositoryImpl(get(), get(), get(), get()) }
+        single<EventRepository> { EventRepositoryImpl(get(), get()) }
+    }
+
+    private fun managersModuleO() = module {
+        single { EventManager(get(), get(), get()) }
     }
 
     private fun useCaseModule() = module {
@@ -82,5 +100,6 @@ object DependencyInjection {
         single { CheckIsLoggedUserUseCase(get()) }
         single { CreateEventUseCase(get()) }
         single { SearchBoardGamesUseCase(get()) }
+        single { GetEventsByAttendeeUseCase(get()) }
     }
 }

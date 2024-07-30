@@ -19,6 +19,7 @@ import androidx.compose.material3.TabRow
 import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -33,14 +34,27 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray40
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Orange
 import com.baldomeronapoli.eventplanner.android.theme.White
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun MyEventsScreen(modifier: Modifier = Modifier, goToCreateEvent: () -> Unit) {
+fun MyEventsScreen(
+    modifier: Modifier = Modifier,
+    uiState: UiState,
+    onIntent: (UiIntent) -> Unit,
+    effect: StateFlow<Effect?>,
+    goToCreateEvent: () -> Unit
+) {
     var tabIndex by remember { mutableIntStateOf(0) }
 
     val tabs = listOf("Próximos", "Pasados", "Organizados")
-
+    LaunchedEffect(Unit) {
+        onIntent(UiIntent.LoadAllEventsByCurrentId)
+    }
     Scaffold(
         floatingActionButton = {
             if (tabIndex == 2) { // Mostrar el botón flotante solo en la pestaña "Organizados"
@@ -95,12 +109,12 @@ fun MyEventsScreen(modifier: Modifier = Modifier, goToCreateEvent: () -> Unit) {
                     )
                 }
             }
-
+            co.touchlab.kermit.Logger.e("Events: ${uiState.userEvents}")
             Column(Modifier.padding(16.dp)) {
                 when (tabIndex) {
-                    0 -> UpcomingEventTab()
-                    1 -> PastEventTab()
-                    2 -> OrganizedEventTab()
+                    0 -> EventTab(events = uiState.userEvents)
+                    1 -> EventTab(events = uiState.expiredEvents)
+                    2 -> EventTab(events = uiState.ownEvents)
                 }
             }
         }
@@ -110,7 +124,12 @@ fun MyEventsScreen(modifier: Modifier = Modifier, goToCreateEvent: () -> Unit) {
 @Preview(showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun PreviewMyEventsScreenLight(modifier: Modifier = Modifier) {
+    val effect: StateFlow<Effect?> = MutableStateFlow(null)
     NPreview {
-        MyEventsScreen(){}
+        MyEventsScreen(
+            uiState = UiState(),
+            onIntent = {},
+            effect = effect,
+        ) {}
     }
 }

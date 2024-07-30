@@ -10,15 +10,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.EventCardWide
 import com.baldomeronapoli.eventplanner.android.components.NPreview
+import com.baldomeronapoli.eventplanner.domain.models.Event
 
 
 @Composable
-fun OrganizedEventTab(modifier: Modifier = Modifier) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        items(List(20) { it }) { item ->
-            EventCardWide(onClick = {})
+fun EventTab(modifier: Modifier = Modifier, events: List<Event> = emptyList()) {
+    if (events.isEmpty()) {
+        EmptyEvent()
+    } else {
+        LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+            items(events) { event ->
+                EventCardWide(event = event, onClick = {})
+            }
         }
     }
+
 }
 
 
@@ -27,6 +33,6 @@ fun OrganizedEventTab(modifier: Modifier = Modifier) {
 fun PreviewOrganizedEventTabLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        OrganizedEventTab()
+        EventTab()
     }
 }

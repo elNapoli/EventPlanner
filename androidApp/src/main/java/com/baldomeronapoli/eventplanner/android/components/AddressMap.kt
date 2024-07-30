@@ -42,6 +42,7 @@ fun AddressMap(
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         NOutlinedTextField(
             value = address,
+            maxLines = 1,
             label = stringResource(id = R.string.event_address),
             onValueChange = { onChange(it) }
         )

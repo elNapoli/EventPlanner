@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
-import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
@@ -24,7 +23,6 @@ open class AuthViewModel(
         when (uiIntent) {
             UiIntent.ToggleVisualTransformation -> updateUiState { togglePasswordVisible() }
             is UiIntent.SaveEmail -> {
-                Logger.e("se guardo el siguiente valor ${uiIntent.email}")
                 updateUiState {
                     saveEmail(uiIntent.email)
                 }
@@ -89,11 +87,9 @@ open class AuthViewModel(
 
     private fun signInWithEmailAndPassword() = scope.useCaseRunner(
         loadingUpdater = { value ->
-            Logger.d("Loading", tag = "signInWithEmailAndPassword")
             updateUiState { loading(value) }
         },
         onError = {
-            Logger.e("Error ${it}", tag = "signInWithEmailAndPassword")
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(

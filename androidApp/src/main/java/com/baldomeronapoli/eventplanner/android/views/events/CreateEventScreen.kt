@@ -159,6 +159,7 @@ fun CreateEventContent(
         item {
             NOutlinedTextField(
                 value = uiState.event.title,
+                maxLines = 1,
                 label = stringResource(id = R.string.event_name),
                 keyboardOptions = KeyboardOptions.Default.copy(capitalization = KeyboardCapitalization.Sentences),
                 onValueChange = {
@@ -171,6 +172,7 @@ fun CreateEventContent(
             NOutlinedTextField(
                 value = uiState.event.date,
                 label = stringResource(id = R.string.data_and_date),
+                maxLines = 1,
                 onValueChange = { },
                 readOnly = true,
                 trailingIcon = {
@@ -206,12 +208,12 @@ fun CreateEventContent(
                 feedbackUIType = FeedbackUIType.WARNING
             )
             AutoComplete(
-                value = uiState.event.games,
+                value = uiState.event.boardgames.getOrNull(0)?.name ?: "",
                 query = uiState.queryGames,
-                items = uiState.games,
+                items = uiState.boardGameBGG,
                 label = stringResource(id = R.string.event_s_games),
                 onValueChange = {
-                    onIntent(UiIntent.UpdateProperty("games", it))
+                    onIntent(UiIntent.AddGameIntoEvent(it))
                 },
                 onValueQueryChange = {
                     onIntent(UiIntent.UpdateQuery(it))
@@ -222,12 +224,14 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = if (uiState.event.slots == null) "" else uiState.event.slots.toString(),
+                value = uiState.event.slots.toString(),
                 label = stringResource(id = R.string.event_slot_number),
+                maxLines = 1,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 onValueChange = {
-                    val intValue = it.takeIf { it.isNotEmpty() }?.toIntOrNull()
-                    onIntent(UiIntent.UpdateProperty("slots", intValue))
+                    if (it.isNotBlank() && it.length <= 2) {
+                        onIntent(UiIntent.UpdateProperty("slots", it))
+                    }
                 }
             )
         }

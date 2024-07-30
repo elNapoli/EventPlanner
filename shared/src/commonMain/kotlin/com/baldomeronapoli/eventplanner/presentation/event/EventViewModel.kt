@@ -1,10 +1,12 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
+import co.touchlab.kermit.Logger
+import com.baldomeronapoli.eventplanner.domain.models.Address
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
-import com.baldomeronapoli.eventplanner.domain.models.NPlace
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
@@ -20,7 +22,8 @@ import dev.jordond.compass.geolocation.GeolocatorResult
 class EventViewModel(
     private val createEventUseCase: CreateEventUseCase,
     private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
-    private val geolocator: Geolocator
+    private val geolocator: Geolocator,
+    private val getEventsByAttendeeUseCase: GetEventsByAttendeeUseCase,
 ) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
 
     init {
@@ -46,6 +49,18 @@ class EventViewModel(
 
                 }
             }
+
+            is UiIntent.AddGameIntoEvent -> updateUiState {
+                copy(
+                    event = event.copy(
+                        boardgames = listOf(
+                            uiIntent.game
+                        )
+                    )
+                )
+            }
+
+            UiIntent.LoadAllEventsByCurrentId -> loadAllEventsByCurrentId()
         }
     }
 
@@ -53,7 +68,7 @@ class EventViewModel(
         loadingUpdater = {},
         onError = {},
         onSuccess = {
-            updateUiState { copy(games = it) }
+            updateUiState { copy(boardGameBGG = it) }
         },
         useCase = {
             searchBoardGamesUseCase(query)
@@ -89,19 +104,36 @@ class EventViewModel(
             }
         },
         useCase = {
-            val param = CreateEventUseCase.Param(
-                id = uiState.value.event.id,
-                title = uiState.value.event.title,
-                games = uiState.value.event.games,
-                slots = uiState.value.event.slots ?: 0,
-                date = uiState.value.event.date,
-                description = uiState.value.event.description,
-                lat = uiState.value.event.place.coordinates.latitude,
-                lon = uiState.value.event.place.coordinates.longitude,
-                thumbnail = uiState.value.event.thumbnail!!,
-                street = uiState.value.event.place.street ?: ""
+            createEventUseCase(
+                event = uiState.value.event,
+                games = uiState.value.event.boardgames,
+                address = uiState.value.event.place
             )
-            createEventUseCase(param)
+        }
+    )
+
+    private fun loadAllEventsByCurrentId() = scope.useCaseRunner(
+        loadingUpdater = {
+            updateUiState { copy(isLoading = it) }
+        },
+        onError = {
+            updateUiState {
+                handleFeedbackUI(
+                    feedbackUI = FeedbackUI(
+                        title = "Error",
+                        message = it.message ?: "Error desconocido",
+                        type = FeedbackUIType.ERROR,
+                        show = true
+                    )
+                )
+            }
+        },
+        onSuccess = {
+            updateUiState { copy(userEvents = it) }
+
+        },
+        useCase = {
+            getEventsByAttendeeUseCase()
         }
     )
 
@@ -115,6 +147,7 @@ class EventViewModel(
             val autocomplete = Autocomplete()
             val places: List<Place>? = autocomplete.search(query).getOrNull()
             val place = places?.firstOrNull()
+            Logger.e(place.toString())
             if (place != null) {
                 updateUiState {
                     copy(
@@ -143,7 +176,7 @@ class EventViewModel(
                 updateUiState {
                     copy(
                         event = event.copy(
-                            place = NPlace()
+                            place = Address()
                         ),
                     )
                 }

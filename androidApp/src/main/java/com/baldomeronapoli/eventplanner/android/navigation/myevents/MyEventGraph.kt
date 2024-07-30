@@ -35,6 +35,8 @@ fun NavGraphBuilder.myEventGraph(
         route = MainRoute.MyEvents.path
     ) {
         composable(MyEventsRoute.Index.path) {
+            val viewmodel: EventViewModel = koinViewModel()
+            val uiState = viewmodel.uiState.collectAsStateWithLifecycle()
             ScaffoldWithBottomBarNavigation(
                 topBar = {
                     Row(
@@ -49,7 +51,11 @@ fun NavGraphBuilder.myEventGraph(
                     }
                 }
             ) {
-                MyEventsScreen {
+                MyEventsScreen(
+                    uiState = uiState.value,
+                    effect = viewmodel.effect,
+                    onIntent = viewmodel::sendIntent,
+                ) {
                     onNavigationEvent(NavigationEvent.OnNavigateToScreen(MyEventsRoute.Create))
                 }
             }

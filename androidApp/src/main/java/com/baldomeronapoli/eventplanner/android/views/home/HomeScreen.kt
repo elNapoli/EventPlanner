@@ -24,6 +24,7 @@ import com.baldomeronapoli.eventplanner.android.components.CategoryFilter
 import com.baldomeronapoli.eventplanner.android.components.EventCard
 import com.baldomeronapoli.eventplanner.android.components.EventCardWide
 import com.baldomeronapoli.eventplanner.android.components.NPreview
+import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray60
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
@@ -76,7 +77,7 @@ fun HomeScreen(
         CategoryFilter(modifier = Modifier.padding(vertical = 16.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(List(20) { it }) { item ->
-                EventCardWide(onClick = goToEventDetail)
+                EventCardWide(onClick = goToEventDetail, event = EventsMock.event)
             }
         }
     }
