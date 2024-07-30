@@ -7,13 +7,14 @@ import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
 import com.baldomeronapoli.eventplanner.utils.ValidateState
+import dev.gitlive.firebase.auth.FirebaseUser
 
 interface AuthContract {
     data class UiState(
         var passwordVisible: Boolean,
         @property:EmailValidation
         var email: String,
-        var userId: String?,
+        var user: FirebaseUser?,
         var password: String,
         var repeatPassword: String,
         var loading: Boolean,
@@ -24,7 +25,7 @@ interface AuthContract {
         constructor() : this(
             passwordVisible = false,
             email = "",
-            userId = null,
+            user = null,
             password = "",
             repeatPassword = "",
             loading = false,
@@ -46,8 +47,11 @@ interface AuthContract {
 
         fun togglePasswordVisible(): UiState = copy(passwordVisible = !passwordVisible)
 
-        fun handleCreateUseWithEmailAndPassword(userId: String, feedbackUI: FeedbackUI?): UiState =
-            copy(userId = userId, feedbackUI = feedbackUI)
+        fun handleCreateUseWithEmailAndPassword(
+            user: FirebaseUser?,
+            feedbackUI: FeedbackUI?
+        ): UiState =
+            copy(user = user, feedbackUI = feedbackUI)
     }
 
     sealed interface UiIntent : BaseUiIntent {
@@ -58,6 +62,7 @@ interface AuthContract {
         data class SaveRepeatPassword(val repeatPassword: String) : UiIntent
         data object CreateUseWithEmailAndPassword : UiIntent
         data object SignInWithEmailAndPassword : UiIntent
+        data object CheckIsLoggedUser : UiIntent
     }
 
     sealed interface Effect : BaseEffect {

@@ -1,7 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,18 +15,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.baldomeronapoli.eventplanner.android.R
+import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
+import com.baldomeronapoli.eventplanner.domain.models.Event
 
 @Composable
-fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun EventCardWide(modifier: Modifier = Modifier, event: Event, onClick: () -> Unit) {
     Column(
         modifier = modifier
             .clickable { onClick() }
@@ -43,16 +47,21 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
 
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            Image(
+            AsyncImage(
                 modifier = Modifier
                     .size(60.dp),
-                painter = painterResource(id = R.drawable.empty_thumbnail_event),
-                contentDescription = null
+
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(event.thumbnailUrl)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.placeholder),
+                contentDescription = null,
             )
             Column {
-                Text(text = "Today 10.00 - 12.00", style = MaterialTheme.typography.titleSmall)
+                Text(text = event.date, style = MaterialTheme.typography.titleSmall)
                 Text(
-                    text = "Shawn Mendes The Virtual Tour 2021 indes The Virtual Tour 2021 indes The Virtual Tour 2021 indes The Virtual Tour 2021 indes The Virtual Tour 2021 in Germany ",
+                    text = event.title,
                     style = MaterialTheme.typography.titleSmall,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
@@ -69,10 +78,14 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            OrganizerAvatar(modifier = Modifier.padding(start=76.dp),size = 20.dp)
+            OrganizerAvatar(
+                modifier = Modifier.padding(start = 76.dp),
+                size = 20.dp,
+                name = event.host.userName
+            )
 
             Text(
-                text = "$100",
+                text = "Free",
                 color = Blue,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge
@@ -86,7 +99,6 @@ fun EventCardWide(modifier: Modifier = Modifier, onClick: () -> Unit) {
 @Composable
 fun PreviewEventCardWideLight(modifier: Modifier = Modifier) {
     NPreview {
-
-        EventCardWide(){}
+        EventCardWide(onClick = {}, event = EventsMock.event)
     }
 }

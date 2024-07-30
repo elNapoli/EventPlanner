@@ -1,8 +1,8 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
-import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
@@ -13,7 +13,8 @@ import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 
 open class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,
-    private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase
+    private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase,
+    private val checkIsLoggedUserUseCase: CheckIsLoggedUserUseCase
 ) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState()
 ) {
@@ -22,7 +23,6 @@ open class AuthViewModel(
         when (uiIntent) {
             UiIntent.ToggleVisualTransformation -> updateUiState { togglePasswordVisible() }
             is UiIntent.SaveEmail -> {
-                Logger.e("se guardo el siguiente valor ${uiIntent.email}")
                 updateUiState {
                     saveEmail(uiIntent.email)
                 }
@@ -45,6 +45,7 @@ open class AuthViewModel(
             UiIntent.CreateUseWithEmailAndPassword -> createUseWithEmailAndPassword()
             UiIntent.SignInWithEmailAndPassword -> signInWithEmailAndPassword()
             UiIntent.ResetFeedbackUI -> updateUiState { copy(feedbackUI = null) }
+            UiIntent.CheckIsLoggedUser -> checkIsLoggedUser()
         }
     }
 
@@ -53,9 +54,9 @@ open class AuthViewModel(
         onError = {
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
-                    userId = "", feedbackUI = FeedbackUI(
+                    user = null, feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.cause?.message ?: "Error desconocido",
+                        message = it.message ?: "Error desconocido",
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -65,7 +66,7 @@ open class AuthViewModel(
         onSuccess = { data ->
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
-                    userId = data!!, feedbackUI = FeedbackUI(
+                    user = data!!, feedbackUI = FeedbackUI(
                         title = "Cuenta creada",
                         message = "Tu cuenta ha sido creada exitosamente, el usuario es ${data}",
                         type = FeedbackUIType.SUCCESS,
@@ -86,11 +87,19 @@ open class AuthViewModel(
 
     private fun signInWithEmailAndPassword() = scope.useCaseRunner(
         loadingUpdater = { value ->
-            Logger.d("Loading", tag = "signInWithEmailAndPassword")
             updateUiState { loading(value) }
         },
         onError = {
-            Logger.e("Error ${it}", tag = "signInWithEmailAndPassword")
+            updateUiState {
+                handleCreateUseWithEmailAndPassword(
+                    user = null, feedbackUI = FeedbackUI(
+                        title = "Error",
+                        message = it.message ?: "Error desconocido",
+                        type = FeedbackUIType.ERROR,
+                        show = true
+                    )
+                )
+            }
 
         },
         onSuccess = { data ->
@@ -103,6 +112,32 @@ open class AuthViewModel(
                     password = uiState.value.password
                 )
             )
+        }
+    )
+
+
+    private fun checkIsLoggedUser() = scope.useCaseRunner(
+        loadingUpdater = { value ->
+            updateUiState { loading(value) }
+        },
+        onError = {
+            updateUiState {
+                handleCreateUseWithEmailAndPassword(
+                    user = null, feedbackUI = FeedbackUI(
+                        title = "Error",
+                        message = it.message ?: "Error desconocido",
+                        type = FeedbackUIType.ERROR,
+                        show = true
+                    )
+                )
+            }
+
+        },
+        onSuccess = { data ->
+            sendEffect(Effect.GoToHome)
+        },
+        useCase = {
+            checkIsLoggedUserUseCase()
         }
     )
 }

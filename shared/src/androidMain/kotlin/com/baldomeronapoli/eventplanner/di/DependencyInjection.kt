@@ -2,6 +2,7 @@ package com.baldomeronapoli.eventplanner.di
 
 import android.content.Context
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
+import com.baldomeronapoli.eventplanner.presentation.event.EventViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -18,6 +19,7 @@ actual fun platformModule() = module {
     viewModel { OnBoardViewModel(get()) }
 
     //auth
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get()) }
+    viewModel { EventViewModel(get(), get(), get(), get()) }
 
 }

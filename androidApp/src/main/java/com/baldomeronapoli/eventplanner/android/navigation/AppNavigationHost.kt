@@ -23,14 +23,17 @@ fun AppNavigationHost(
     val sharedPrefs = koinInject<SharePreferences>()
     val startDestination = if (sharedPrefs.getShownOnboarding()) {
         MainRoute.Onboard.path
-    } else {
+    } else if (sharedPrefs.getEmailCurrentUser().isNullOrEmpty()) {
         MainRoute.Auth.path
+    } else {
+        MainRoute.Home.path
     }
     val navController = appState.navController
     NavHost(
         modifier = modifier,
-        navController = navController, startDestination = MainRoute.Home.path
+        navController = navController, startDestination = startDestination
     ) {
+
         homeGraph(onNavigationEvent = navigationViewModel::onEvent)
         onboardGraph(onNavigationEvent = navigationViewModel::onEvent)
         authGraph(onNavigationEvent = navigationViewModel::onEvent)

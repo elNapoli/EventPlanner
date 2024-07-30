@@ -21,4 +21,16 @@ actual class SharePreferences actual constructor() : KoinComponent {
     actual fun setShownOnboarding() {
         settings.putBoolean(Preferences.SHOW_ONBOARDING, false)
     }
+
+    actual fun setEmailCurrentUser(email: String?) {
+        if (email == null) {
+            settings.remove(Preferences.EMAIL_CURRENT_USER)
+        } else {
+            settings.putString(Preferences.EMAIL_CURRENT_USER, email)
+
+        }
+    }
+
+    actual fun getEmailCurrentUser() =
+        settings.getStringOrNull(Preferences.EMAIL_CURRENT_USER)
 }

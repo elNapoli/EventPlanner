@@ -75,7 +75,7 @@ fun SignUpScreen(
                 confirmText = if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) stringResource(
                     id = R.string.cancel
                 ) else stringResource(
-                    id = R.string.login_with_google
+                    id = R.string.login_button
                 ),
             )
         }
@@ -142,7 +142,7 @@ fun SignUpScreen(
                 ) {
                     NOutlinedTextField(
                         value = uiState.email,
-                        maxLines = 1,
+                        singleLine = true,
                         onValueChange = { onIntent(UiIntent.SaveEmail(it)) },
                         trailingIcon = {
                             Icon(
@@ -153,7 +153,8 @@ fun SignUpScreen(
                         isError = uiState.error?.property == "email",
                         textError = uiState.error?.message ?: "",
                         placeholder = "prueba@gmail.com",
-                        label = { Text(stringResource(id = R.string.email)) })
+                        label = stringResource(id = R.string.email)
+                    )
 
                     NOutlinedTextField(
                         value = uiState.password,
@@ -170,7 +171,8 @@ fun SignUpScreen(
                             }
                         },
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        label = { Text(stringResource(id = R.string.password)) })
+                        label = stringResource(id = R.string.password)
+                    )
 
                     NOutlinedTextField(
                         value = uiState.repeatPassword,
@@ -189,7 +191,8 @@ fun SignUpScreen(
                             }
                         },
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        label = { Text(stringResource(id = R.string.repeat_password)) })
+                        label = stringResource(id = R.string.repeat_password)
+                    )
                     NButton(
                         modifier = Modifier
                             .fillMaxWidth()

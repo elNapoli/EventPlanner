@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.android.navigation.search
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -12,7 +11,6 @@ import com.baldomeronapoli.eventplanner.android.views.search.SearchScreen
 import com.baldomeronapoli.eventplanner.android.views.search.TopAppBarSearchScreen
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.searchGraph(
     onNavigationEvent: (NavigationEvent) -> Unit,
 ) {
@@ -24,7 +22,7 @@ fun NavGraphBuilder.searchGraph(
             ScaffoldWithBottomBarNavigation(
                 topBar = { TopAppBarSearchScreen() }
             ) {
-                SearchScreen() {
+                SearchScreen {
                     onNavigationEvent(NavigationEvent.OnNavigateToScreen(EventDetailRoute.Index))
                 }
             }
