@@ -31,6 +31,15 @@ class EventRepositoryImpl(
         )
     }
 
+    override suspend fun getEventById(eventId: String): Flow<NetworkResult<Event?>> = flow {
+        emit(NetworkResult.Loading(true))
+        emit(
+            eventManager.getEventById(
+                eventId = eventId
+            )
+        )
+    }
+
     override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>> =
         flow {
             emit(NetworkResult.Loading(true))
@@ -46,8 +55,9 @@ class EventRepositoryImpl(
             }
         }
 
-    override suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event>>> = flow {
-        emit(NetworkResult.Loading(true))
-        emit(eventManager.getEventsByAttendee())
-    }
+    override suspend fun getEventsByAttendee(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
+        flow {
+            emit(NetworkResult.Loading(true))
+            emit(eventManager.getEventsByAttendee())
+        }
 }

@@ -14,13 +14,17 @@ import com.baldomeronapoli.eventplanner.domain.models.Event
 
 
 @Composable
-fun EventTab(modifier: Modifier = Modifier, events: List<Event> = emptyList()) {
+fun EventTab(
+    modifier: Modifier = Modifier,
+    events: List<Event> = emptyList(),
+    goToEventDetail: (Event) -> Unit
+) {
     if (events.isEmpty()) {
         EmptyEvent()
     } else {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(events) { event ->
-                EventCardWide(event = event, onClick = {})
+                EventCardWide(event = event, onClick = goToEventDetail)
             }
         }
     }
@@ -33,6 +37,6 @@ fun EventTab(modifier: Modifier = Modifier, events: List<Event> = emptyList()) {
 fun PreviewOrganizedEventTabLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        EventTab()
+        EventTab {}
     }
 }

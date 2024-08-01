@@ -28,11 +28,12 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray60
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
+import com.baldomeronapoli.eventplanner.domain.models.Event
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    goToEventDetail: () -> Unit
+    goToEventDetail: (Event) -> Unit
 ) {
     Column {
         Text(
@@ -50,8 +51,12 @@ fun HomeScreen(
             modifier = Modifier.padding(top = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(List(20) { it }) { item ->
-                EventCard(modifier = Modifier.width(260.dp), onClick = goToEventDetail)
+            items(listOf(EventsMock.event)) { item ->
+                EventCard(
+                    modifier = Modifier.width(260.dp),
+                    event = item,
+                    onClick = goToEventDetail
+                )
             }
         }
 
@@ -76,7 +81,7 @@ fun HomeScreen(
         }
         CategoryFilter(modifier = Modifier.padding(vertical = 16.dp))
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            items(List(20) { it }) { item ->
+            items(listOf(EventsMock.event)) { item ->
                 EventCardWide(onClick = goToEventDetail, event = EventsMock.event)
             }
         }

@@ -7,10 +7,10 @@ import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import kotlinx.coroutines.flow.Flow
 
 
-class GetEventsByAttendeeUseCase(
+class GetEventByIdUseCase(
     private val repository: EventRepository,
 ) {
     @NativeCoroutines
-    suspend operator fun invoke(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
-        repository.getEventsByAttendee()
+    suspend operator fun invoke(eventId: String): Flow<NetworkResult<Event?>> =
+        repository.getEventById(eventId)
 }

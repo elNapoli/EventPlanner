@@ -10,6 +10,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUs
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
@@ -101,5 +102,6 @@ object DependencyInjection {
         single { CreateEventUseCase(get()) }
         single { SearchBoardGamesUseCase(get()) }
         single { GetEventsByAttendeeUseCase(get()) }
+        single { GetEventByIdUseCase(get()) }
     }
 }
