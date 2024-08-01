@@ -20,7 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +48,7 @@ import com.baldomeronapoli.eventplanner.android.components.AddressMap
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
 import com.baldomeronapoli.eventplanner.android.components.AlertSticky
 import com.baldomeronapoli.eventplanner.android.components.MyDatePickerDialog
+import com.baldomeronapoli.eventplanner.android.components.MyTimePickerDialog
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
@@ -53,6 +56,7 @@ import com.baldomeronapoli.eventplanner.android.components.richText.NRichTextEdi
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
+import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
@@ -94,6 +98,8 @@ fun CreateEventScreen(
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEventContent(
     uiState: UiState,
@@ -111,9 +117,9 @@ fun CreateEventContent(
             }
         }
     )
-
     val painter = rememberAsyncImagePainter(model = imageUri ?: R.drawable.empty_thumbnail_event_2)
     var showDatePickerDialog by remember { mutableStateOf(false) }
+    var showTimePickerDialog by remember { mutableStateOf(false) }
     if (uiState.feedbackUI != null) {
         AlertDialog(
             onConfirmation = goBack,
@@ -170,8 +176,8 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.date,
-                label = stringResource(id = R.string.data_and_date),
+                value = uiState.event.date.toFormattedDateString("dd/MM/yyyy"),
+                label = stringResource(id = R.string.date),
                 maxLines = 1,
                 onValueChange = { },
                 readOnly = true,
@@ -183,13 +189,40 @@ fun CreateEventContent(
             )
         }
 
+
         item {
+            NOutlinedTextField(
+                value = uiState.event.date.toFormattedDateString("HH:mm"),
+                label = stringResource(id = R.string.hour),
+                maxLines = 1,
+                onValueChange = { },
+                readOnly = true,
+                trailingIcon = {
+                    IconButton(onClick = { showTimePickerDialog = true }) {
+                        Icon(imageVector = Icons.Default.Timer, contentDescription = null)
+                    }
+                }
+            )
+        }
+
+        item {
+            Text("Selected DateTime: ${uiState.event.date.toFormattedDateString()}")
             MyDatePickerDialog(
                 show = showDatePickerDialog,
                 value = uiState.event.date,
                 onDismiss = { showDatePickerDialog = false },
                 onDateSelected = {
-                    onIntent(UiIntent.UpdateProperty("date", it))
+                    onIntent(UiIntent.UpdateDateEvent(it))
+                })
+        }
+
+        item {
+            MyTimePickerDialog(
+                show = showTimePickerDialog,
+                value = uiState.event.date,
+                onDismiss = { showTimePickerDialog = false },
+                onTimeSelected = {
+                    onIntent(UiIntent.UpdateDateEvent(it))
                 })
         }
 

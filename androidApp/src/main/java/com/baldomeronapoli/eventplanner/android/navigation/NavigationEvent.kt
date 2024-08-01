@@ -18,4 +18,10 @@ sealed interface NavigationEvent {
         val inclusive: Boolean = false
     ) :
         NavigationEvent
+
+    data class NavigateToDetailScreen(
+        val route: Route,
+        val eventId: String
+    ) :
+        NavigationEvent
 }

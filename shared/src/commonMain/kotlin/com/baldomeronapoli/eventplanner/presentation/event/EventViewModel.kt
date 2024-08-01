@@ -6,6 +6,7 @@ import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
@@ -24,7 +25,9 @@ class EventViewModel(
     private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
     private val geolocator: Geolocator,
     private val getEventsByAttendeeUseCase: GetEventsByAttendeeUseCase,
-) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
+    private val getEventByIdUseCase: GetEventByIdUseCase,
+
+    ) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
 
     init {
         getCurrentLocation()
@@ -61,8 +64,23 @@ class EventViewModel(
             }
 
             UiIntent.LoadAllEventsByCurrentId -> loadAllEventsByCurrentId()
+            is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
+            is UiIntent.UpdateDateEvent -> updateUiState { copy(event = event.copy(date = uiIntent.value)) }
         }
     }
+
+    private fun getEventById(eventId: String) = scope.useCaseRunner(
+        loadingUpdater = {
+            updateUiState { copy(isLoading = it) }
+        },
+        onError = {},
+        onSuccess = {
+            updateUiState { copy(currentEvent = it) }
+        },
+        useCase = {
+            getEventByIdUseCase(eventId = eventId)
+        }
+    )
 
     private fun searchBoardGamesByQuery(query: String) = scope.useCaseRunner(
         loadingUpdater = {},
@@ -128,8 +146,15 @@ class EventViewModel(
                 )
             }
         },
-        onSuccess = {
-            updateUiState { copy(userEvents = it) }
+        onSuccess = { a ->
+
+            updateUiState {
+                copy(
+                    ownEvents = a.first,
+                    nextEvents = a.second,
+                    expiredEvents = a.third,
+                )
+            }
 
         },
         useCase = {
@@ -185,7 +210,6 @@ class EventViewModel(
     }
 
     private fun getCurrentLocation() {
-        updateUiState { copy(isLoading = true) }
         scope.launch {
             when (val result: GeolocatorResult = geolocator.current()) {
                 is GeolocatorResult.Success -> {
@@ -199,7 +223,6 @@ class EventViewModel(
                                     coordinates = nCoordinates
                                 )
                             ),
-                            isLoading = false
                         )
                     }
                 }

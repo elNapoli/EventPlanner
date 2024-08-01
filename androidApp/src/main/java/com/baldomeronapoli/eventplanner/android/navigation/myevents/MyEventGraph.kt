@@ -19,6 +19,7 @@ import androidx.navigation.navigation
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.NTopBar
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
+import com.baldomeronapoli.eventplanner.android.navigation.eventDetail.EventDetailRoute
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
@@ -55,9 +56,18 @@ fun NavGraphBuilder.myEventGraph(
                     uiState = uiState.value,
                     effect = viewmodel.effect,
                     onIntent = viewmodel::sendIntent,
-                ) {
-                    onNavigationEvent(NavigationEvent.OnNavigateToScreen(MyEventsRoute.Create))
-                }
+                    goToEventDetail = { event ->
+                        onNavigationEvent(
+                            NavigationEvent.NavigateToDetailScreen(
+                                EventDetailRoute.Index,
+                                event.id
+                            )
+                        )
+                    },
+                    goToCreateEvent = {
+                        onNavigationEvent(NavigationEvent.OnNavigateToScreen(MyEventsRoute.Create))
+                    }
+                )
             }
         }
 

@@ -20,7 +20,7 @@ import com.baldomeronapoli.eventplanner.android.theme.Orange
 
 @Composable
 fun ProfilePicture(
-    letter: String,
+    letter: Char,
     size: Dp = 40.dp,
     backgroundColor: Color = Orange, // Naranja
     textColor: Color = Color.White,
@@ -34,9 +34,10 @@ fun ProfilePicture(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = letter,
+            text = letter.toString(),
             color = textColor,
-            style = textStyle
+            style = textStyle,
+            fontSize = (size / 2).value.sp
         )
     }
 }
@@ -48,7 +49,7 @@ fun PreviewAlertDialogLight() {
     NPreview {
 
         ProfilePicture(
-            letter = "A"
+            letter = 'A'
         )
     }
 }

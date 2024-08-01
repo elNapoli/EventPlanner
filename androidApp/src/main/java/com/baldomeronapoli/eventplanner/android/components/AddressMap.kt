@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun AddressMap(
     address: String,
     lat: Double,
     lng: Double,
+    previewMode: Boolean = false,
     onChange: (String) -> Unit
 ) {
     val location = LatLng(lat, lng)
@@ -40,12 +42,17 @@ fun AddressMap(
     }
 
     Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        NOutlinedTextField(
-            value = address,
-            maxLines = 1,
-            label = stringResource(id = R.string.event_address),
-            onValueChange = { onChange(it) }
-        )
+        if (previewMode) {
+            Text(text = address)
+        } else {
+            NOutlinedTextField(
+                value = address,
+                maxLines = 1,
+                label = stringResource(id = R.string.event_address),
+                onValueChange = { onChange(it) }
+            )
+        }
+
 
         GoogleMap(
             modifier = Modifier

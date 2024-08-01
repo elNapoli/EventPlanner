@@ -20,9 +20,11 @@ import com.baldomeronapoli.eventplanner.android.components.CategoryFilter
 import com.baldomeronapoli.eventplanner.android.components.EventCard
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
+import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
+import com.baldomeronapoli.eventplanner.domain.models.Event
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: () -> Unit) {
+fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: (Event) -> Unit) {
     Column {
         NOutlinedTextField(
             leadingIcon = {
@@ -40,8 +42,12 @@ fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: () -> Unit) {
             modifier = Modifier.padding(top = 24.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(List(20) { it }) { item ->
-                EventCard(modifier = Modifier.fillMaxWidth(), onClick = goToEventDetail)
+            items(listOf(EventsMock.event)) { item ->
+                EventCard(
+                    modifier = Modifier.fillMaxWidth(),
+                    event = item,
+                    onClick = goToEventDetail
+                )
             }
         }
     }
@@ -53,6 +59,6 @@ fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: () -> Unit) {
 fun PreviewButtonTapLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        SearchScreen{}
+        SearchScreen {}
     }
 }

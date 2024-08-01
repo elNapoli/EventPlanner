@@ -2,6 +2,7 @@ package com.baldomeronapoli.eventplanner.android.views.events
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +37,7 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray40
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Orange
 import com.baldomeronapoli.eventplanner.android.theme.White
+import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
@@ -47,7 +51,9 @@ fun MyEventsScreen(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
-    goToCreateEvent: () -> Unit
+    goToCreateEvent: () -> Unit,
+    goToEventDetail: (Event) -> Unit
+
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
 
@@ -109,12 +115,33 @@ fun MyEventsScreen(
                     )
                 }
             }
-            co.touchlab.kermit.Logger.e("Events: ${uiState.userEvents}")
             Column(Modifier.padding(16.dp)) {
-                when (tabIndex) {
-                    0 -> EventTab(events = uiState.userEvents)
-                    1 -> EventTab(events = uiState.expiredEvents)
-                    2 -> EventTab(events = uiState.ownEvents)
+                if (uiState.isLoading) {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    when (tabIndex) {
+                        0 -> EventTab(
+                            events = uiState.nextEvents,
+                            goToEventDetail = goToEventDetail
+                        )
+
+                        1 -> EventTab(
+                            events = uiState.expiredEvents,
+                            goToEventDetail = goToEventDetail
+                        )
+
+                        2 -> EventTab(
+                            events = uiState.ownEvents,
+                            goToEventDetail = goToEventDetail
+                        )
+                    }
                 }
             }
         }
@@ -130,6 +157,8 @@ fun PreviewMyEventsScreenLight(modifier: Modifier = Modifier) {
             uiState = UiState(),
             onIntent = {},
             effect = effect,
-        ) {}
+            goToCreateEvent = {},
+            goToEventDetail = {}
+        )
     }
 }

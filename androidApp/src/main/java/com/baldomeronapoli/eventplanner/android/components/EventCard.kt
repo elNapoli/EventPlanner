@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,17 +24,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.R
+import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.White
+import com.baldomeronapoli.eventplanner.domain.models.Event
 
 
 @Composable
-fun EventCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun EventCard(
+    modifier: Modifier = Modifier,
+    event: Event,
+    onClick: (Event) -> Unit
+) {
     Column(
         modifier = modifier
-            .clickable { onClick() }
+            .clickable { onClick(event) }
             .fillMaxWidth()
             .border(
                 width = 1.dp,
@@ -45,8 +50,11 @@ fun EventCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(             modifier = Modifier
-            .fillMaxWidth().padding(bottom = 16.dp)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        ) {
             Image(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -107,6 +115,6 @@ fun EventCard(modifier: Modifier = Modifier, onClick: () -> Unit) {
 fun PreviewEventCardLight(modifier: Modifier = Modifier) {
     NPreview {
 
-        EventCard {}
+        EventCard(event = EventsMock.event) {}
     }
 }

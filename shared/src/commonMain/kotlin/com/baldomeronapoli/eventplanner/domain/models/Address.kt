@@ -3,7 +3,9 @@ package com.baldomeronapoli.eventplanner.domain.models
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FAddress
 import com.baldomeronapoli.eventplanner.mappers.Mappable
 import com.baldomeronapoli.eventplanner.utils.randomUUID
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Address(
     override val id: String = randomUUID,
     val coordinates: NCoordinates = NCoordinates(0.0, 0.0),

@@ -2,6 +2,7 @@ package com.baldomeronapoli.eventplanner.android.navigation
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavHostController
+import com.baldomeronapoli.eventplanner.android.navigation.eventDetail.EventDetailRoute
 
 open class NavigationViewModel : ViewModel() {
 
@@ -30,6 +31,9 @@ open class NavigationViewModel : ViewModel() {
                 }
             }
 
+            is NavigationEvent.NavigateToDetailScreen -> {
+                activityNavController.navigate(EventDetailRoute.Index.detail(event.eventId))
+            }
         }
     }
 

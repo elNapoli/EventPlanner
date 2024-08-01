@@ -2,7 +2,9 @@ package com.baldomeronapoli.eventplanner.domain.models
 
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FAttendee
 import com.baldomeronapoli.eventplanner.mappers.Mappable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Attendee(
     override val id: String = "",
     val userName: String = "",

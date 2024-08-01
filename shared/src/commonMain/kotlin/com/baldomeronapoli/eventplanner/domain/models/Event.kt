@@ -3,6 +3,7 @@ package com.baldomeronapoli.eventplanner.domain.models
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FEvent
 import com.baldomeronapoli.eventplanner.mappers.Mappable
 import com.baldomeronapoli.eventplanner.utils.randomUUID
+import dev.gitlive.firebase.firestore.Timestamp
 import dev.gitlive.firebase.storage.File
 
 data class Event(
@@ -15,7 +16,7 @@ data class Event(
     var attendees: List<Attendee> = emptyList(),
     var host: Attendee = Attendee(),
     var slots: Int = 0,
-    var date: String = "",
+    var date: Timestamp = Timestamp.now(),
     var isPrivate: Boolean = false,
     var price: Double = 0.0,
     var place: Address = Address(),
@@ -24,7 +25,7 @@ data class Event(
     fun isValid(): Boolean {
 
         return (this.thumbnail != null && this.title.isNotEmpty() && this.description.isNotEmpty()
-                && this.boardgames.isNotEmpty()) && this.date.isNotEmpty() && this.place.street != null && this.place.coordinates.latitude != 0.0 && this.place.coordinates.longitude != 0.0
+                && this.boardgames.isNotEmpty()) && this.place.street != null && this.place.coordinates.latitude != 0.0 && this.place.coordinates.longitude != 0.0
     }
 
     override fun map(): FEvent = FEvent(
@@ -40,3 +41,7 @@ data class Event(
         hostId = host.id
     )
 }
+
+
+val ho = Timestamp.now()
+

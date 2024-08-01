@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.managers
 
+import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.data.collections.EventsCollection
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FAddress
 import com.baldomeronapoli.eventplanner.data.firebaseModels.FAttendee
@@ -15,6 +16,11 @@ import dev.gitlive.firebase.firestore.FirebaseFirestore
 import dev.gitlive.firebase.storage.File
 import dev.gitlive.firebase.storage.FirebaseStorage
 import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.format.FormatStringsInDatetimeFormats
+import kotlinx.datetime.format.byUnicodePattern
+import kotlinx.datetime.toLocalDateTime
 
 class EventManager(
     private val firestore: FirebaseFirestore,
@@ -97,6 +103,52 @@ class EventManager(
 
     }
 
+
+    @NativeCoroutines
+    suspend fun getEventById(eventId: String): NetworkResult<Event?> {
+        try {
+            var eventTemp: Event
+            var fEvent: FEvent
+
+            val event =
+                firestore.collection(EventsCollection.COLLECTION_NAME).document(eventId).get()
+            val boardGames: List<BoardGame> =
+                event.reference.collection(EventsCollection.EventSubCollection.BOARDGAMES)
+                    .get().documents.map { game ->
+                        game.data(
+                            FBoardGame.serializer()
+                        ).map()
+                    }
+            val attendees =
+                event.reference.collection(EventsCollection.EventSubCollection.ATTENDEES)
+                    .get().documents.map { game ->
+                        game.data(
+                            FAttendee.serializer()
+                        ).map()
+                    }
+
+            val address =
+                event.reference.collection(EventsCollection.EventSubCollection.ADDRESSES)
+                    .get().documents.first().data(FAddress.serializer())
+
+
+            fEvent = event.data(FEvent.serializer())
+            eventTemp = fEvent.map()
+            eventTemp.attendees = attendees
+            eventTemp.host = attendees.first { it.id == fEvent.hostId }
+            eventTemp.boardgames = boardGames
+            eventTemp.place = address.map()
+            return NetworkResult.Success(eventTemp)
+
+        } catch (e: Throwable) {
+            return NetworkResult.Error(
+                exception = Throwable("No existe evento cuyo ID es: $eventId"),
+                data = null
+            )
+        }
+
+    }
+
     @NativeCoroutines
     suspend fun createEvent(
         thumbnail: File,
@@ -153,10 +205,14 @@ class EventManager(
     }
 
 
+    @OptIn(FormatStringsInDatetimeFormats::class)
     @NativeCoroutines
-    suspend fun getEventsByAttendee(): NetworkResult<List<Event>> {
+    suspend fun getEventsByAttendee(): NetworkResult<Triple<List<Event>, List<Event>, List<Event>>> {
         try {
             val events: MutableList<Event> = mutableListOf()
+            val currentDate =
+                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+
             var fEvent: FEvent
             var eventTemp: Event
             firestore.collection(EventsCollection.COLLECTION_NAME)
@@ -183,15 +239,26 @@ class EventManager(
                             .get().documents.first().data(FAddress.serializer())
                     eventTemp = fEvent.map()
                     eventTemp.attendees = attendees
-                    eventTemp.host = attendees.first { it.id == userId }
+                    eventTemp.host = attendees.first { it.id == fEvent.hostId }
                     eventTemp.boardgames = boardGames
                     eventTemp.place = address.map()
                     events.add(eventTemp)
                 }
+            val (ownEvents, otherEvents) = events.partition { it.host.id == userId }
+            val (expiredEvents, nextEvents) = otherEvents.partition { e ->
+                val eventDate = LocalDate.parse(e.date.toString(), LocalDate.Format {
+                    byUnicodePattern("dd/MM/yyyy HH:mm")
+                })
+                eventDate < currentDate
+            }
 
-            return NetworkResult.Success(events)
+            return NetworkResult.Success(Triple(ownEvents, nextEvents, expiredEvents))
         } catch (e: Throwable) {
-            return NetworkResult.Error(exception = e, data = emptyList())
+            Logger.e(e.toString())
+            return NetworkResult.Error(
+                exception = e,
+                data = Triple(emptyList(), emptyList(), emptyList())
+            )
         }
     }
 }
