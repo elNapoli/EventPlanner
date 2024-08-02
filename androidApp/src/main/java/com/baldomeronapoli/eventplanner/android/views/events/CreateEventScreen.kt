@@ -56,13 +56,11 @@ import com.baldomeronapoli.eventplanner.android.components.richText.NRichTextEdi
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
-import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import dev.gitlive.firebase.storage.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -113,7 +111,7 @@ fun CreateEventContent(
         onResult = {
             it?.let { image ->
                 imageUri = image
-                onIntent(UiIntent.SetThumbnail(File(image)))
+                //onIntent(UiIntent.SetThumbnail(File(image)))
             }
         }
     )
@@ -176,7 +174,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.date.toFormattedDateString("dd/MM/yyyy"),
+                value = "d",
                 label = stringResource(id = R.string.date),
                 maxLines = 1,
                 onValueChange = { },
@@ -192,7 +190,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.date.toFormattedDateString("HH:mm"),
+                value = "d",
                 label = stringResource(id = R.string.hour),
                 maxLines = 1,
                 onValueChange = { },
@@ -206,23 +204,23 @@ fun CreateEventContent(
         }
 
         item {
-            Text("Selected DateTime: ${uiState.event.date.toFormattedDateString()}")
+            Text("Selected DateTime:")
             MyDatePickerDialog(
                 show = showDatePickerDialog,
-                value = uiState.event.date,
+                //value =" uiState.event.date",
                 onDismiss = { showDatePickerDialog = false },
                 onDateSelected = {
-                    onIntent(UiIntent.UpdateDateEvent(it))
+                    // onIntent(UiIntent.UpdateDateEvent(it))
                 })
         }
 
         item {
             MyTimePickerDialog(
                 show = showTimePickerDialog,
-                value = uiState.event.date,
+                //  value = uiState.event.date,
                 onDismiss = { showTimePickerDialog = false },
                 onTimeSelected = {
-                    onIntent(UiIntent.UpdateDateEvent(it))
+                    //   onIntent(UiIntent.UpdateDateEvent(it))
                 })
         }
 

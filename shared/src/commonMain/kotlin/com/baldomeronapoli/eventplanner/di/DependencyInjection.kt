@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.di
 
-import com.baldomeronapoli.eventplanner.data.managers.EventManager
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
@@ -15,10 +14,6 @@ import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttend
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.auth
-import dev.gitlive.firebase.firestore.firestore
-import dev.gitlive.firebase.storage.storage
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.mobile
 import io.ktor.client.HttpClient
@@ -64,9 +59,6 @@ object DependencyInjection {
         }.koin
 
     private fun appModule() = module {
-        single { Firebase.auth }
-        single { Firebase.firestore }
-        single { Firebase.storage }
         single { Geolocator.mobile() }
         single { SharePreferences() }
     }
@@ -87,12 +79,12 @@ object DependencyInjection {
                 }
             }
         }
-        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<EventRepository> { EventRepositoryImpl(get(), get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get()) }
+        single<EventRepository> { EventRepositoryImpl(get()) }
     }
 
     private fun managersModuleO() = module {
-        single { EventManager(get(), get(), get()) }
+
     }
 
     private fun useCaseModule() = module {

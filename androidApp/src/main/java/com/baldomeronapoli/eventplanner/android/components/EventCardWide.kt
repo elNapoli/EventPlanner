@@ -28,7 +28,6 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.domain.models.Event
 
 @Composable
@@ -61,7 +60,7 @@ fun EventCardWide(modifier: Modifier = Modifier, event: Event, onClick: (Event) 
             )
             Column {
                 Text(
-                    text = event.date.toFormattedDateString(),
+                    text = "",
                     style = MaterialTheme.typography.titleSmall
                 )
                 Text(

@@ -1,7 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.mocks
 
 import com.baldomeronapoli.eventplanner.domain.models.Event
-import dev.gitlive.firebase.firestore.Timestamp
 
 object EventsMock {
     val event = Event(
@@ -10,7 +9,7 @@ object EventsMock {
         description = "Coldplay are a British rock band formed in London in 1996. The band consists of vocalist, rhythm guitarist, and pianist Chris Martin; lead guitarist Jonny Buckland; bassist Guy Berryman; drummer Will Champion; and creative director Phil Harvey. Read More",
         boardgames = emptyList(),
         slots = 5,
-        date = Timestamp.now(),
+        //  date = Timestamp.now(),
         isPrivate = false,
         price = 0.0,
     )

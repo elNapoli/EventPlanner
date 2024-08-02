@@ -1,6 +1,5 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
-import com.baldomeronapoli.eventplanner.data.managers.EventManager
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
 import com.baldomeronapoli.eventplanner.domain.models.Address
 import com.baldomeronapoli.eventplanner.domain.models.BoardGame
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.flow
 
 class EventRepositoryImpl(
     private val algoliaService: AlgoliaService,
-    private val eventManager: EventManager
 ) : EventRepository {
 
     override suspend fun createEvent(
@@ -21,23 +19,12 @@ class EventRepositoryImpl(
         address: Address
     ): Flow<NetworkResult<Boolean>> = flow {
         emit(NetworkResult.Loading(true))
-        emit(
-            eventManager.createEvent(
-                thumbnail = event.thumbnail!!,
-                event = event.map(),
-                games = games.map { it.map() },
-                address = address.map()
-            )
-        )
+
     }
 
     override suspend fun getEventById(eventId: String): Flow<NetworkResult<Event?>> = flow {
         emit(NetworkResult.Loading(true))
-        emit(
-            eventManager.getEventById(
-                eventId = eventId
-            )
-        )
+
     }
 
     override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>> =
@@ -58,6 +45,5 @@ class EventRepositoryImpl(
     override suspend fun getEventsByAttendee(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
         flow {
             emit(NetworkResult.Loading(true))
-            emit(eventManager.getEventsByAttendee())
         }
 }

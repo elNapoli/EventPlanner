@@ -7,14 +7,13 @@ import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
 import com.baldomeronapoli.eventplanner.utils.ValidateState
-import dev.gitlive.firebase.auth.FirebaseUser
 
 interface AuthContract {
     data class UiState(
         var passwordVisible: Boolean,
         @property:EmailValidation
         var email: String,
-        var user: FirebaseUser?,
+        var user: String?,
         var password: String,
         var repeatPassword: String,
         var loading: Boolean,
@@ -48,7 +47,7 @@ interface AuthContract {
         fun togglePasswordVisible(): UiState = copy(passwordVisible = !passwordVisible)
 
         fun handleCreateUseWithEmailAndPassword(
-            user: FirebaseUser?,
+            user: String?,
             feedbackUI: FeedbackUI?
         ): UiState =
             copy(user = user, feedbackUI = feedbackUI)

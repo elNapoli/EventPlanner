@@ -42,7 +42,7 @@ class EventViewModel(
 
             is UiIntent.UpdatePlace -> updatePlace(uiIntent.address)
             UiIntent.CreateEvent -> saveEvent()
-            is UiIntent.SetThumbnail -> updateUiState { copy(event = event.copy(thumbnail = uiIntent.file)) }
+            //is UiIntent.SetThumbnail -> updateUiState { copy(event = event.copy(thumbnail = uiIntent.file)) }
             is UiIntent.UpdateQuery -> {
                 updateUiState {
                     copy(queryGames = uiIntent.query)
@@ -65,7 +65,7 @@ class EventViewModel(
 
             UiIntent.LoadAllEventsByCurrentId -> loadAllEventsByCurrentId()
             is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
-            is UiIntent.UpdateDateEvent -> updateUiState { copy(event = event.copy(date = uiIntent.value)) }
+            //  is UiIntent.UpdateDateEvent -> updateUiState { copy(event = event.copy(date = uiIntent.value)) }
         }
     }
 

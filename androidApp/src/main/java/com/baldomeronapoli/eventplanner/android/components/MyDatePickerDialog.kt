@@ -12,20 +12,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.baldomeronapoli.eventplanner.android.R
-import com.baldomeronapoli.eventplanner.android.utils.toMillis
-import com.baldomeronapoli.eventplanner.android.utils.toTimestamp
-import dev.gitlive.firebase.firestore.Timestamp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyDatePickerDialog(
     show: Boolean = false,
-    value: Timestamp,
-    onDateSelected: (Timestamp) -> Unit,
+    // value: Timestamp,
+    onDateSelected: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = value.toMillis(),
+        initialSelectedDateMillis = 1L,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 return utcTimeMillis >= System.currentTimeMillis()
@@ -36,7 +33,7 @@ fun MyDatePickerDialog(
             onDismissRequest = { },
             confirmButton = {
                 NButton(text = stringResource(id = R.string.date_picker_dialog_confirm)) {
-                    onDateSelected(datePickerState.selectedDateMillis!!.toTimestamp())
+                    // onDateSelected(datePickerState.selectedDateMillis!!.toTimestamp())
                     onDismiss()
                 }
             },

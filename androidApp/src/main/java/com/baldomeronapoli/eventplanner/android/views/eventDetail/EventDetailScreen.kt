@@ -38,7 +38,6 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.components.OrganizerAvatar
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.android.utils.toRichHtmlString
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
@@ -116,14 +115,14 @@ fun EventDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
-                        Text(text = uiState.currentEvent!!.date.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
+                        // Text(text = uiState.currentEvent!!.date.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Icon(imageVector = Icons.Default.AccessTime, contentDescription = null)
-                        Text(text = uiState.currentEvent!!.date.toFormattedDateString("HH:mm"))
+                        //   Text(text = uiState.currentEvent!!.date.toFormattedDateString("HH:mm"))
                     }
                 }
                 Column(

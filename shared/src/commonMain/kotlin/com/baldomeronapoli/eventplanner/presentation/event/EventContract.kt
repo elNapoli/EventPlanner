@@ -6,8 +6,6 @@ import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
-import dev.gitlive.firebase.firestore.Timestamp
-import dev.gitlive.firebase.storage.File
 
 interface EventContract {
     data class UiState(
@@ -46,10 +44,12 @@ interface EventContract {
         data class SearchGeocode(val address: String) : UiIntent
         data class AddGameIntoEvent(val game: BoardGame) : UiIntent
         data class UpdateProperty(val nameProperty: String, val value: Any) : UiIntent
-        data class UpdateDateEvent(val value: Timestamp) : UiIntent
+
+        //  data class UpdateDateEvent(val value: String) : UiIntent
         data class UpdatePlace(val address: String) : UiIntent
         data class UpdateQuery(val query: String) : UiIntent
-        data class SetThumbnail(val file: File) : UiIntent
+
+        // data class SetThumbnail(val file: File) : UiIntent
         data class GetEventById(val eventId: String) : UiIntent
         data object CreateEvent : UiIntent
         data object LoadAllEventsByCurrentId : UiIntent

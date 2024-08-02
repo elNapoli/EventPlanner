@@ -3,7 +3,6 @@ package com.baldomeronapoli.eventplanner.domain.usecases
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import com.rickclephas.kmp.observableviewmodel.ViewModelScope
 import com.rickclephas.kmp.observableviewmodel.launch
-import dev.gitlive.firebase.FirebaseException
 import kotlinx.coroutines.flow.Flow
 
 
@@ -23,7 +22,7 @@ fun <T> ViewModelScope.useCaseRunner(
                 }
 
             }
-        } catch (e: FirebaseException) {
+        } catch (e: Throwable) {
             onError?.invoke(e)
         } finally {
             loadingUpdater?.invoke(false)

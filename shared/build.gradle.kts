@@ -54,7 +54,7 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.kotlin.reflect)
             implementation(libs.kmp.koin.android)
-            implementation("io.ktor:ktor-client-okhttp:2.3.0")
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
@@ -64,24 +64,21 @@ kotlin {
             api(libs.kmp.viewmodel)
             api(libs.kmp.koin.core)
             api(libs.kmp.kermit)
-            api(libs.firebase.auth)
-            api("dev.gitlive:firebase-firestore:1.13.0")
-            api("dev.gitlive:firebase-storage:1.13.0")
             implementation(libs.compass.geocoder)
             implementation(libs.compass.geocoder.mobile)
             implementation(libs.compass.geolocation)
             implementation(libs.compass.geolocation.mobile)
             implementation(libs.compass.autocomplete)
             implementation(libs.compass.autocomplete.mobile)
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0")
-            implementation("io.ktor:ktor-client-core:2.3.0")
-            implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
-            implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-            implementation("io.insert-koin:koin-core:3.3.0")
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.kmp.koin.core)
         }
         iosMain.dependencies {
-            implementation("io.ktor:ktor-client-darwin:2.3.0")
+            implementation(libs.ktor.client.darwin)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
