@@ -7,6 +7,7 @@ import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.repositories.EventRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.LoginWithGoogleUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
@@ -16,6 +17,13 @@ import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.mobile
+import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.appleNativeLogin
+import io.github.jan.supabase.compose.auth.googleNativeLogin
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.realtime.Realtime
+import io.github.jan.supabase.storage.Storage
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -61,6 +69,31 @@ object DependencyInjection {
     private fun appModule() = module {
         single { Geolocator.mobile() }
         single { SharePreferences() }
+        single {
+            createSupabaseClient(
+                supabaseUrl = "https://${MySecrets.PROJECT_SUPABASE_REF}.supabase.co",
+                supabaseKey = MySecrets.API_KEY_SUPABASE
+            ) {
+
+                //...
+
+                install(Storage) {
+                    // settings
+                }
+
+                install(Realtime) {
+                    // settings
+                }
+
+                install(Auth) {
+                }
+                install(ComposeAuth) {
+                    googleNativeLogin(serverClientId = MySecrets.GOOGLE_CLIENT_ID)
+                    appleNativeLogin()
+                }
+
+            }
+        }
     }
 
     private fun repositoryModule() = module {
@@ -79,7 +112,7 @@ object DependencyInjection {
                 }
             }
         }
-        single<AuthRepository> { AuthRepositoryImpl(get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<EventRepository> { EventRepositoryImpl(get()) }
     }
 
@@ -95,5 +128,6 @@ object DependencyInjection {
         single { SearchBoardGamesUseCase(get()) }
         single { GetEventsByAttendeeUseCase(get()) }
         single { GetEventByIdUseCase(get()) }
+        single { LoginWithGoogleUseCase(get()) }
     }
 }

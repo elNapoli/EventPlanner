@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.baldomeronapoli.eventplanner.android.views.MainScreen
@@ -28,7 +29,10 @@ class MainActivity : ComponentActivity() {
             }
         }
         setContent {
-            MainScreen(appState = rememberAppState())
+            MainScreen(
+                appState = rememberAppState(),
+                state = viewModel.uiState.collectAsStateWithLifecycle().value
+            )
         }
     }
 

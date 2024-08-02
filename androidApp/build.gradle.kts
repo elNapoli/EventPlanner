@@ -65,6 +65,14 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.8.8")
     implementation(libs.kmp.viewmodel)
-    
+
+
+    implementation("androidx.credentials:credentials:1.2.2")
+    implementation("com.google.android.libraries.identity.googleid:googleid:1.1.1")
+
+// optional - needed for credentials support from play services, for devices running
+// Android 13 and below.
+    implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+
 
 }

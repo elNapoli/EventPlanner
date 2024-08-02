@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +39,7 @@ import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertSticky
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.components.DividerWithText
+import com.baldomeronapoli.eventplanner.android.components.GoogleSignInButton
 import com.baldomeronapoli.eventplanner.android.components.LoadingWrapper
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
@@ -63,7 +63,6 @@ fun SignInScreen(
     goToSignUp: () -> Unit,
     goToHome: () -> Unit
 ) {
-
     CollectEffect(effect) {
         when (it) {
             Effect.GoToHome -> goToHome()
@@ -143,7 +142,8 @@ fun SignInScreen(
                         },
                         singleLine = true,
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        label = stringResource(id = R.string.password))
+                        label = stringResource(id = R.string.password)
+                    )
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)
@@ -187,8 +187,13 @@ fun SignInScreen(
                         ButtonSocialNetwork(rememberVectorPainter(Icons.Outlined.Facebook)) {
                             // onAction(UiIntent.LoginWithFacebook)
                         }
-                        ButtonSocialNetwork(painterResource(R.drawable.google)) {
-                            // onAction(UiIntent.LoginWithGoogle)
+                        GoogleSignInButton(
+                            text = stringResource(id = R.string.login_with_google),
+                            squareButton = true,
+                            hashedNonce = uiState.nonceHash(),
+                            googleClientId = uiState.googleClientId
+                        ) {
+                            onIntent(UiIntent.LoginWithGoogle(it))
                         }
                     }
                     Text(

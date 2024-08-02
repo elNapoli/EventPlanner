@@ -9,6 +9,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.AppNavigationHost
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationViewModel
 import com.baldomeronapoli.eventplanner.android.theme.MyTheme
+import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -16,7 +17,10 @@ val LocalNavigationViewModel =
     compositionLocalOf<NavigationViewModel> { error("No NavigationViewModel provided") }
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier, appState: AppState) {
+fun MainScreen(
+    modifier: Modifier = Modifier, appState: AppState,
+    state: AuthContract.UiState
+) {
     val navigationViewModel = koinViewModel<NavigationViewModel>()
     navigationViewModel.onEvent(
         NavigationEvent.OnSetContent(
@@ -28,6 +32,7 @@ fun MainScreen(modifier: Modifier = Modifier, appState: AppState) {
         MyTheme {
             AppNavigationHost(
                 appState = appState, // TODO: Analizar si es necesario usar appState
+                state = state,
                 navigationViewModel = navigationViewModel
             )
         }

@@ -7,6 +7,6 @@ expect class SharePreferences() {
     val settings: Settings
     fun getShownOnboarding(): Boolean
     fun setShownOnboarding()
-    fun setEmailCurrentUser(email: String?)
-    fun getEmailCurrentUser(): String?
+    fun setInitialRoute(email: String?)
+    fun getInitialRoute(): String
 }

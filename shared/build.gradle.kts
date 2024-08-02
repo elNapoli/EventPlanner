@@ -19,6 +19,7 @@ val algoliaApplicationId: String = localProperties.getProperty("ALGOLIA_APPLICAT
 
 val projectSupabaseRef: String = localProperties.getProperty("PROJECT_SUPABASE_REF", "")
 val apiKeySupabase: String = localProperties.getProperty("API_KEY_SUPABASE", "")
+val googleClientId: String = localProperties.getProperty("GOOGLE_CLIENT_ID", "")
 
 buildConfig {
     className = "MySecrets"
@@ -27,6 +28,7 @@ buildConfig {
     buildConfigField("ALGOLIA_APPLICATION_ID", algoliaApplicationId)
     buildConfigField("PROJECT_SUPABASE_REF", projectSupabaseRef)
     buildConfigField("API_KEY_SUPABASE", apiKeySupabase)
+    buildConfigField("GOOGLE_CLIENT_ID", googleClientId)
 }
 kotlin {
     androidTarget {
@@ -62,9 +64,9 @@ kotlin {
             implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
-            //   implementation(libs.kotlinx.coroutines.core)
+            // implementation(libs.kotlinx.coroutines.core)
             // implementation(libs.kotlin.reflect)
-            //   implementation(libs.kotlinx.serialization)
+
             implementation(libs.kmp.settings)
             implementation(libs.kmp.viewmodel)
             implementation(libs.kmp.kermit)
@@ -76,15 +78,20 @@ kotlin {
             implementation(libs.compass.autocomplete.mobile)
 
             implementation(libs.kotlinx.datetime)
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-            implementation(libs.kotlinx.serialization)
+            // implementation(libs.ktor.client.core)
+            //implementation(libs.ktor.client.content.negotiation)
+            //implementation(libs.ktor.serialization.kotlinx.json)
+            //implementation(libs.kotlinx.serialization)
 
             implementation(libs.kmp.koin.core)
 
 
-            //implementation("io.github.jan-tennert.supabase:compose-auth:2.5.4")
+            implementation("com.squareup.okio:okio:3.9.0")
+            implementation(project.dependencies.platform("io.github.jan-tennert.supabase:bom:2.5.4"))
+            implementation("io.github.jan-tennert.supabase:gotrue-kt")
+            implementation("io.github.jan-tennert.supabase:realtime-kt")
+            implementation("io.github.jan-tennert.supabase:storage-kt")
+            implementation("io.github.jan-tennert.supabase:compose-auth")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

@@ -18,7 +18,7 @@ actual fun platformModule() = module {
     factory { OnBoardViewModel(get()) }
 
     //auth
-    factory { AuthViewModel(get(), get(), get()) }
+    factory { AuthViewModel(get(), get(), get(), get()) }
     single { CreateUseWithEmailAndPasswordUseCase(get()) }
     single { SignInWithEmailAndPasswordUseCase(get()) }
     single<AuthRepository> { AuthRepositoryImpl(get()) }

@@ -47,7 +47,15 @@ fun NavGraphBuilder.authGraph(
                 uiState = uiState.value,
                 effect = viewmodel.effect,
                 onIntent = viewmodel::sendIntent,
-                goBack = { onNavigationEvent(NavigationEvent.OnBack) }
+                goToHome = {
+                    onNavigationEvent(
+                        NavigationEvent.OnNavigateToScreen(
+                            route = MainRoute.Home,
+                            popUpToRoute = MainRoute.Auth.path,
+                            inclusive = true
+                        )
+                    )
+                }
             )
         }
 

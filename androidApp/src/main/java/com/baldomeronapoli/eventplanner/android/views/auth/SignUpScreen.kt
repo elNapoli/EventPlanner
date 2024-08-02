@@ -30,6 +30,7 @@ import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.components.DividerWithText
+import com.baldomeronapoli.eventplanner.android.components.GoogleSignInButton
 import com.baldomeronapoli.eventplanner.android.components.LoadingWrapper
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedButton
@@ -44,6 +45,7 @@ import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun SignUpScreen(
@@ -51,8 +53,9 @@ fun SignUpScreen(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
-    goBack: () -> Unit
+    goToHome: () -> Unit
 ) {
+
     EmptyScaffold {
         CollectEffect(effect) {
             when (it) {
@@ -66,7 +69,7 @@ fun SignUpScreen(
         if (uiState.feedbackUI != null) {
             AlertDialog(
                 onConfirmation = {
-                    if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) onIntent(UiIntent.ResetFeedbackUI) else goBack()
+                    if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) onIntent(UiIntent.ResetFeedbackUI) else goToHome()
                 },
                 dialogTitle = uiState.feedbackUI!!.title,
                 dialogText = uiState.feedbackUI!!.message,
@@ -74,7 +77,7 @@ fun SignUpScreen(
                 confirmText = if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) stringResource(
                     id = R.string.cancel
                 ) else stringResource(
-                    id = R.string.login_button
+                    id = R.string.go_to_home
                 ),
             )
         }
@@ -113,11 +116,12 @@ fun SignUpScreen(
                         },
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    NOutlinedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.login_with_google)
+                    GoogleSignInButton(
+                        text = stringResource(id = R.string.login_with_google),
+                        hashedNonce = uiState.nonceHash(),
+                        googleClientId = uiState.googleClientId
                     ) {
-
+                        onIntent(UiIntent.LoginWithGoogle(it))
                     }
                     NOutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -205,7 +209,7 @@ fun SignUpScreen(
                     Text(
                         modifier = Modifier
                             .padding(top = 45.dp, bottom = 32.dp)
-                            .clickable { goBack() },
+                            .clickable { goToHome() },
                         text = stringResource(id = R.string.i_am_already_account),
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -224,7 +228,7 @@ fun PreviewSignUpScreenLight(modifier: Modifier = Modifier) {
             uiState = UiState(),
             effect = effect,
             onIntent = { },
-            goBack = {}
+            goToHome = {}
         )
     }
 }

@@ -37,12 +37,6 @@ fun HomeScreen(
 ) {
     Column {
         Text(
-            text = "Hola Baldomero",
-            style = MaterialTheme.typography.headlineSmall,
-            color = GrayTitle,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
             text = stringResource(id = R.string.find_an_event_around_you),
             style = MaterialTheme.typography.titleMedium,
             color = Gray60,

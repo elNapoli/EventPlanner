@@ -11,6 +11,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.myevents.myEventGraph
 import com.baldomeronapoli.eventplanner.android.navigation.onboard.onboardGraph
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.navigation.search.searchGraph
+import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import org.koin.compose.koinInject
 
@@ -18,15 +19,14 @@ import org.koin.compose.koinInject
 fun AppNavigationHost(
     modifier: Modifier = Modifier,
     appState: AppState,
+    state: AuthContract.UiState,
     navigationViewModel: NavigationViewModel,
 ) {
     val sharedPrefs = koinInject<SharePreferences>()
     val startDestination = if (sharedPrefs.getShownOnboarding()) {
         MainRoute.Onboard.path
-    } else if (sharedPrefs.getEmailCurrentUser().isNullOrEmpty()) {
-        MainRoute.Auth.path
     } else {
-        MainRoute.Home.path
+        sharedPrefs.getInitialRoute()
     }
     val navController = appState.navController
     NavHost(
@@ -34,7 +34,7 @@ fun AppNavigationHost(
         navController = navController, startDestination = startDestination
     ) {
 
-        homeGraph(onNavigationEvent = navigationViewModel::onEvent)
+        homeGraph(onNavigationEvent = navigationViewModel::onEvent, state = state)
         onboardGraph(onNavigationEvent = navigationViewModel::onEvent)
         authGraph(onNavigationEvent = navigationViewModel::onEvent)
         searchGraph(onNavigationEvent = navigationViewModel::onEvent)
