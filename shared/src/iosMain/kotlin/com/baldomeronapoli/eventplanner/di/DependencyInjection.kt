@@ -7,15 +7,12 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndP
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.auth
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.dsl.module
 
 
 actual fun platformModule() = module {
-    single { Firebase.auth }
 
     // onboard
     factory { OnBoardViewModel(get()) }
@@ -24,7 +21,7 @@ actual fun platformModule() = module {
     factory { AuthViewModel(get(), get(), get()) }
     single { CreateUseWithEmailAndPasswordUseCase(get()) }
     single { SignInWithEmailAndPasswordUseCase(get()) }
-    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get()) }
 }
 
 @Suppress("unused")
