@@ -74,6 +74,5 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 nativecoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "nativecoroutines" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 google-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-gms-googleService = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 buildkonfig = { id = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigVersion" }
 

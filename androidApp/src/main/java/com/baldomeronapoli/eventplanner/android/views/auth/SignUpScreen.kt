@@ -26,7 +26,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
@@ -58,7 +57,7 @@ fun SignUpScreen(
         CollectEffect(effect) {
             when (it) {
                 Effect.GoToHome -> {
-                    Logger.d("No se implementa en esta vista....")
+                    // Logger.d("No se implementa en esta vista....")
                 }
 
                 Effect.None -> TODO()

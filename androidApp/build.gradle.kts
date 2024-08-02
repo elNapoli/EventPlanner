@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.gms.googleService)
 }
 
 android {
@@ -62,12 +61,10 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.4.1")
     // Otras dependencias
 
-    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.android.gms:play-services-location:21.0.0")
-
     implementation("io.coil-kt:coil-compose:2.7.0")
 
     implementation("com.google.code.gson:gson:2.8.8")
+    implementation(libs.kmp.viewmodel)
+    
 
 }
