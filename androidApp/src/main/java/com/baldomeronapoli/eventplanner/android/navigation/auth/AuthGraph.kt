@@ -55,7 +55,8 @@ fun NavGraphBuilder.authGraph(
                             inclusive = true
                         )
                     )
-                }
+                },
+                goBack = { onNavigationEvent(NavigationEvent.OnBack) }
             )
         }
 

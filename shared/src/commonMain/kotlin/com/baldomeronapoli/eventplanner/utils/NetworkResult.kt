@@ -1,19 +1,37 @@
 package com.baldomeronapoli.eventplanner.utils
 
-sealed class NetworkResult<out T>(val status: ApiStatus, open val data: T?, val message: String?) {
+import co.touchlab.kermit.Logger
+import io.github.jan.supabase.exceptions.RestException
 
-    data class Success<out T>(override val data: T) :
-        NetworkResult<T>(status = ApiStatus.SUCCESS, data = data, message = null)
+sealed class NetworkResult<out T>(
+    open val data: T? = null,
+    open val message: String?,
+    open val error: MyError? = null
+) {
 
-    data class Error<out T>(override val data: T?, val exception: Throwable) :
-        NetworkResult<T>(status = ApiStatus.ERROR, data = data, message = exception.message)
+    data class Success<out T>(
+        override val data: T,
+        override val message: String = "Petición finalizada con éxito"
+    ) :
+        NetworkResult<T>(data = data, message = null)
+
+    data class Error<out T>(override val error: MyError) :
+        NetworkResult<T>(error = error, message = error.message)
 
     data class Loading<out T>(val isLoading: Boolean) :
-        NetworkResult<T>(status = ApiStatus.LOADING, data = null, message = null)
+        NetworkResult<T>(data = null, message = null, error = null)
 }
 
-enum class ApiStatus {
-    SUCCESS,
-    ERROR,
-    LOADING
+data class MyError(val message: String)
+
+
+fun Throwable.toMyError(): MyError {
+    Logger.e("explot algo, solucionar o moriremos $this")
+    val errorMessage = when (this) {
+        is RestException -> this.description
+            ?: "Error desconocido AuthWeakPasswordException"
+
+        else -> "Error desconocido: $this ${this.message}"
+    }
+    return MyError(message = errorMessage)
 }

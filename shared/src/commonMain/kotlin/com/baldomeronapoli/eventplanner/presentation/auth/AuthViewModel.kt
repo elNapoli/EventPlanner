@@ -61,7 +61,7 @@ open class AuthViewModel(
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -93,7 +93,7 @@ open class AuthViewModel(
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -131,7 +131,7 @@ open class AuthViewModel(
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -162,7 +162,7 @@ open class AuthViewModel(
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )

@@ -16,7 +16,7 @@ interface AuthRepository {
     suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<NetworkResult<String?>>
+    ): Flow<NetworkResult<User?>>
 
     @NativeCoroutines
     suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<User?>>

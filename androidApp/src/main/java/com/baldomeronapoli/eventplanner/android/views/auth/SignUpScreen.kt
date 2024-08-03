@@ -53,7 +53,8 @@ fun SignUpScreen(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
-    goToHome: () -> Unit
+    goToHome: () -> Unit,
+    goBack: () -> Unit,
 ) {
 
     EmptyScaffold {
@@ -209,7 +210,7 @@ fun SignUpScreen(
                     Text(
                         modifier = Modifier
                             .padding(top = 45.dp, bottom = 32.dp)
-                            .clickable { goToHome() },
+                            .clickable { goBack() },
                         text = stringResource(id = R.string.i_am_already_account),
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -228,7 +229,8 @@ fun PreviewSignUpScreenLight(modifier: Modifier = Modifier) {
             uiState = UiState(),
             effect = effect,
             onIntent = { },
-            goToHome = {}
+            goToHome = {},
+            goBack = {}
         )
     }
 }
