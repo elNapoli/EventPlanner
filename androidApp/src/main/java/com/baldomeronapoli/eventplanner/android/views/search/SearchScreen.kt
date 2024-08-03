@@ -22,9 +22,10 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 @Composable
-fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: (Event) -> Unit) {
+fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: (EventUI) -> Unit) {
     Column {
         NOutlinedTextField(
             leadingIcon = {

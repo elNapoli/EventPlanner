@@ -1,4 +1,4 @@
-package com.baldomeronapoli.eventplanner.domain.models
+package com.baldomeronapoli.eventplanner.presentation.models
 
 import kotlinx.serialization.Serializable
 

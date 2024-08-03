@@ -1,19 +1,18 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
 import co.touchlab.kermit.Logger
-import com.baldomeronapoli.eventplanner.domain.models.Address
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
-import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
+import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.models.AddressUI
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 import com.rickclephas.kmp.observableviewmodel.launch
 import dev.jordond.compass.Place
 import dev.jordond.compass.autocomplete.Autocomplete
@@ -22,7 +21,6 @@ import dev.jordond.compass.geolocation.GeolocatorResult
 
 class EventViewModel(
     private val createEventUseCase: CreateEventUseCase,
-    private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
     private val geolocator: Geolocator,
     private val getEventsByAttendeeUseCase: GetEventsByAttendeeUseCase,
     private val getEventByIdUseCase: GetEventByIdUseCase,
@@ -46,10 +44,6 @@ class EventViewModel(
             is UiIntent.UpdateQuery -> {
                 updateUiState {
                     copy(queryGames = uiIntent.query)
-                }
-                if (uiIntent.query.length >= 3) {
-                    searchBoardGamesByQuery(uiIntent.query)
-
                 }
             }
 
@@ -75,25 +69,14 @@ class EventViewModel(
         },
         onError = {},
         onSuccess = {
-            updateUiState { copy(currentEvent = it) }
+            updateUiState { copy(currentEvent = it?.mapToUI()) }
         },
         useCase = {
             getEventByIdUseCase(eventId = eventId)
         }
     )
 
-    private fun searchBoardGamesByQuery(query: String) = scope.useCaseRunner(
-        loadingUpdater = {},
-        onError = {},
-        onSuccess = {
-            updateUiState { copy(boardGameBGG = it) }
-        },
-        useCase = {
-            searchBoardGamesUseCase(query)
-        }
-    )
-
-    private fun saveEvent() = scope.useCaseRunner(
+    private fun saveEvent() = scope.useCaseRunner<Event>(
         loadingUpdater = {
             updateUiState { copy(isLoading = it) }
         },
@@ -122,11 +105,7 @@ class EventViewModel(
             }
         },
         useCase = {
-            createEventUseCase(
-                event = uiState.value.event,
-                games = uiState.value.event.boardgames,
-                address = uiState.value.event.place
-            )
+            TODO()
         }
     )
 
@@ -135,6 +114,7 @@ class EventViewModel(
             updateUiState { copy(isLoading = it) }
         },
         onError = {
+            Logger.e(it.message.toString())
             updateUiState {
                 handleFeedbackUI(
                     feedbackUI = FeedbackUI(
@@ -148,13 +128,6 @@ class EventViewModel(
         },
         onSuccess = { a ->
 
-            updateUiState {
-                copy(
-                    ownEvents = a.first,
-                    nextEvents = a.second,
-                    expiredEvents = a.third,
-                )
-            }
 
         },
         useCase = {
@@ -177,15 +150,11 @@ class EventViewModel(
                 updateUiState {
                     copy(
                         event = event.copy(
-                            place = event.place.copy(
-                                coordinates = NCoordinates(
-                                    place.coordinates.latitude,
-                                    place.coordinates.longitude
-                                ),
+                            address = event.address.copy(
                                 name = place.name,
-                                street = place.street,
+                                street = place.street ?: "",
                                 isoCountryCode = place.isoCountryCode,
-                                country = place.country,
+                                country = place.country ?: "",
                                 postalCode = place.postalCode,
                                 administrativeArea = place.administrativeArea,
                                 subAdministrativeArea = place.subAdministrativeArea,
@@ -193,6 +162,9 @@ class EventViewModel(
                                 subLocality = place.subLocality,
                                 thoroughfare = place.thoroughfare,
                                 subThoroughfare = place.subThoroughfare,
+                                latitude = place.coordinates.latitude,
+                                longitude = place.coordinates.longitude
+
                             )
                         ),
                     )
@@ -201,7 +173,7 @@ class EventViewModel(
                 updateUiState {
                     copy(
                         event = event.copy(
-                            place = Address()
+                            address = AddressUI()
                         ),
                     )
                 }
@@ -214,13 +186,12 @@ class EventViewModel(
             when (val result: GeolocatorResult = geolocator.current()) {
                 is GeolocatorResult.Success -> {
                     val location = result.data
-                    val nCoordinates =
-                        NCoordinates(location.coordinates.latitude, location.coordinates.longitude)
                     updateUiState {
                         copy(
                             event = event.copy(
-                                place = event.place.copy(
-                                    coordinates = nCoordinates
+                                address = event.address.copy(
+                                    latitude = location.coordinates.latitude,
+                                    longitude = location.coordinates.longitude,
                                 )
                             ),
                         )

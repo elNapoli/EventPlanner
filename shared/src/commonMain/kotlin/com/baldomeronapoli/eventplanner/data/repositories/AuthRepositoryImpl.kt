@@ -1,6 +1,8 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.map
 import com.baldomeronapoli.eventplanner.data.utils.InitialRoute
+import com.baldomeronapoli.eventplanner.domain.models.User
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
@@ -9,7 +11,6 @@ import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.gotrue.auth
 import io.github.jan.supabase.gotrue.providers.Google
 import io.github.jan.supabase.gotrue.providers.builtin.IDToken
-import io.github.jan.supabase.gotrue.user.UserInfo
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -22,7 +23,7 @@ class AuthRepositoryImpl(
     override suspend fun createUseWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<NetworkResult<UserInfo?>> = flow {
+    ): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
 
@@ -45,7 +46,7 @@ class AuthRepositoryImpl(
         }
     }
 
-    override suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<UserInfo?>> = flow {
+    override suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
             supabaseClient.auth.awaitInitialization()
@@ -54,7 +55,7 @@ class AuthRepositoryImpl(
             if (user != null) {
                 preferences.setInitialRoute(InitialRoute.HOME)
             }
-            emit(NetworkResult.Success(user))
+            emit(NetworkResult.Success(user.map()))
         } catch (e: Throwable) {
             emit(NetworkResult.Error(exception = e, data = null))
         }
@@ -64,7 +65,7 @@ class AuthRepositoryImpl(
     override suspend fun loginWithGoogle(
         token: String,
         rawNonce: String
-    ): Flow<NetworkResult<UserInfo?>> = flow {
+    ): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
             supabaseClient.auth.signInWith(IDToken) {
@@ -72,7 +73,9 @@ class AuthRepositoryImpl(
                 provider = Google
                 nonce = rawNonce
             }
-            emit(NetworkResult.Success(supabaseClient.auth.currentUserOrNull()))
+            val user = supabaseClient.auth.currentUserOrNull()
+
+            emit(NetworkResult.Success(user.map()))
 
         } catch (e: Throwable) {
             emit(NetworkResult.Error(exception = e, data = null))

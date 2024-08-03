@@ -56,10 +56,10 @@ import com.baldomeronapoli.eventplanner.android.components.richText.NRichTextEdi
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -270,15 +270,15 @@ fun CreateEventContent(
         item {
             AddressMap(
                 address = uiState.queryAddress,
-                lat = uiState.event.place.coordinates.latitude,
-                lng = uiState.event.place.coordinates.longitude
+                lat = uiState.event.address.latitude,
+                lng = uiState.event.address.longitude
             ) { onIntent(UiIntent.UpdatePlace(it)) }
         }
 
         item {
             NButton(
                 text = stringResource(id = R.string.create_event),
-                enabled = uiState.event.isValid()
+                enabled = true
             ) {
                 onIntent(UiIntent.CreateEvent)
             }

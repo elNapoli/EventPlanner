@@ -28,10 +28,10 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 @Composable
-fun EventCardWide(modifier: Modifier = Modifier, event: Event, onClick: (Event) -> Unit) {
+fun EventCardWide(modifier: Modifier = Modifier, event: EventUI, onClick: (EventUI) -> Unit) {
     Column(
         modifier = modifier
             .clickable { onClick(event) }
@@ -52,7 +52,7 @@ fun EventCardWide(modifier: Modifier = Modifier, event: Event, onClick: (Event) 
                     .size(60.dp),
 
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.thumbnailUrl)
+                    .data(event.thumbnail)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.placeholder),
@@ -84,7 +84,7 @@ fun EventCardWide(modifier: Modifier = Modifier, event: Event, onClick: (Event) 
             OrganizerAvatar(
                 modifier = Modifier.padding(start = 76.dp),
                 size = 20.dp,
-                name = event.host.userName
+                name = event.host.email
             )
 
             Text(

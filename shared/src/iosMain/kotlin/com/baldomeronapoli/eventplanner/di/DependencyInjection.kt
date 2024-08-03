@@ -21,7 +21,7 @@ actual fun platformModule() = module {
     factory { AuthViewModel(get(), get(), get(), get()) }
     single { CreateUseWithEmailAndPasswordUseCase(get()) }
     single { SignInWithEmailAndPasswordUseCase(get()) }
-    single<AuthRepository> { AuthRepositoryImpl(get()) }
+    single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
 }
 
 @Suppress("unused")

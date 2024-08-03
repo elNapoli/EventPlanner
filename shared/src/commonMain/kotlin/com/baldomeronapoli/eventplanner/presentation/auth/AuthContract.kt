@@ -1,12 +1,12 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
-import com.baldomeronapoli.eventplanner.domain.models.User
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
 import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
 import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.presentation.models.UserUI
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.ValidateState
 import com.baldomeronapoli.eventplanner.utils.randomUUID
@@ -18,7 +18,7 @@ interface AuthContract {
         var passwordVisible: Boolean,
         @property:EmailValidation
         var email: String,
-        var user: User?,
+        var user: UserUI?,
         var password: String,
         var repeatPassword: String,
         var googleClientId: String,
@@ -56,7 +56,7 @@ interface AuthContract {
         fun togglePasswordVisible(): UiState = copy(passwordVisible = !passwordVisible)
 
         fun handleCreateUseWithEmailAndPassword(
-            user: User?,
+            user: UserUI?,
             feedbackUI: FeedbackUI?
         ): UiState =
             copy(user = user, feedbackUI = feedbackUI)

@@ -1,8 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUI
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
-import com.baldomeronapoli.eventplanner.domain.models.toUserUI
+import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.LoginWithGoogleUseCase
@@ -12,6 +10,8 @@ import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 
 open class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,
@@ -56,6 +56,7 @@ open class AuthViewModel(
     private fun loginWithGoogle(token: String) = scope.useCaseRunner(
         loadingUpdater = { value -> updateUiState { loading(value) } },
         onError = {
+            Logger.e(it.message.toString())
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(
@@ -70,7 +71,7 @@ open class AuthViewModel(
         onSuccess = { data ->
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
-                    user = data?.toUserUI(), feedbackUI = FeedbackUI(
+                    user = data?.mapToUI(), feedbackUI = FeedbackUI(
                         title = "Cuenta creada",
                         message = "Tu cuenta ha sido creada exitosamente, el usuario es ${data?.email}",
                         type = FeedbackUIType.SUCCESS,
@@ -102,7 +103,7 @@ open class AuthViewModel(
         onSuccess = { data ->
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
-                    user = data?.toUserUI(), feedbackUI = FeedbackUI(
+                    user = data?.mapToUI(), feedbackUI = FeedbackUI(
                         title = "Cuenta creada",
                         message = "Tu cuenta ha sido creada exitosamente, el usuario es ${data}",
                         type = FeedbackUIType.SUCCESS,
@@ -174,7 +175,7 @@ open class AuthViewModel(
 
                 updateUiState {
                     copy(
-                        user = user.toUserUI()
+                        user = user.mapToUI()
                     )
                 }
                 sendEffect(Effect.GoToHome)

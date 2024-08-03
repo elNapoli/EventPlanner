@@ -37,10 +37,10 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray40
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Orange
 import com.baldomeronapoli.eventplanner.android.theme.White
-import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -52,7 +52,7 @@ fun MyEventsScreen(
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
     goToCreateEvent: () -> Unit,
-    goToEventDetail: (Event) -> Unit
+    goToEventDetail: (EventUI) -> Unit
 
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }

@@ -22,9 +22,6 @@ interface EventRepository {
     ): Flow<NetworkResult<Event?>>
 
     @NativeCoroutines
-    suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>>
-
-    @NativeCoroutines
-    suspend fun getEventsByAttendee(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>>
+    suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event?>>>
 
 }

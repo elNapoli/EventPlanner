@@ -92,6 +92,7 @@ kotlin {
             implementation("io.github.jan-tennert.supabase:realtime-kt")
             implementation("io.github.jan-tennert.supabase:storage-kt")
             implementation("io.github.jan-tennert.supabase:compose-auth")
+            implementation("io.github.jan-tennert.supabase:apollo-graphql")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

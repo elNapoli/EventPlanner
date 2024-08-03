@@ -1,41 +1,86 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
-import com.baldomeronapoli.eventplanner.data.firebaseModels.FBoardGame
-import com.baldomeronapoli.eventplanner.mappers.Mappable
-import com.baldomeronapoli.eventplanner.utils.randomUUID
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.BoardGameDTO
+import com.baldomeronapoli.eventplanner.mappers.BiMappable
+import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class BoardGame(
-    override val id: String = randomUUID,
-    val boardgamepublisher: String?,
-    var description: String?,
-    var image: String?,
-    var maxplayers: String?,
-    var maxplaytime: String?,
-    var minplayers: String?,
-    val categorias: List<String>,
-    var minplaytime: String?,
-    var name: String?,
-    var playingtime: String?,
-    var thumbnail: String?,
-    var yearpublished: String?,
-) : BaseModel, Mappable<FBoardGame> {
-    override fun map(): FBoardGame =
-        FBoardGame(
-            id = id.toInt(),
-            boardgamepublisher = boardgamepublisher,
-            description = description,
-            image = image,
-            maxplayers = maxplayers,
-            maxplaytime = maxplaytime,
-            minplayers = minplayers,
-            categorias = categorias,
-            minplaytime = minplaytime,
-            name = name,
-            playingtime = playingtime,
-            thumbnail = thumbnail,
-            yearpublished = yearpublished
-        )
+    @SerialName("id")
+    val id: Int = 0,
 
+    @SerialName("board_game_publisher")
+    val boardGamePublisher: String? = null,
+
+    @SerialName("description")
+    var description: String? = null,
+
+    @SerialName("image")
+    var image: String? = null,
+
+    @SerialName("max_players")
+    var maxPlayers: String? = null,
+
+    @SerialName("max_playtime")
+    var maxPlaytime: String? = null,
+
+    @SerialName("min_players")
+    var minPlayers: String? = null,
+
+    @SerialName("categories")
+    val categories: List<String> = emptyList(),
+
+    @SerialName("min_playtime")
+    var minPlaytime: String? = null,
+
+    @SerialName("name")
+    var name: String? = null,
+
+    @SerialName("playing_time")
+    var playingTime: String? = null,
+
+    @SerialName("thumbnail")
+    var thumbnail: String? = null,
+
+    @SerialName("year_published")
+    var yearPublished: String? = null
+) : BiMappable<BoardGameDTO, BoardGameUI> {
+
+    override fun mapToDto(): BoardGameDTO {
+        return BoardGameDTO(
+            id = this.id,
+            boardGamePublisher = this.boardGamePublisher,
+            description = this.description,
+            image = this.image,
+            maxPlayers = this.maxPlayers,
+            maxPlaytime = this.maxPlaytime,
+            minPlayers = this.minPlayers,
+            categories = this.categories,
+            minPlaytime = this.minPlaytime,
+            name = this.name,
+            playingTime = this.playingTime,
+            thumbnail = this.thumbnail,
+            yearPublished = this.yearPublished
+        )
+    }
+
+    override fun mapToUI(): BoardGameUI {
+        return BoardGameUI(
+            id = this.id,
+            boardGamePublisher = this.boardGamePublisher,
+            description = this.description,
+            image = this.image,
+            maxPlayers = this.maxPlayers,
+            maxPlaytime = this.maxPlaytime,
+            minPlayers = this.minPlayers,
+            categories = this.categories,
+            minPlaytime = this.minPlaytime,
+            name = this.name,
+            playingTime = this.playingTime,
+            thumbnail = this.thumbnail,
+            yearPublished = this.yearPublished
+        )
+    }
 }

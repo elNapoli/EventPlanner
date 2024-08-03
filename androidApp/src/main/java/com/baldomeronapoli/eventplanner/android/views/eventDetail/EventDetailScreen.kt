@@ -79,7 +79,7 @@ fun EventDetailScreen(
                         .clip(MaterialTheme.shapes.small),
 
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(uiState.currentEvent!!.thumbnailUrl)
+                        .data(uiState.currentEvent!!.thumbnail)
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.placeholder),
@@ -164,7 +164,7 @@ fun EventDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        OrganizerAvatar(name = uiState.currentEvent!!.host.userName)
+                        OrganizerAvatar(name = uiState.currentEvent!!.host.email)
                         Text(
                             text = stringResource(id = R.string.chat),
                             color = Blue,
@@ -189,10 +189,10 @@ fun EventDetailScreen(
 
 
                     AddressMap(
-                        address = uiState.currentEvent!!.place.street!!,
+                        address = uiState.currentEvent!!.address.street,
                         previewMode = true,
-                        lat = uiState.currentEvent!!.place.coordinates.latitude,
-                        lng = uiState.currentEvent!!.place.coordinates.longitude
+                        lat = uiState.currentEvent!!.address.latitude,
+                        lng = uiState.currentEvent!!.address.longitude
                     ) { onIntent(UiIntent.UpdatePlace(it)) }
                     Column(
                         modifier = Modifier.fillMaxWidth(),

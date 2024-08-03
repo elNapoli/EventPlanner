@@ -6,6 +6,6 @@ sealed class EventDetailRoute(override val path: String, override val title: Str
     Route(path, title) {
     data object Index : EventDetailRoute("event-detail-route", "Iniciar sesion") {
         fun createPath() = "event-detail-route/{eventId}"
-        fun detail(eventId: String) = "event-detail-route/$eventId"
+        fun detail(eventId: Int) = "event-detail-route/$eventId"
     }
 }

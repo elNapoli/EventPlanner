@@ -1,5 +1,7 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
+import co.touchlab.kermit.Logger
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
 import com.baldomeronapoli.eventplanner.domain.models.Address
 import com.baldomeronapoli.eventplanner.domain.models.BoardGame
@@ -11,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 
 class EventRepositoryImpl(
     private val algoliaService: AlgoliaService,
+    private val eventQueries: EventQueries
 ) : EventRepository {
 
     override suspend fun createEvent(
@@ -25,25 +28,14 @@ class EventRepositoryImpl(
     override suspend fun getEventById(eventId: String): Flow<NetworkResult<Event?>> = flow {
         emit(NetworkResult.Loading(true))
 
+
     }
 
-    override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>> =
+    override suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event?>>> =
         flow {
             emit(NetworkResult.Loading(true))
-            try {
-                val response = algoliaService.searchBoardGames(query)
-                emit(
-                    NetworkResult.Success(
-                        response.data?.hits?.map { it.map() }
-                    )
-                )
-            } catch (e: Throwable) {
-                emit(NetworkResult.Error(exception = e, data = emptyList()))
-            }
-        }
+            val events = eventQueries.getEventsByAttendee(1)
 
-    override suspend fun getEventsByAttendee(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
-        flow {
-            emit(NetworkResult.Loading(true))
+            Logger.e(events.toString())
         }
 }

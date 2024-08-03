@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.di
 
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
@@ -12,7 +13,6 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndP
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.jordond.compass.geolocation.Geolocator
@@ -22,6 +22,7 @@ import io.github.jan.supabase.compose.auth.appleNativeLogin
 import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.postgrest.Postgrest
 import io.github.jan.supabase.realtime.Realtime
 import io.github.jan.supabase.storage.Storage
 import io.ktor.client.HttpClient
@@ -81,6 +82,10 @@ object DependencyInjection {
                     // settings
                 }
 
+                install(Postgrest) {
+
+                }
+
                 install(Realtime) {
                     // settings
                 }
@@ -93,6 +98,9 @@ object DependencyInjection {
                 }
 
             }
+        }
+        single {
+            EventQueries(get())
         }
     }
 
@@ -113,7 +121,7 @@ object DependencyInjection {
             }
         }
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<EventRepository> { EventRepositoryImpl(get()) }
+        single<EventRepository> { EventRepositoryImpl(get(), get()) }
     }
 
     private fun managersModuleO() = module {
@@ -125,7 +133,6 @@ object DependencyInjection {
         single { SignInWithEmailAndPasswordUseCase(get()) }
         single { CheckIsLoggedUserUseCase(get()) }
         single { CreateEventUseCase(get()) }
-        single { SearchBoardGamesUseCase(get()) }
         single { GetEventsByAttendeeUseCase(get()) }
         single { GetEventByIdUseCase(get()) }
         single { LoginWithGoogleUseCase(get()) }
