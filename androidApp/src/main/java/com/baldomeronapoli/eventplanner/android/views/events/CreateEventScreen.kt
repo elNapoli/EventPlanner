@@ -56,10 +56,12 @@ import com.baldomeronapoli.eventplanner.android.components.richText.NRichTextEdi
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
+import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
+import com.baldomeronapoli.eventplanner.utils.TimeConstant
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -174,7 +176,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = "d",
+                value = uiState.event.startDate.toFormattedDateString(),
                 label = stringResource(id = R.string.date),
                 maxLines = 1,
                 onValueChange = { },
@@ -190,7 +192,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = "d",
+                value = uiState.event.startDate.toFormattedDateString(TimeConstant.TIME_FORMAT_24_HOUR),
                 label = stringResource(id = R.string.hour),
                 maxLines = 1,
                 onValueChange = { },
@@ -204,23 +206,22 @@ fun CreateEventContent(
         }
 
         item {
-            Text("Selected DateTime:")
             MyDatePickerDialog(
                 show = showDatePickerDialog,
-                //value =" uiState.event.date",
+                value = uiState.event.startDate,
                 onDismiss = { showDatePickerDialog = false },
                 onDateSelected = {
-                    // onIntent(UiIntent.UpdateDateEvent(it))
+                    onIntent(UiIntent.UpdateStartDateEvent(it))
                 })
         }
 
         item {
             MyTimePickerDialog(
                 show = showTimePickerDialog,
-                //  value = uiState.event.date,
+                value = uiState.event.startDate,
                 onDismiss = { showTimePickerDialog = false },
                 onTimeSelected = {
-                    //   onIntent(UiIntent.UpdateDateEvent(it))
+                    onIntent(UiIntent.UpdateStartDateEvent(it))
                 })
         }
 

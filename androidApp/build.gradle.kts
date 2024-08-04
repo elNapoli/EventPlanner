@@ -73,6 +73,7 @@ dependencies {
 // optional - needed for credentials support from play services, for devices running
 // Android 13 and below.
     implementation("androidx.credentials:credentials-play-services-auth:1.2.2")
+    implementation(libs.kotlinx.datetime)
 
 
 }

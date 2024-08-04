@@ -2,8 +2,17 @@ package com.baldomeronapoli.eventplanner.data.postgresql.dto
 
 import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.mappers.Mappable
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+
+
+@Serializable
+data class EventWrapper(
+    @SerialName("new_event")
+    val event: EventDTO
+)
+
 
 @Serializable
 data class EventDTO(
@@ -12,9 +21,9 @@ data class EventDTO(
     @SerialName("thumbnail")
     var thumbnail: String,
     @SerialName("start_date")
-    var startDate: String,
+    var startDate: Instant,
     @SerialName("end_date")
-    var endDate: String,
+    var endDate: Instant,
     @SerialName("title")
     var title: String,
     @SerialName("description")
@@ -36,7 +45,7 @@ data class EventDTO(
     @SerialName("event_boardgames")
     var boardgames: List<EventBoardGameDTO>
 ) : Mappable<Event> {
-    override fun map(): Event = Event(
+    override fun toInstance(): Event = Event(
         id = id,
         thumbnail = thumbnail,
         startDate = startDate,
@@ -46,9 +55,9 @@ data class EventDTO(
         slots = slots,
         isPrivate = isPrivate,
         price = price,
-        host = host.map(),
-        attendees = attendees.map { it.map() },
-        address = address.map(),
-        boardgames = boardgames.map { it.map() }
+        host = host.toInstance(),
+        attendees = attendees.map { it.toInstance() },
+        address = address.toInstance(),
+        boardgames = boardgames.map { it.toInstance() }
     )
 }

@@ -12,5 +12,5 @@ data class EventAttendeeDTO(
     @SerialName("users")
     val user: UserDTO
 ) : Mappable<User> {
-    override fun map(): User = user.map()
+    override fun toInstance(): User = user.toInstance()
 }

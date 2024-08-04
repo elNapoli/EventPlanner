@@ -1,10 +1,10 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
 import co.touchlab.kermit.Logger
-import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
@@ -22,6 +22,7 @@ import dev.jordond.compass.geolocation.GeolocatorResult
 class EventViewModel(
     private val createEventUseCase: CreateEventUseCase,
     private val geolocator: Geolocator,
+    private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
     private val getEventsByAttendeeUseCase: GetEventsByAttendeeUseCase,
     private val getEventByIdUseCase: GetEventByIdUseCase,
 
@@ -40,10 +41,13 @@ class EventViewModel(
 
             is UiIntent.UpdatePlace -> updatePlace(uiIntent.address)
             UiIntent.CreateEvent -> saveEvent()
-            //is UiIntent.SetThumbnail -> updateUiState { copy(event = event.copy(thumbnail = uiIntent.file)) }
             is UiIntent.UpdateQuery -> {
                 updateUiState {
                     copy(queryGames = uiIntent.query)
+                }
+                if (uiIntent.query.length >= 3) {
+                    searchBoardGamesByQuery(uiIntent.query)
+
                 }
             }
 
@@ -59,7 +63,7 @@ class EventViewModel(
 
             UiIntent.LoadAllEventsByCurrentId -> loadAllEventsByCurrentId()
             is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
-            //  is UiIntent.UpdateDateEvent -> updateUiState { copy(event = event.copy(date = uiIntent.value)) }
+            is UiIntent.UpdateStartDateEvent -> updateUiState { copy(event = event.copy(startDate = uiIntent.value)) }
         }
     }
 
@@ -76,7 +80,7 @@ class EventViewModel(
         }
     )
 
-    private fun saveEvent() = scope.useCaseRunner<Event>(
+    private fun saveEvent() = scope.useCaseRunner(
         loadingUpdater = {
             updateUiState { copy(isLoading = it) }
         },
@@ -85,7 +89,7 @@ class EventViewModel(
                 handleFeedbackUI(
                     feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -105,7 +109,7 @@ class EventViewModel(
             }
         },
         useCase = {
-            TODO()
+            createEventUseCase(uiState.value.event.toInstance())
         }
     )
 
@@ -114,12 +118,12 @@ class EventViewModel(
             updateUiState { copy(isLoading = it) }
         },
         onError = {
-            Logger.e(it.message.toString())
+            Logger.e(it.message)
             updateUiState {
                 handleFeedbackUI(
                     feedbackUI = FeedbackUI(
                         title = "Error",
-                        message = it.message ?: "Error desconocido",
+                        message = it.message,
                         type = FeedbackUIType.ERROR,
                         show = true
                     )
@@ -180,6 +184,17 @@ class EventViewModel(
             }
         }
     }
+
+    private fun searchBoardGamesByQuery(query: String) = scope.useCaseRunner(
+        loadingUpdater = {},
+        onError = {},
+        onSuccess = {
+            updateUiState { copy(boardGameBGG = it.map { game -> game?.mapToUI() }) }
+        },
+        useCase = {
+            searchBoardGamesUseCase(query)
+        }
+    )
 
     private fun getCurrentLocation() {
         scope.launch {

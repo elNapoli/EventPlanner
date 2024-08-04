@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.map
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.utils.InitialRoute
 import com.baldomeronapoli.eventplanner.domain.models.User
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.flow
 
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
+    private val eventQueries: EventQueries,
     private val preferences: SharePreferences
 ) : AuthRepository {
     override suspend fun createUseWithEmailAndPassword(

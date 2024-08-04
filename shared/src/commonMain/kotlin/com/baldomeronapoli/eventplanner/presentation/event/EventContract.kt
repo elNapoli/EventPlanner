@@ -15,7 +15,7 @@ interface EventContract {
         var expiredEvents: List<EventUI> = emptyList(),
         var ownEvents: List<EventUI> = emptyList(),
         var queryGames: String = "",
-        var boardGameBGG: List<BoardGameUI>? = emptyList(),
+        var boardGameBGG: List<BoardGameUI?> = emptyList(),
         var isLoading: Boolean = false,
         var currentEvent: EventUI? = null,
         var feedbackUI: FeedbackUI? = null
@@ -45,7 +45,7 @@ interface EventContract {
         data class AddGameIntoEvent(val game: BoardGameUI) : UiIntent
         data class UpdateProperty(val nameProperty: String, val value: Any) : UiIntent
 
-        //  data class UpdateDateEvent(val value: String) : UiIntent
+        data class UpdateStartDateEvent(val value: Long) : UiIntent
         data class UpdatePlace(val address: String) : UiIntent
         data class UpdateQuery(val query: String) : UiIntent
 

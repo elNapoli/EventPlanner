@@ -13,13 +13,13 @@ import java.util.Calendar
 @Composable
 fun MyTimePickerDialog(
     show: Boolean = false,
-    //value: Timestamp,
-    onTimeSelected: (String) -> Unit,
-    onDismiss: () -> Unit
+    onTimeSelected: (Long) -> Unit,
+    onDismiss: () -> Unit,
+    value: Long
 ) {
     if (show) {
         val currentTime = Calendar.getInstance().apply {
-            timeInMillis = 1L
+            timeInMillis = value
         }
 
         val timePickerState = rememberTimePickerState(
@@ -40,7 +40,7 @@ fun MyTimePickerDialog(
                 NButton(text = stringResource(id = R.string.date_picker_dialog_confirm)) {
                     currentTime.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
                     currentTime.set(Calendar.MINUTE, timePickerState.minute)
-                    onTimeSelected("Timestamp(currentTime.timeInMillis / 1000, 0)")
+                    onTimeSelected(currentTime.timeInMillis)
                     onDismiss()
                 }
             },

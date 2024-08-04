@@ -12,5 +12,5 @@ data class EventBoardGameDTO(
     @SerialName("board_game")
     val boardGame: BoardGameDTO
 ) : Mappable<BoardGame> {
-    override fun map(): BoardGame = boardGame.map()
+    override fun toInstance(): BoardGame = boardGame.toInstance()
 }

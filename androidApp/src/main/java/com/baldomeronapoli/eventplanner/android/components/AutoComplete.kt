@@ -46,7 +46,7 @@ fun AutoComplete(
     value: String,
     query: String,
     label: String? = null,
-    items: List<BoardGameUI>? = emptyList(),
+    items: List<BoardGameUI?> = emptyList(),
     onValueQueryChange: (String) -> Unit,
     onValueChange: (BoardGameUI) -> Unit,
 ) {
@@ -138,10 +138,10 @@ fun AutoComplete(
                     LazyColumn(
                         modifier = Modifier.heightIn(max = 150.dp),
                     ) {
-                        items?.let {
-                            items(
-                                items
-                            ) {
+                        items(
+                            items
+                        ) { i ->
+                            i?.let {
                                 ItemsCategory(it) { title ->
                                     onValueChange(title)
                                     onValueQueryChange("")

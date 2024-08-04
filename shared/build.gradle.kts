@@ -78,10 +78,6 @@ kotlin {
             implementation(libs.compass.autocomplete.mobile)
 
             implementation(libs.kotlinx.datetime)
-            // implementation(libs.ktor.client.core)
-            //implementation(libs.ktor.client.content.negotiation)
-            //implementation(libs.ktor.serialization.kotlinx.json)
-            //implementation(libs.kotlinx.serialization)
 
             implementation(libs.kmp.koin.core)
 

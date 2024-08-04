@@ -13,6 +13,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndP
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.jordond.compass.geolocation.Geolocator
@@ -120,8 +121,8 @@ object DependencyInjection {
                 }
             }
         }
-        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<EventRepository> { EventRepositoryImpl(get(), get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
+        single<EventRepository> { EventRepositoryImpl(get()) }
     }
 
     private fun managersModuleO() = module {
@@ -136,5 +137,6 @@ object DependencyInjection {
         single { GetEventsByAttendeeUseCase(get()) }
         single { GetEventByIdUseCase(get()) }
         single { LoginWithGoogleUseCase(get()) }
+        single { SearchBoardGamesUseCase(get()) }
     }
 }

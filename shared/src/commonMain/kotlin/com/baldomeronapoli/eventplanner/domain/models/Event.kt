@@ -5,6 +5,7 @@ import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventBoardGameDTO
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
 import com.baldomeronapoli.eventplanner.mappers.BiMappable
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 
 data class Event(
@@ -13,9 +14,9 @@ data class Event(
     @SerialName("thumbnail")
     var thumbnail: String,
     @SerialName("start_date")
-    var startDate: String,
+    var startDate: Instant,
     @SerialName("end_date")
-    var endDate: String,
+    var endDate: Instant,
     @SerialName("title")
     var title: String,
     @SerialName("description")
@@ -38,7 +39,7 @@ data class Event(
 
     override fun mapToDto(): EventDTO {
         return EventDTO(
-            id = this.id,
+            id = id,
             thumbnail = this.thumbnail,
             startDate = this.startDate,
             endDate = this.endDate,
@@ -64,8 +65,8 @@ data class Event(
         return EventUI(
             id = this.id,
             thumbnail = this.thumbnail,
-            startDate = this.startDate,
-            endDate = this.endDate,
+            startDate = this.startDate.toEpochMilliseconds(),
+            endDate = this.endDate.toEpochMilliseconds(),
             title = this.title,
             description = this.description,
             slots = this.slots,

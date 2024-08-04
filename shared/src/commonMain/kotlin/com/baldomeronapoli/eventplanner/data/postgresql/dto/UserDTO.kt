@@ -6,6 +6,8 @@ import io.github.jan.supabase.gotrue.user.UserInfo
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 
 @Serializable
@@ -27,8 +29,8 @@ data class UserDTO(
 
     @SerialName("raw_user_meta_data")
     val rawUserMetaData: String?,
-) : Mappable<User> {
-    override fun map(): User = User(
+) : Mappable<User>, JsonObjectBuilder {
+    override fun toInstance(): User = User(
         id = id,
         email = email,
         createdAt = createdAt,
@@ -36,6 +38,15 @@ data class UserDTO(
         emailConfirmedAt = emailConfirmedAt,
         rawUserMetaData = rawUserMetaData
     )
+
+    override fun buildJsonObject(): JsonObject = kotlinx.serialization.json.buildJsonObject {
+        put("thumbnail", JsonPrimitive(id))
+        put("title", JsonPrimitive(email))
+        put("description", JsonPrimitive(createdAt.toString()))
+        put("host_id", JsonPrimitive(aud))
+        put("slots", JsonPrimitive(emailConfirmedAt.toString()))
+        put("is_private", JsonPrimitive(rawUserMetaData))
+    }
 }
 
 

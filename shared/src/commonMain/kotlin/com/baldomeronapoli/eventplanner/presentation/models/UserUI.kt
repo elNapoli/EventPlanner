@@ -27,7 +27,7 @@ data class UserUI(
     @SerialName("raw_user_meta_data")
     val rawUserMetaData: String? = "",
 ) : Mappable<User> {
-    override fun map(): User = User(
+    override fun toInstance(): User = User(
         id = id,
         email = email,
         createdAt = createdAt,

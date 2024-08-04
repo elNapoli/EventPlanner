@@ -1,5 +1,7 @@
 package com.baldomeronapoli.eventplanner.presentation.models
 
+import com.baldomeronapoli.eventplanner.domain.models.Address
+import com.baldomeronapoli.eventplanner.mappers.Mappable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -46,4 +48,21 @@ data class AddressUI(
 
     @SerialName("longitude")
     val longitude: Double = 0.0
-)
+) : Mappable<Address> {
+    override fun toInstance(): Address = Address(
+        id = this.id,
+        name = this.name,
+        street = this.street,
+        isoCountryCode = this.isoCountryCode,
+        country = this.country,
+        postalCode = this.postalCode,
+        administrativeArea = this.administrativeArea,
+        subAdministrativeArea = this.subAdministrativeArea,
+        locality = this.locality,
+        subLocality = this.subLocality,
+        thoroughfare = this.thoroughfare,
+        subThoroughfare = this.subThoroughfare,
+        latitude = this.latitude,
+        longitude = this.longitude
+    )
+}
