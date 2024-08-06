@@ -1,7 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
 import co.touchlab.kermit.Logger
-import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.LoginWithGoogleUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
@@ -16,7 +15,6 @@ import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 open class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,
     private val signInWithEmailAndPasswordUseCase: SignInWithEmailAndPasswordUseCase,
-    private val checkIsLoggedUserUseCase: CheckIsLoggedUserUseCase,
     private val loginWithGoogleUseCase: LoginWithGoogleUseCase
 ) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState()
@@ -48,7 +46,6 @@ open class AuthViewModel(
             UiIntent.CreateUseWithEmailAndPassword -> createUseWithEmailAndPassword()
             UiIntent.SignInWithEmailAndPassword -> signInWithEmailAndPassword()
             UiIntent.ResetFeedbackUI -> updateUiState { copy(feedbackUI = null) }
-            UiIntent.CheckIsLoggedUser -> checkIsLoggedUser()
             is UiIntent.LoginWithGoogle -> loginWithGoogle(uiIntent.token)
         }
     }
@@ -149,40 +146,6 @@ open class AuthViewModel(
                     password = uiState.value.password
                 )
             )
-        }
-    )
-
-
-    private fun checkIsLoggedUser() = scope.useCaseRunner(
-        loadingUpdater = { value ->
-            updateUiState { loading(value) }
-        },
-        onError = {
-            updateUiState {
-                handleCreateUseWithEmailAndPassword(
-                    user = null, feedbackUI = FeedbackUI(
-                        title = "Error",
-                        message = it.message,
-                        type = FeedbackUIType.ERROR,
-                        show = true
-                    )
-                )
-            }
-
-        },
-        onSuccess = { data ->
-            data?.let { user ->
-
-                updateUiState {
-                    copy(
-                        user = user.mapToUI()
-                    )
-                }
-                sendEffect(Effect.GoToHome)
-            }
-        },
-        useCase = {
-            checkIsLoggedUserUseCase()
         }
     )
 }

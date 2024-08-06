@@ -77,7 +77,6 @@ interface AuthContract {
         data class SaveRepeatPassword(val repeatPassword: String) : UiIntent
         data object CreateUseWithEmailAndPassword : UiIntent
         data object SignInWithEmailAndPassword : UiIntent
-        data object CheckIsLoggedUser : UiIntent
         data class LoginWithGoogle(val token: String) : UiIntent
 
     }
