@@ -12,8 +12,8 @@ import kotlinx.serialization.Serializable
 data class EventUI(
     @SerialName("id")
     val id: Int = 0,
-    @SerialName("thumbnail")
-    var thumbnail: String = "",
+    @SerialName("thumbnail_id")
+    var thumbnail: ThumbnailUI = ThumbnailUI(),
     @SerialName("start_date")
     var startDate: Long = Clock.System.now().toEpochMilliseconds(),
     @SerialName("end_date")
@@ -38,18 +38,18 @@ data class EventUI(
     var boardgames: List<BoardGameUI> = emptyList()
 ) : Mappable<Event> {
     override fun toInstance(): Event = Event(
-        id = this.id,
-        thumbnail = this.thumbnail,
-        startDate = Instant.fromEpochMilliseconds(this.startDate),
-        endDate = Instant.fromEpochMilliseconds(this.endDate),
-        title = this.title,
-        description = this.description,
-        slots = this.slots,
-        isPrivate = this.isPrivate,
-        price = this.price,
-        host = this.host.toInstance(),
-        attendees = this.attendees.map { it.toInstance() },
-        address = this.address.toInstance(),
-        boardgames = this.boardgames.map { it.toInstance() }
+        id = id,
+        thumbnail = thumbnail.toInstance(),
+        startDate = Instant.fromEpochMilliseconds(startDate),
+        endDate = Instant.fromEpochMilliseconds(endDate),
+        title = title,
+        description = description,
+        slots = slots,
+        isPrivate = isPrivate,
+        price = price,
+        host = host.toInstance(),
+        attendees = attendees.map { it.toInstance() },
+        address = address.toInstance(),
+        boardgames = boardgames.map { it.toInstance() }
     )
 }

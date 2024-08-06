@@ -2,37 +2,60 @@ package com.baldomeronapoli.eventplanner.data.postgresql.queries
 
 import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.data.postgresql.Scheme
+import com.baldomeronapoli.eventplanner.data.postgresql.Storage.BUCKET_NAME
+import com.baldomeronapoli.eventplanner.data.postgresql.Storage.generatePathFile
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.BaseDto
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.BaseRequest
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.BoardGameDTO
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.DbOperationResponse
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
-import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventWrapper
+import com.baldomeronapoli.eventplanner.data.postgresql.requests.AttendeeEventPagination
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
 import io.github.jan.supabase.postgrest.rpc
+import io.github.jan.supabase.storage.storage
+import kotlin.time.Duration.Companion.minutes
 
 class EventQueries(private val supabaseClient: SupabaseClient) {
 
     @NativeCoroutines
-    suspend fun getEventsByAttendee(
-        attendeeId: Int
-    ): List<EventDTO?> {
+    suspend fun getEventsByAttendee(page: Int = 1): BaseDto<List<EventDTO>> {
+        val result = supabaseClient.postgrest.rpc(
+            function = "get_user_attended_events_with_details",
+            parameters = BaseRequest(
+                AttendeeEventPagination(
+                    recordsPerPage = 10, // TODO: si esto no se dine aca. el parameters no lo toma
+                    currentPage = page
+                )
+            )
+        )
 
+        val events = result.decodeAs<BaseDto<List<EventDTO>>>()
 
-        return supabaseClient.from("events")
-            .select(Columns.raw("*, events_attendees!inner(id, users(id, email)), users(id, email), addresses(*)")) {
-                filter {
-                    eq("id", attendeeId)
-                }
-            }.decodeList<EventDTO>()
+        events.data.map { event ->
+            val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
+            val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes)
+            Logger.e(url)
+            event.thumbnail.name = url
+        }
+        return events
     }
 
     @NativeCoroutines
     suspend fun saveEventInBD(
-        event: EventDTO
+        event: EventDTO,
+        file: ByteArray
     ): Boolean {
-        supabaseClient.postgrest.rpc("setup_event_with_details", EventWrapper(event))
+        val data = supabaseClient.postgrest.rpc(
+            function = Scheme.Event.Functions.SETUP_EVENT_WITH_DETAILS,
+            parameters = BaseRequest(event)
+        ).decodeAs<BaseDto<DbOperationResponse>>()
+        val path = generatePathFile(data.data.id)
+        supabaseClient.storage.from(BUCKET_NAME)
+            .upload(path, file)
         return true
     }
 

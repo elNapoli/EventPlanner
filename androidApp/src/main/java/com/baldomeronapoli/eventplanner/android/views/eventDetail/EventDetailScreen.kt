@@ -79,7 +79,7 @@ fun EventDetailScreen(
                         .clip(MaterialTheme.shapes.small),
 
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(uiState.currentEvent!!.thumbnail)
+                        .data(uiState.currentEvent!!.thumbnail.name)
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.placeholder),
@@ -192,7 +192,7 @@ fun EventDetailScreen(
                         address = uiState.currentEvent!!.address.street,
                         previewMode = true,
                         lat = uiState.currentEvent!!.address.latitude,
-                        lng = uiState.currentEvent!!.address.longitude
+                        lng = uiState.currentEvent!!.address.longitude,
                     ) { onIntent(UiIntent.UpdatePlace(it)) }
                     Column(
                         modifier = Modifier.fillMaxWidth(),

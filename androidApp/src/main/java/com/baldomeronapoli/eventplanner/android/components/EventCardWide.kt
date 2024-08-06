@@ -52,7 +52,7 @@ fun EventCardWide(modifier: Modifier = Modifier, event: EventUI, onClick: (Event
                     .size(60.dp),
 
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(event.thumbnail)
+                    .data(event.thumbnail.name)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.placeholder),

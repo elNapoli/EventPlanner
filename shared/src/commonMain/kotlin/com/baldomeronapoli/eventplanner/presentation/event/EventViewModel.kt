@@ -61,9 +61,10 @@ class EventViewModel(
                 )
             }
 
-            UiIntent.LoadAllEventsByCurrentId -> loadAllEventsByCurrentId()
+            UiIntent.LoadAllEventsByCurrentId -> fetchMyEvents()
             is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
             is UiIntent.UpdateStartDateEvent -> updateUiState { copy(event = event.copy(startDate = uiIntent.value)) }
+            is UiIntent.SetThumbnailByArray -> updateUiState { copy(tempThumbnail = uiIntent.file) }
         }
     }
 
@@ -109,11 +110,11 @@ class EventViewModel(
             }
         },
         useCase = {
-            createEventUseCase(uiState.value.event.toInstance())
+            createEventUseCase(uiState.value.event.toInstance(), uiState.value.tempThumbnail!!)
         }
     )
 
-    private fun loadAllEventsByCurrentId() = scope.useCaseRunner(
+    private fun fetchMyEvents() = scope.useCaseRunner(
         loadingUpdater = {
             updateUiState { copy(isLoading = it) }
         },
@@ -130,9 +131,8 @@ class EventViewModel(
                 )
             }
         },
-        onSuccess = { a ->
-
-
+        onSuccess = { events ->
+            updateUiState { copy(ownEvents = events.map { it?.mapToUI() }) }
         },
         useCase = {
             getEventsByAttendeeUseCase()

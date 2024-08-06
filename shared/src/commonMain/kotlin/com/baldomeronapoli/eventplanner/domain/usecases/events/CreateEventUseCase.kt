@@ -11,9 +11,11 @@ class CreateEventUseCase(
 ) {
     @NativeCoroutines
     suspend operator fun invoke(
-        event: Event
+        event: Event,
+        file: ByteArray
     ): Flow<NetworkResult<Boolean>> =
         repository.createEvent(
-            event = event
+            event = event,
+            file = file
         )
 }

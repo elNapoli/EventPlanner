@@ -16,7 +16,7 @@ import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 @Composable
 fun EventTab(
     modifier: Modifier = Modifier,
-    events: List<EventUI> = emptyList(),
+    events: List<EventUI?> = emptyList(),
     goToEventDetail: (EventUI) -> Unit
 ) {
     if (events.isEmpty()) {
@@ -24,7 +24,7 @@ fun EventTab(
     } else {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(events) { event ->
-                EventCardWide(event = event, onClick = goToEventDetail)
+                EventCardWide(event = event!!, onClick = goToEventDetail)
             }
         }
     }

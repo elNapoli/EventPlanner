@@ -11,6 +11,7 @@ interface EventRepository {
     @NativeCoroutines
     suspend fun createEvent(
         event: Event,
+        file: ByteArray
     ): Flow<NetworkResult<Boolean>>
 
     @NativeCoroutines

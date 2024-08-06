@@ -43,26 +43,26 @@ data class AddressUI(
     @SerialName("sub_thoroughfare")
     val subThoroughfare: String? = null,
 
+
     @SerialName("latitude")
     val latitude: Double = 0.0,
-
     @SerialName("longitude")
-    val longitude: Double = 0.0
+    val longitude: Double = 0.0,
 ) : Mappable<Address> {
     override fun toInstance(): Address = Address(
-        id = this.id,
-        name = this.name,
-        street = this.street,
-        isoCountryCode = this.isoCountryCode,
-        country = this.country,
-        postalCode = this.postalCode,
-        administrativeArea = this.administrativeArea,
-        subAdministrativeArea = this.subAdministrativeArea,
-        locality = this.locality,
-        subLocality = this.subLocality,
-        thoroughfare = this.thoroughfare,
-        subThoroughfare = this.subThoroughfare,
-        latitude = this.latitude,
-        longitude = this.longitude
+        id = id,
+        name = name,
+        street = street,
+        isoCountryCode = isoCountryCode,
+        country = country,
+        postalCode = postalCode,
+        administrativeArea = administrativeArea,
+        subAdministrativeArea = subAdministrativeArea,
+        locality = locality,
+        subLocality = subLocality,
+        thoroughfare = thoroughfare,
+        subThoroughfare = subThoroughfare,
+        longitude = longitude,
+        latitude = latitude
     )
 }

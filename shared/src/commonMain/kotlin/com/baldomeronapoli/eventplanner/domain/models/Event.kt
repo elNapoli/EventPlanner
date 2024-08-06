@@ -1,7 +1,5 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
-import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventAttendeeDTO
-import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventBoardGameDTO
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
 import com.baldomeronapoli.eventplanner.mappers.BiMappable
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
@@ -12,7 +10,7 @@ data class Event(
     @SerialName("id")
     val id: Int,
     @SerialName("thumbnail")
-    var thumbnail: String,
+    var thumbnail: Thumbnail,
     @SerialName("start_date")
     var startDate: Instant,
     @SerialName("end_date")
@@ -27,55 +25,45 @@ data class Event(
     var isPrivate: Boolean,
     @SerialName("price")
     var price: Double,
-    @SerialName("users")
+    @SerialName("host")
     var host: User,
-    @SerialName("events_attendees")
+    @SerialName("attendees")
     var attendees: List<User>,
-    @SerialName("addresses")
+    @SerialName("address")
     var address: Address,
-    @SerialName("event_boardgames")
+    @SerialName("board_games")
     var boardgames: List<BoardGame>
 ) : BiMappable<EventDTO, EventUI> {
 
-    override fun mapToDto(): EventDTO {
-        return EventDTO(
-            id = id,
-            thumbnail = this.thumbnail,
-            startDate = this.startDate,
-            endDate = this.endDate,
-            title = this.title,
-            description = this.description,
-            hostId = this.host.id,
-            slots = this.slots,
-            isPrivate = this.isPrivate,
-            price = this.price,
-            host = this.host.mapToDto(),
-            attendees = this.attendees.map { EventAttendeeDTO(id = 1, it.mapToDto()) },
-            address = this.address.mapToDto(), // Assuming Address has a mapToDto() method
-            boardgames = this.boardgames.map {
-                EventBoardGameDTO(
-                    id = 1,
-                    it.mapToDto()
-                )
-            } // Assuming BoardGame has a mapToDto() method
-        )
-    }
+    override fun mapToDto(): EventDTO = EventDTO(
+        id = id,
+        thumbnail = thumbnail.mapToDto(),
+        startDate = startDate,
+        endDate = endDate,
+        title = title,
+        description = description,
+        slots = slots,
+        isPrivate = isPrivate,
+        price = price,
+        host = host.mapToDto(),
+        attendees = attendees.map { it.mapToDto() },
+        address = address.mapToDto(),
+        boardgames = boardgames.map { it.mapToDto() }
+    )
 
-    override fun mapToUI(): EventUI {
-        return EventUI(
-            id = this.id,
-            thumbnail = this.thumbnail,
-            startDate = this.startDate.toEpochMilliseconds(),
-            endDate = this.endDate.toEpochMilliseconds(),
-            title = this.title,
-            description = this.description,
-            slots = this.slots,
-            isPrivate = this.isPrivate,
-            price = this.price,
-            host = this.host.mapToUI(),
-            attendees = this.attendees.map { it.mapToUI() },
-            address = this.address.mapToUI(),
-            boardgames = this.boardgames.map { it.mapToUI() }
-        )
-    }
+    override fun mapToUI(): EventUI = EventUI(
+        id = id,
+        thumbnail = thumbnail.mapToUI(),
+        startDate = startDate.toEpochMilliseconds(),
+        endDate = endDate.toEpochMilliseconds(),
+        title = title,
+        description = description,
+        slots = slots,
+        isPrivate = isPrivate,
+        price = price,
+        host = host.mapToUI(),
+        attendees = attendees.map { it.mapToUI() },
+        address = address.mapToUI(),
+        boardgames = boardgames.map { it.mapToUI() }
+    )
 }

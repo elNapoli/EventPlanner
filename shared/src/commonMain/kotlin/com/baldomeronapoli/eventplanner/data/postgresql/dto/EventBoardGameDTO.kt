@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 data class EventBoardGameDTO(
     @SerialName("id")
     val id: Int,
-    @SerialName("board_game")
+    @SerialName("board_games")
     val boardGame: BoardGameDTO
 ) : Mappable<BoardGame> {
     override fun toInstance(): BoardGame = boardGame.toInstance()

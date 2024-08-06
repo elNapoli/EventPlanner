@@ -4,10 +4,6 @@ import com.baldomeronapoli.eventplanner.domain.models.Address
 import com.baldomeronapoli.eventplanner.mappers.Mappable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonNull
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
 
 @Serializable
 data class AddressDTO(
@@ -46,13 +42,9 @@ data class AddressDTO(
 
     @SerialName("sub_thoroughfare")
     val subThoroughfare: String?,
-
-    @SerialName("latitude")
-    val latitude: Double,
-
-    @SerialName("longitude")
-    val longitude: Double
-) : Mappable<Address>, JsonObjectBuilder {
+    @SerialName("coordinates")
+    val coordinates: CoordinatesDTO,
+) : Mappable<Address> {
     override fun toInstance(): Address = Address(
         id = id,
         name = name,
@@ -66,28 +58,7 @@ data class AddressDTO(
         subLocality = subLocality,
         thoroughfare = thoroughfare,
         subThoroughfare = subThoroughfare,
-        latitude = latitude,
-        longitude = longitude
+        latitude = coordinates.latitude,
+        longitude = coordinates.longitude,
     )
-
-    override fun buildJsonObject(): JsonObject {
-        return buildJsonObject {
-            put("id", JsonPrimitive(id))
-            put("name", name?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("street", JsonPrimitive(street))
-            put("iso_country_code", isoCountryCode?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("country", JsonPrimitive(country))
-            put("postal_code", postalCode?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("administrative_area", administrativeArea?.let { JsonPrimitive(it) } ?: JsonNull)
-            put(
-                "sub_administrative_area",
-                subAdministrativeArea?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("locality", locality?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("sub_locality", subLocality?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("thoroughfare", thoroughfare?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("sub_thoroughfare", subThoroughfare?.let { JsonPrimitive(it) } ?: JsonNull)
-            put("latitude", JsonPrimitive(latitude))
-            put("longitude", JsonPrimitive(longitude))
-        }
-    }
 }

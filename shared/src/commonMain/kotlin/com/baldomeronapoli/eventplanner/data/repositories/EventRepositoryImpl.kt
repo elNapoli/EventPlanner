@@ -14,9 +14,10 @@ class EventRepositoryImpl(
 
     override suspend fun createEvent(
         event: Event,
+        file: ByteArray
     ): Flow<NetworkResult<Boolean>> = flow {
         emit(NetworkResult.Loading(true))
-        emit(NetworkResult.Success(eventQueries.saveEventInBD(event.mapToDto())))
+        emit(NetworkResult.Success(eventQueries.saveEventInBD(event.mapToDto(), file)))
     }
 
     override suspend fun getEventById(eventId: String): Flow<NetworkResult<Event?>> = flow {
@@ -28,7 +29,11 @@ class EventRepositoryImpl(
     override suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event?>>> =
         flow {
             emit(NetworkResult.Loading(true))
-            //val events = eventQueries.getEventsByAttendee(1)
+            val events = eventQueries.getEventsByAttendee()
+            emit(NetworkResult.Success(events.data.map {
+                it.toInstance()
+
+            }))
         }
 
     override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame?>>> =

@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.AddressDTO
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.CoordinatesDTO
 import com.baldomeronapoli.eventplanner.mappers.BiMappable
 import com.baldomeronapoli.eventplanner.presentation.models.AddressUI
 import kotlinx.serialization.SerialName
@@ -44,48 +45,45 @@ data class Address(
     @SerialName("sub_thoroughfare")
     val subThoroughfare: String?,
 
-    @SerialName("latitude")
     val latitude: Double,
-
     @SerialName("longitude")
-    val longitude: Double
+    val longitude: Double,
 ) : BiMappable<AddressDTO, AddressUI> {
 
     override fun mapToDto(): AddressDTO {
         return AddressDTO(
-            id = this.id,
-            name = this.name,
-            street = this.street,
-            isoCountryCode = this.isoCountryCode,
-            country = this.country,
-            postalCode = this.postalCode,
-            administrativeArea = this.administrativeArea,
-            subAdministrativeArea = this.subAdministrativeArea,
-            locality = this.locality,
-            subLocality = this.subLocality,
-            thoroughfare = this.thoroughfare,
-            subThoroughfare = this.subThoroughfare,
-            latitude = this.latitude,
-            longitude = this.longitude
+            id = id,
+            name = name,
+            street = street,
+            isoCountryCode = isoCountryCode,
+            country = country,
+            postalCode = postalCode,
+            administrativeArea = administrativeArea,
+            subAdministrativeArea = subAdministrativeArea,
+            locality = locality,
+            subLocality = subLocality,
+            thoroughfare = thoroughfare,
+            subThoroughfare = subThoroughfare,
+            coordinates = CoordinatesDTO(latitude, longitude)
         )
     }
 
     override fun mapToUI(): AddressUI {
         return AddressUI(
-            id = this.id,
-            name = this.name,
-            street = this.street,
-            isoCountryCode = this.isoCountryCode,
-            country = this.country,
-            postalCode = this.postalCode,
-            administrativeArea = this.administrativeArea,
-            subAdministrativeArea = this.subAdministrativeArea,
-            locality = this.locality,
-            subLocality = this.subLocality,
-            thoroughfare = this.thoroughfare,
-            subThoroughfare = this.subThoroughfare,
-            latitude = this.latitude,
-            longitude = this.longitude
+            id = id,
+            name = name,
+            street = street,
+            isoCountryCode = isoCountryCode,
+            country = country,
+            postalCode = postalCode,
+            administrativeArea = administrativeArea,
+            subAdministrativeArea = subAdministrativeArea,
+            locality = locality,
+            subLocality = subLocality,
+            thoroughfare = thoroughfare,
+            subThoroughfare = subThoroughfare,
+            latitude = latitude,
+            longitude = longitude,
         )
     }
 }
