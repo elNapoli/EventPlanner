@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.theme.Success
 import com.baldomeronapoli.eventplanner.android.theme.Warning
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 
 @Composable
 fun AlertSticky(

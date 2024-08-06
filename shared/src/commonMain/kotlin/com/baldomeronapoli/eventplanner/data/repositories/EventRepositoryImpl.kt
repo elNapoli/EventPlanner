@@ -1,8 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
-import com.baldomeronapoli.eventplanner.data.managers.EventManager
-import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
-import com.baldomeronapoli.eventplanner.domain.models.Address
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.domain.models.BoardGame
 import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.domain.repositories.EventRepository
@@ -11,53 +9,37 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class EventRepositoryImpl(
-    private val algoliaService: AlgoliaService,
-    private val eventManager: EventManager
+    private val eventQueries: EventQueries
 ) : EventRepository {
 
     override suspend fun createEvent(
         event: Event,
-        games: List<BoardGame>,
-        address: Address
+        file: ByteArray
     ): Flow<NetworkResult<Boolean>> = flow {
         emit(NetworkResult.Loading(true))
-        emit(
-            eventManager.createEvent(
-                thumbnail = event.thumbnail!!,
-                event = event.map(),
-                games = games.map { it.map() },
-                address = address.map()
-            )
-        )
+        emit(NetworkResult.Success(eventQueries.saveEventInBD(event.mapToDto(), file)))
     }
 
     override suspend fun getEventById(eventId: String): Flow<NetworkResult<Event?>> = flow {
         emit(NetworkResult.Loading(true))
-        emit(
-            eventManager.getEventById(
-                eventId = eventId
-            )
-        )
+
+
     }
 
-    override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame>?>> =
+    override suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event?>>> =
         flow {
             emit(NetworkResult.Loading(true))
-            try {
-                val response = algoliaService.searchBoardGames(query)
-                emit(
-                    NetworkResult.Success(
-                        response.data?.hits?.map { it.map() }
-                    )
-                )
-            } catch (e: Throwable) {
-                emit(NetworkResult.Error(exception = e, data = emptyList()))
-            }
+            val events = eventQueries.getEventsByAttendee()
+            emit(NetworkResult.Success(events.data.map {
+                it.toInstance()
+
+            }))
         }
 
-    override suspend fun getEventsByAttendee(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
+    override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame?>>> =
         flow {
             emit(NetworkResult.Loading(true))
-            emit(eventManager.getEventsByAttendee())
+            val boardGamesDto = eventQueries.searchBoardGames(query)
+            emit(NetworkResult.Success(boardGamesDto.map { it?.toInstance() }))
         }
 }

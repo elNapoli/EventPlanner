@@ -12,20 +12,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.baldomeronapoli.eventplanner.android.R
-import com.baldomeronapoli.eventplanner.android.utils.toMillis
-import com.baldomeronapoli.eventplanner.android.utils.toTimestamp
-import dev.gitlive.firebase.firestore.Timestamp
+import java.time.Instant
+import java.time.ZoneId
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyDatePickerDialog(
     show: Boolean = false,
-    value: Timestamp,
-    onDateSelected: (Timestamp) -> Unit,
-    onDismiss: () -> Unit
+    onDateSelected: (Long) -> Unit,
+    onDismiss: () -> Unit,
+    value: Long
 ) {
     val datePickerState = rememberDatePickerState(
-        initialSelectedDateMillis = value.toMillis(),
+        initialSelectedDateMillis = value,
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 return utcTimeMillis >= System.currentTimeMillis()
@@ -36,7 +36,9 @@ fun MyDatePickerDialog(
             onDismissRequest = { },
             confirmButton = {
                 NButton(text = stringResource(id = R.string.date_picker_dialog_confirm)) {
-                    onDateSelected(datePickerState.selectedDateMillis!!.toTimestamp())
+                    val selectedDateUtc = datePickerState.selectedDateMillis!!
+                    val selectedDateWithOffset = adjustToLocalTime(selectedDateUtc)
+                    onDateSelected(selectedDateWithOffset)
                     onDismiss()
                 }
             },
@@ -56,4 +58,11 @@ fun MyDatePickerDialog(
             }
         }
     }
+}
+
+fun adjustToLocalTime(timeInMillisUTC: Long): Long {
+    val instant = Instant.ofEpochMilli(timeInMillisUTC)
+    val localZoneId = ZoneId.systemDefault()
+    val offset = localZoneId.rules.getOffset(instant).totalSeconds / 3600
+    return timeInMillisUTC + (-1 * offset * 3600 * 1000)
 }

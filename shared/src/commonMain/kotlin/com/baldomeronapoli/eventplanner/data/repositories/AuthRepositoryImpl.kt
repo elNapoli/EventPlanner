@@ -1,60 +1,98 @@
 package com.baldomeronapoli.eventplanner.data.repositories
 
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.map
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
+import com.baldomeronapoli.eventplanner.data.utils.InitialRoute
+import com.baldomeronapoli.eventplanner.domain.models.User
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.utils.NetworkResult
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
-import dev.gitlive.firebase.auth.FirebaseAuth
-import dev.gitlive.firebase.auth.FirebaseUser
+import com.baldomeronapoli.eventplanner.utils.toMyError
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import io.github.jan.supabase.SupabaseClient
+import io.github.jan.supabase.gotrue.auth
+import io.github.jan.supabase.gotrue.providers.Google
+import io.github.jan.supabase.gotrue.providers.builtin.Email
+import io.github.jan.supabase.gotrue.providers.builtin.IDToken
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 
-class AuthRepositoryImpl(private val auth: FirebaseAuth, private val prefs: SharePreferences) :
-    AuthRepository {
+class AuthRepositoryImpl(
+    private val supabaseClient: SupabaseClient,
+    private val eventQueries: EventQueries,
+    private val preferences: SharePreferences
+) : AuthRepository {
     override suspend fun createUseWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<NetworkResult<FirebaseUser?>> = flow {
+    ): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
-            val result = auth.createUserWithEmailAndPassword(email, password)
-            val user = result.user!!
+            supabaseClient.auth.signUpWith(Email) {
+                this.email = email
+                this.password = password
+            }
+            val user = supabaseClient.auth.currentUserOrNull()
 
-            auth.signOut()
-            emit(NetworkResult.Success(user))
+            emit(NetworkResult.Success(user.map()))
         } catch (e: Throwable) {
-            emit(NetworkResult.Error(exception = e, data = null))
+            emit(NetworkResult.Error(error = e.toMyError()))
         }
     }
 
     override suspend fun signInWithEmailAndPassword(
         email: String,
         password: String
-    ): Flow<NetworkResult<FirebaseUser?>> = flow {
+    ): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
-            val result = auth.signInWithEmailAndPassword(email, password)
-            val userId = result.user!!
-            prefs.setEmailCurrentUser(result.user!!.email)
-            emit(NetworkResult.Success(userId))
+            supabaseClient.auth.signInWith(Email) {
+                this.email = email
+                this.password = password
+            }
+            val user = supabaseClient.auth.currentUserOrNull()
+
+            emit(NetworkResult.Success(user.map()))
         } catch (e: Throwable) {
-            emit(NetworkResult.Error(exception = e, data = null))
+            emit(NetworkResult.Error(error = e.toMyError()))
         }
     }
 
-    override suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<Boolean>> = flow {
+    override suspend fun checkIsLoggedUserUseCase(): Flow<NetworkResult<User?>> = flow {
         emit(NetworkResult.Loading(true))
         try {
-            val user = auth.currentUser
-            if (user != null) {
-                prefs.setEmailCurrentUser(user.email)
-                emit(NetworkResult.Success(true))
+            supabaseClient.auth.awaitInitialization()
+            val user = supabaseClient.auth.currentUserOrNull()
 
-            } else {
-                emit(NetworkResult.Success(false))
+            if (user != null) {
+                preferences.setInitialRoute(InitialRoute.HOME)
             }
+            emit(NetworkResult.Success(user.map()))
         } catch (e: Throwable) {
-            emit(NetworkResult.Error(exception = e, data = null))
+            emit(NetworkResult.Error(error = e.toMyError()))
+        }
+    }
+
+    @NativeCoroutines
+    override suspend fun loginWithGoogle(
+        token: String,
+        rawNonce: String
+    ): Flow<NetworkResult<User?>> = flow {
+        emit(NetworkResult.Loading(true))
+        try {
+            supabaseClient.auth.signInWith(IDToken) {
+                idToken = token
+                provider = Google
+                nonce = rawNonce
+            }
+            val user = supabaseClient.auth.currentUserOrNull()
+
+            emit(NetworkResult.Success(user.map()))
+
+        } catch (e: Throwable) {
+            emit(NetworkResult.Error(error = e.toMyError()))
+
         }
     }
 }

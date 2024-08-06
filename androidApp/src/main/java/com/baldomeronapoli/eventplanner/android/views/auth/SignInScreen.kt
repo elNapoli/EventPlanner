@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Visibility
@@ -27,9 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -40,6 +43,7 @@ import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertSticky
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.components.DividerWithText
+import com.baldomeronapoli.eventplanner.android.components.GoogleSignInButton
 import com.baldomeronapoli.eventplanner.android.components.LoadingWrapper
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
@@ -63,7 +67,6 @@ fun SignInScreen(
     goToSignUp: () -> Unit,
     goToHome: () -> Unit
 ) {
-
     CollectEffect(effect) {
         when (it) {
             Effect.GoToHome -> goToHome()
@@ -73,7 +76,9 @@ fun SignInScreen(
     EmptyScaffold {
 // TODO: esta vista tiene muchas lineas de codigo, hau que separarlas en componentes mas chicos
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
             val (column1, column2, loading) = createRefs()
             LoadingWrapper(modifier = Modifier.constrainAs(loading) {
@@ -121,6 +126,8 @@ fun SignInScreen(
                                 contentDescription = null
                             )
                         },
+                        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
+
                         isError = uiState.error?.property == "email",
                         textError = uiState.error?.message ?: "",
                         placeholder = "prueba@gmail.com",
@@ -143,7 +150,8 @@ fun SignInScreen(
                         },
                         singleLine = true,
                         visualTransformation = if (uiState.passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
-                        label = stringResource(id = R.string.password))
+                        label = stringResource(id = R.string.password)
+                    )
                     Text(
                         modifier = Modifier
                             .padding(top = 8.dp)
@@ -187,8 +195,13 @@ fun SignInScreen(
                         ButtonSocialNetwork(rememberVectorPainter(Icons.Outlined.Facebook)) {
                             // onAction(UiIntent.LoginWithFacebook)
                         }
-                        ButtonSocialNetwork(painterResource(R.drawable.google)) {
-                            // onAction(UiIntent.LoginWithGoogle)
+                        GoogleSignInButton(
+                            text = stringResource(id = R.string.login_with_google),
+                            squareButton = true,
+                            hashedNonce = uiState.nonceHash(),
+                            googleClientId = uiState.googleClientId
+                        ) {
+                            onIntent(UiIntent.LoginWithGoogle(it))
                         }
                     }
                     Text(

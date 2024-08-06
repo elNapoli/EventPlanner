@@ -7,21 +7,19 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.baldomeronapoli.eventplanner.android.R
-import com.baldomeronapoli.eventplanner.android.utils.toMillis
-import dev.gitlive.firebase.firestore.Timestamp
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTimePickerDialog(
     show: Boolean = false,
-    value: Timestamp,
-    onTimeSelected: (Timestamp) -> Unit,
-    onDismiss: () -> Unit
+    onTimeSelected: (Long) -> Unit,
+    onDismiss: () -> Unit,
+    value: Long
 ) {
     if (show) {
         val currentTime = Calendar.getInstance().apply {
-            timeInMillis = value.toMillis()
+            timeInMillis = value
         }
 
         val timePickerState = rememberTimePickerState(
@@ -42,7 +40,7 @@ fun MyTimePickerDialog(
                 NButton(text = stringResource(id = R.string.date_picker_dialog_confirm)) {
                     currentTime.set(Calendar.HOUR_OF_DAY, timePickerState.hour)
                     currentTime.set(Calendar.MINUTE, timePickerState.minute)
-                    onTimeSelected(Timestamp(currentTime.timeInMillis / 1000, 0))
+                    onTimeSelected(currentTime.timeInMillis)
                     onDismiss()
                 }
             },

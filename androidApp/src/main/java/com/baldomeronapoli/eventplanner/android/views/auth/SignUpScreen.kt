@@ -26,11 +26,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.components.DividerWithText
+import com.baldomeronapoli.eventplanner.android.components.GoogleSignInButton
 import com.baldomeronapoli.eventplanner.android.components.LoadingWrapper
 import com.baldomeronapoli.eventplanner.android.components.NButton
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedButton
@@ -38,12 +38,13 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+
 
 @SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
@@ -52,13 +53,15 @@ fun SignUpScreen(
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
     effect: StateFlow<Effect?>,
-    goBack: () -> Unit
+    goToHome: () -> Unit,
+    goBack: () -> Unit,
 ) {
+
     EmptyScaffold {
         CollectEffect(effect) {
             when (it) {
                 Effect.GoToHome -> {
-                    Logger.d("No se implementa en esta vista....")
+                    // Logger.d("No se implementa en esta vista....")
                 }
 
                 Effect.None -> TODO()
@@ -67,7 +70,7 @@ fun SignUpScreen(
         if (uiState.feedbackUI != null) {
             AlertDialog(
                 onConfirmation = {
-                    if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) onIntent(UiIntent.ResetFeedbackUI) else goBack()
+                    if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) onIntent(UiIntent.ResetFeedbackUI) else goToHome()
                 },
                 dialogTitle = uiState.feedbackUI!!.title,
                 dialogText = uiState.feedbackUI!!.message,
@@ -75,7 +78,7 @@ fun SignUpScreen(
                 confirmText = if (uiState.feedbackUI!!.type == FeedbackUIType.ERROR) stringResource(
                     id = R.string.cancel
                 ) else stringResource(
-                    id = R.string.login_button
+                    id = R.string.go_to_home
                 ),
             )
         }
@@ -114,11 +117,12 @@ fun SignUpScreen(
                         },
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    NOutlinedButton(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = stringResource(id = R.string.login_with_google)
+                    GoogleSignInButton(
+                        text = stringResource(id = R.string.login_with_google),
+                        hashedNonce = uiState.nonceHash(),
+                        googleClientId = uiState.googleClientId
                     ) {
-
+                        onIntent(UiIntent.LoginWithGoogle(it))
                     }
                     NOutlinedButton(
                         modifier = Modifier.fillMaxWidth(),
@@ -225,6 +229,7 @@ fun PreviewSignUpScreenLight(modifier: Modifier = Modifier) {
             uiState = UiState(),
             effect = effect,
             onIntent = { },
+            goToHome = {},
             goBack = {}
         )
     }

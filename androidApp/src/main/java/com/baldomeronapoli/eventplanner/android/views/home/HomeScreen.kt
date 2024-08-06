@@ -28,20 +28,14 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray60
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    goToEventDetail: (Event) -> Unit
+    goToEventDetail: (EventUI) -> Unit
 ) {
     Column {
-        Text(
-            text = "Hola Baldomero",
-            style = MaterialTheme.typography.headlineSmall,
-            color = GrayTitle,
-            fontWeight = FontWeight.Bold
-        )
         Text(
             text = stringResource(id = R.string.find_an_event_around_you),
             style = MaterialTheme.typography.titleMedium,

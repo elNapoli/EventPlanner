@@ -1,28 +1,55 @@
-package com.baldomeronapoli.eventplanner.data.firebaseModels
+package com.baldomeronapoli.eventplanner.presentation.models
 
 import com.baldomeronapoli.eventplanner.domain.models.Address
-import com.baldomeronapoli.eventplanner.domain.models.NCoordinates
 import com.baldomeronapoli.eventplanner.mappers.Mappable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FAddress(
-    val id: String = "",
-    val name: String = "",
+data class AddressUI(
+    @SerialName("id")
+    val id: Int = 0,
+
+    @SerialName("name")
+    val name: String? = null,
+
+    @SerialName("street")
     val street: String = "",
-    val isoCountryCode: String = "",
+
+    @SerialName("iso_country_code")
+    val isoCountryCode: String? = null,
+
+    @SerialName("country")
     val country: String = "",
+
+    @SerialName("postal_code")
     val postalCode: String? = null,
+
+    @SerialName("administrative_area")
     val administrativeArea: String? = null,
+
+    @SerialName("sub_administrative_area")
     val subAdministrativeArea: String? = null,
-    val locality: String = "",
+
+    @SerialName("locality")
+    val locality: String? = null,
+
+    @SerialName("sub_locality")
     val subLocality: String? = null,
+
+    @SerialName("thoroughfare")
     val thoroughfare: String? = null,
+
+    @SerialName("sub_thoroughfare")
     val subThoroughfare: String? = null,
+
+
+    @SerialName("latitude")
     val latitude: Double = 0.0,
+    @SerialName("longitude")
     val longitude: Double = 0.0,
 ) : Mappable<Address> {
-    override fun map(): Address = Address(
+    override fun toInstance(): Address = Address(
         id = id,
         name = name,
         street = street,
@@ -35,6 +62,7 @@ data class FAddress(
         subLocality = subLocality,
         thoroughfare = thoroughfare,
         subThoroughfare = subThoroughfare,
-        coordinates = NCoordinates(latitude, longitude)
+        longitude = longitude,
+        latitude = latitude
     )
 }

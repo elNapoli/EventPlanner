@@ -38,7 +38,6 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.components.OrganizerAvatar
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.android.utils.toRichHtmlString
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
@@ -80,7 +79,7 @@ fun EventDetailScreen(
                         .clip(MaterialTheme.shapes.small),
 
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(uiState.currentEvent!!.thumbnailUrl)
+                        .data(uiState.currentEvent!!.thumbnail.name)
                         .crossfade(true)
                         .build(),
                     placeholder = painterResource(R.drawable.placeholder),
@@ -116,14 +115,14 @@ fun EventDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
-                        Text(text = uiState.currentEvent!!.date.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
+                        // Text(text = uiState.currentEvent!!.date.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Icon(imageVector = Icons.Default.AccessTime, contentDescription = null)
-                        Text(text = uiState.currentEvent!!.date.toFormattedDateString("HH:mm"))
+                        //   Text(text = uiState.currentEvent!!.date.toFormattedDateString("HH:mm"))
                     }
                 }
                 Column(
@@ -165,7 +164,7 @@ fun EventDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        OrganizerAvatar(name = uiState.currentEvent!!.host.userName)
+                        OrganizerAvatar(name = uiState.currentEvent!!.host.email)
                         Text(
                             text = stringResource(id = R.string.chat),
                             color = Blue,
@@ -190,10 +189,10 @@ fun EventDetailScreen(
 
 
                     AddressMap(
-                        address = uiState.currentEvent!!.place.street!!,
+                        address = uiState.currentEvent!!.address.street,
                         previewMode = true,
-                        lat = uiState.currentEvent!!.place.coordinates.latitude,
-                        lng = uiState.currentEvent!!.place.coordinates.longitude
+                        lat = uiState.currentEvent!!.address.latitude,
+                        lng = uiState.currentEvent!!.address.longitude,
                     ) { onIntent(UiIntent.UpdatePlace(it)) }
                     Column(
                         modifier = Modifier.fillMaxWidth(),

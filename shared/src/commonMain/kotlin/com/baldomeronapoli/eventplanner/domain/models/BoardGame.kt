@@ -1,41 +1,43 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
-import com.baldomeronapoli.eventplanner.data.firebaseModels.FBoardGame
-import com.baldomeronapoli.eventplanner.mappers.Mappable
-import com.baldomeronapoli.eventplanner.utils.randomUUID
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.BoardGameDTO
+import com.baldomeronapoli.eventplanner.mappers.BiMappable
+import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class BoardGame(
-    override val id: String = randomUUID,
-    val boardgamepublisher: String?,
-    var description: String?,
-    var image: String?,
-    var maxplayers: String?,
-    var maxplaytime: String?,
-    var minplayers: String?,
-    val categorias: List<String>,
-    var minplaytime: String?,
-    var name: String?,
-    var playingtime: String?,
-    var thumbnail: String?,
-    var yearpublished: String?,
-) : BaseModel, Mappable<FBoardGame> {
-    override fun map(): FBoardGame =
-        FBoardGame(
-            id = id.toInt(),
-            boardgamepublisher = boardgamepublisher,
-            description = description,
-            image = image,
-            maxplayers = maxplayers,
-            maxplaytime = maxplaytime,
-            minplayers = minplayers,
-            categorias = categorias,
-            minplaytime = minplaytime,
-            name = name,
-            playingtime = playingtime,
-            thumbnail = thumbnail,
-            yearpublished = yearpublished
-        )
+    @SerialName("id") val id: Int,
+    @SerialName("board_game_publisher") val boardGamePublisher: String?,
+    @SerialName("image") var image: String?,
+    @SerialName("name") var name: String?,
+    @SerialName("thumbnail") var thumbnail: String?,
+    @SerialName("year_published") var yearPublished: Int?,
+    @SerialName("bgg_id") var bggId: Int?,
+) : BiMappable<BoardGameDTO, BoardGameUI> {
 
+    override fun mapToDto(): BoardGameDTO {
+        return BoardGameDTO(
+            id = id,
+            boardGamePublisher = boardGamePublisher,
+            image = image,
+            name = name,
+            bggId = bggId,
+            thumbnail = thumbnail,
+            yearPublished = yearPublished
+        )
+    }
+
+    override fun mapToUI(): BoardGameUI {
+        return BoardGameUI(
+            id = id,
+            boardGamePublisher = boardGamePublisher,
+            image = image,
+            name = name,
+            bggId = bggId,
+            thumbnail = thumbnail,
+            yearPublished = yearPublished
+        )
+    }
 }

@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -57,12 +57,13 @@ import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
 import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
-import com.baldomeronapoli.eventplanner.domain.models.FeedbackUIType
+import com.baldomeronapoli.eventplanner.android.utils.uriToByteArray
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
+import com.baldomeronapoli.eventplanner.utils.TimeConstant
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import dev.gitlive.firebase.storage.File
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -99,7 +100,6 @@ fun CreateEventScreen(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEventContent(
     uiState: UiState,
@@ -108,12 +108,13 @@ fun CreateEventContent(
     goBack: () -> Unit,
 ) {
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var context = LocalContext.current
     val singlePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
             it?.let { image ->
                 imageUri = image
-                onIntent(UiIntent.SetThumbnail(File(image)))
+                onIntent(UiIntent.SetThumbnailByArray(uriToByteArray(context, imageUri!!)))
             }
         }
     )
@@ -176,7 +177,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.date.toFormattedDateString("dd/MM/yyyy"),
+                value = uiState.event.startDate.toFormattedDateString(),
                 label = stringResource(id = R.string.date),
                 maxLines = 1,
                 onValueChange = { },
@@ -192,7 +193,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.date.toFormattedDateString("HH:mm"),
+                value = uiState.event.startDate.toFormattedDateString(TimeConstant.TIME_FORMAT_24_HOUR),
                 label = stringResource(id = R.string.hour),
                 maxLines = 1,
                 onValueChange = { },
@@ -206,23 +207,22 @@ fun CreateEventContent(
         }
 
         item {
-            Text("Selected DateTime: ${uiState.event.date.toFormattedDateString()}")
             MyDatePickerDialog(
                 show = showDatePickerDialog,
-                value = uiState.event.date,
+                value = uiState.event.startDate,
                 onDismiss = { showDatePickerDialog = false },
                 onDateSelected = {
-                    onIntent(UiIntent.UpdateDateEvent(it))
+                    onIntent(UiIntent.UpdateStartDateEvent(it))
                 })
         }
 
         item {
             MyTimePickerDialog(
                 show = showTimePickerDialog,
-                value = uiState.event.date,
+                value = uiState.event.startDate,
                 onDismiss = { showTimePickerDialog = false },
                 onTimeSelected = {
-                    onIntent(UiIntent.UpdateDateEvent(it))
+                    onIntent(UiIntent.UpdateStartDateEvent(it))
                 })
         }
 
@@ -272,15 +272,15 @@ fun CreateEventContent(
         item {
             AddressMap(
                 address = uiState.queryAddress,
-                lat = uiState.event.place.coordinates.latitude,
-                lng = uiState.event.place.coordinates.longitude
+                lat = uiState.event.address.latitude,
+                lng = uiState.event.address.longitude
             ) { onIntent(UiIntent.UpdatePlace(it)) }
         }
 
         item {
             NButton(
                 text = stringResource(id = R.string.create_event),
-                enabled = uiState.event.isValid()
+                enabled = true
             ) {
                 onIntent(UiIntent.CreateEvent)
             }

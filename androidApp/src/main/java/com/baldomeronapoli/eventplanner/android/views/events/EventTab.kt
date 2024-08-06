@@ -10,21 +10,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.baldomeronapoli.eventplanner.android.components.EventCardWide
 import com.baldomeronapoli.eventplanner.android.components.NPreview
-import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 
 @Composable
 fun EventTab(
     modifier: Modifier = Modifier,
-    events: List<Event> = emptyList(),
-    goToEventDetail: (Event) -> Unit
+    events: List<EventUI?> = emptyList(),
+    goToEventDetail: (EventUI) -> Unit
 ) {
     if (events.isEmpty()) {
         EmptyEvent()
     } else {
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(events) { event ->
-                EventCardWide(event = event, onClick = goToEventDetail)
+                EventCardWide(event = event!!, onClick = goToEventDetail)
             }
         }
     }

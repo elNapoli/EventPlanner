@@ -38,7 +38,7 @@ import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
-import com.baldomeronapoli.eventplanner.domain.models.BoardGame
+import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
 
 
 @Composable
@@ -46,9 +46,9 @@ fun AutoComplete(
     value: String,
     query: String,
     label: String? = null,
-    items: List<BoardGame>? = emptyList(),
+    items: List<BoardGameUI?> = emptyList(),
     onValueQueryChange: (String) -> Unit,
-    onValueChange: (BoardGame) -> Unit,
+    onValueChange: (BoardGameUI) -> Unit,
 ) {
     var textFieldSize by remember {
         mutableStateOf(Size.Zero)
@@ -138,10 +138,10 @@ fun AutoComplete(
                     LazyColumn(
                         modifier = Modifier.heightIn(max = 150.dp),
                     ) {
-                        items?.let {
-                            items(
-                                items
-                            ) {
+                        items(
+                            items
+                        ) { i ->
+                            i?.let {
                                 ItemsCategory(it) { title ->
                                     onValueChange(title)
                                     onValueQueryChange("")
@@ -164,8 +164,8 @@ fun AutoComplete(
 
 @Composable
 fun ItemsCategory(
-    boardGame: BoardGame,
-    onSelect: (BoardGame) -> Unit
+    boardGame: BoardGameUI,
+    onSelect: (BoardGameUI) -> Unit
 ) {
 
     Row(

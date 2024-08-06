@@ -1,47 +1,69 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
-import com.baldomeronapoli.eventplanner.data.firebaseModels.FEvent
-import com.baldomeronapoli.eventplanner.mappers.Mappable
-import com.baldomeronapoli.eventplanner.utils.randomUUID
-import dev.gitlive.firebase.firestore.Timestamp
-import dev.gitlive.firebase.storage.File
+import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
+import com.baldomeronapoli.eventplanner.mappers.BiMappable
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
+import kotlinx.datetime.Instant
+import kotlinx.serialization.SerialName
 
 data class Event(
-    override val id: String = randomUUID,
-    val thumbnail: File? = null,
-    val thumbnailUrl: String = "",
-    var title: String = "",
-    var description: String = "",
-    var boardgames: List<BoardGame> = emptyList(),
-    var attendees: List<Attendee> = emptyList(),
-    var host: Attendee = Attendee(),
-    var slots: Int = 0,
-    var date: Timestamp = Timestamp.now(),
-    var isPrivate: Boolean = false,
-    var price: Double = 0.0,
-    var place: Address = Address(),
-) : BaseModel, Mappable<FEvent> {
+    @SerialName("id")
+    val id: Int,
+    @SerialName("thumbnail")
+    var thumbnail: Thumbnail,
+    @SerialName("start_date")
+    var startDate: Instant,
+    @SerialName("end_date")
+    var endDate: Instant,
+    @SerialName("title")
+    var title: String,
+    @SerialName("description")
+    var description: String,
+    @SerialName("slots")
+    var slots: Int,
+    @SerialName("is_private")
+    var isPrivate: Boolean,
+    @SerialName("price")
+    var price: Double,
+    @SerialName("host")
+    var host: User,
+    @SerialName("attendees")
+    var attendees: List<User>,
+    @SerialName("address")
+    var address: Address,
+    @SerialName("board_games")
+    var boardgames: List<BoardGame>
+) : BiMappable<EventDTO, EventUI> {
 
-    fun isValid(): Boolean {
-
-        return (this.thumbnail != null && this.title.isNotEmpty() && this.description.isNotEmpty()
-                && this.boardgames.isNotEmpty()) && this.place.street != null && this.place.coordinates.latitude != 0.0 && this.place.coordinates.longitude != 0.0
-    }
-
-    override fun map(): FEvent = FEvent(
+    override fun mapToDto(): EventDTO = EventDTO(
         id = id,
-        thumbnail = thumbnailUrl,
+        thumbnail = thumbnail.mapToDto(),
+        startDate = startDate,
+        endDate = endDate,
         title = title,
         description = description,
-        attendeesId = attendees.map { it.id },
         slots = slots,
-        date = date,
         isPrivate = isPrivate,
         price = price,
-        hostId = host.id
+        host = host.mapToDto(),
+        attendees = attendees.map { it.mapToDto() },
+        address = address.mapToDto(),
+        boardgames = boardgames.map { it.mapToDto() }
+    )
+
+    override fun mapToUI(): EventUI = EventUI(
+        id = id,
+        thumbnail = thumbnail.mapToUI(),
+        startDate = startDate.toEpochMilliseconds(),
+        endDate = endDate.toEpochMilliseconds(),
+        title = title,
+        description = description,
+        slots = slots,
+        isPrivate = isPrivate,
+        price = price,
+        host = host.mapToUI(),
+        attendees = attendees.map { it.mapToUI() },
+        address = address.mapToUI(),
+        boardgames = boardgames.map { it.mapToUI() }
     )
 }
-
-
-val ho = Timestamp.now()
-

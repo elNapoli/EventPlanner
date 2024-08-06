@@ -21,7 +21,7 @@ sealed interface NavigationEvent {
 
     data class NavigateToDetailScreen(
         val route: Route,
-        val eventId: String
+        val eventId: Int
     ) :
         NavigationEvent
 }

@@ -30,13 +30,14 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.White
 import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 
 @Composable
 fun EventCard(
     modifier: Modifier = Modifier,
-    event: Event,
-    onClick: (Event) -> Unit
+    event: EventUI,
+    onClick: (EventUI) -> Unit
 ) {
     Column(
         modifier = modifier

@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.utils
 
 import com.baldomeronapoli.eventplanner.constants.Preferences
+import com.baldomeronapoli.eventplanner.data.utils.InitialRoute
 import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
 import platform.Foundation.NSUserDefaults
@@ -16,14 +17,14 @@ actual class SharePreferences actual constructor() {
         settings.putBoolean(Preferences.SHOW_ONBOARDING, false)
     }
 
-    actual fun setEmailCurrentUser(email: String?) {
+    actual fun setInitialRoute(email: String?) {
         if (email == null) {
-            settings.remove(Preferences.EMAIL_CURRENT_USER)
+            settings.remove(Preferences.MAIN_ROUTE)
         } else {
-            settings.putString(Preferences.EMAIL_CURRENT_USER, email)
+            settings.putString(Preferences.MAIN_ROUTE, email)
         }
     }
 
-    actual fun getEmailCurrentUser() =
-        settings.getStringOrNull(Preferences.EMAIL_CURRENT_USER)
+    actual fun getInitialRoute() =
+        settings.getString(Preferences.MAIN_ROUTE, InitialRoute.AUTH)
 }

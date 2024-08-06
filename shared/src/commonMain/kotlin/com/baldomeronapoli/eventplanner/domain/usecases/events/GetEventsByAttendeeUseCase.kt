@@ -11,6 +11,6 @@ class GetEventsByAttendeeUseCase(
     private val repository: EventRepository,
 ) {
     @NativeCoroutines
-    suspend operator fun invoke(): Flow<NetworkResult<Triple<List<Event>, List<Event>, List<Event>>>> =
+    suspend operator fun invoke(): Flow<NetworkResult<List<Event?>>> =
         repository.getEventsByAttendee()
 }

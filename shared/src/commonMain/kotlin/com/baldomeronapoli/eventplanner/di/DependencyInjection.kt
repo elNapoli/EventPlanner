@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.di
 
-import com.baldomeronapoli.eventplanner.data.managers.EventManager
+import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
@@ -8,6 +8,7 @@ import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.repositories.EventRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.auth.LoginWithGoogleUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
@@ -15,12 +16,16 @@ import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttend
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
-import dev.gitlive.firebase.Firebase
-import dev.gitlive.firebase.auth.auth
-import dev.gitlive.firebase.firestore.firestore
-import dev.gitlive.firebase.storage.storage
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.mobile
+import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.appleNativeLogin
+import io.github.jan.supabase.compose.auth.googleNativeLogin
+import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.gotrue.Auth
+import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.realtime.Realtime
+import io.github.jan.supabase.storage.Storage
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -64,11 +69,40 @@ object DependencyInjection {
         }.koin
 
     private fun appModule() = module {
-        single { Firebase.auth }
-        single { Firebase.firestore }
-        single { Firebase.storage }
         single { Geolocator.mobile() }
         single { SharePreferences() }
+        single {
+            createSupabaseClient(
+                supabaseUrl = "https://${MySecrets.PROJECT_SUPABASE_REF}.supabase.co",
+                supabaseKey = MySecrets.API_KEY_SUPABASE
+            ) {
+
+                //...
+
+                install(Storage) {
+                    // settings
+                }
+
+                install(Postgrest) {
+
+                }
+
+                install(Realtime) {
+                    // settings
+                }
+
+                install(Auth) {
+                }
+                install(ComposeAuth) {
+                    googleNativeLogin(serverClientId = MySecrets.GOOGLE_CLIENT_ID)
+                    appleNativeLogin()
+                }
+
+            }
+        }
+        single {
+            EventQueries(get())
+        }
     }
 
     private fun repositoryModule() = module {
@@ -87,12 +121,12 @@ object DependencyInjection {
                 }
             }
         }
-        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
-        single<EventRepository> { EventRepositoryImpl(get(), get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
+        single<EventRepository> { EventRepositoryImpl(get()) }
     }
 
     private fun managersModuleO() = module {
-        single { EventManager(get(), get(), get()) }
+
     }
 
     private fun useCaseModule() = module {
@@ -100,8 +134,9 @@ object DependencyInjection {
         single { SignInWithEmailAndPasswordUseCase(get()) }
         single { CheckIsLoggedUserUseCase(get()) }
         single { CreateEventUseCase(get()) }
-        single { SearchBoardGamesUseCase(get()) }
         single { GetEventsByAttendeeUseCase(get()) }
         single { GetEventByIdUseCase(get()) }
+        single { LoginWithGoogleUseCase(get()) }
+        single { SearchBoardGamesUseCase(get()) }
     }
 }
