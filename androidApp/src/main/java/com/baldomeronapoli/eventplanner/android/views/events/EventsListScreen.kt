@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baldomeronapoli.eventplanner.android.LocalMainViewModel
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray40
@@ -40,13 +41,14 @@ import com.baldomeronapoli.eventplanner.android.theme.White
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
+import com.baldomeronapoli.eventplanner.presentation.main.MainContract
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun MyEventsScreen(
+fun EventsListScreen(
     modifier: Modifier = Modifier,
     uiState: UiState,
     onIntent: (UiIntent) -> Unit,
@@ -56,7 +58,7 @@ fun MyEventsScreen(
 
 ) {
     var tabIndex by remember { mutableIntStateOf(0) }
-
+    val mainViewModel = LocalMainViewModel.current
     val tabs = listOf("Próximos", "Pasados", "Organizados")
     LaunchedEffect(Unit) {
         onIntent(UiIntent.LoadAllEventsByCurrentId)
@@ -129,7 +131,10 @@ fun MyEventsScreen(
                     when (tabIndex) {
                         0 -> EventTab(
                             events = uiState.nextEvents,
-                            goToEventDetail = goToEventDetail
+                            goToEventDetail = { event ->
+                                mainViewModel.sendIntent(MainContract.UiIntent.SetCurrentEvent(event))
+                                goToEventDetail(event)
+                            }
                         )
 
                         1 -> EventTab(
@@ -139,7 +144,10 @@ fun MyEventsScreen(
 
                         2 -> EventTab(
                             events = uiState.ownEvents,
-                            goToEventDetail = goToEventDetail
+                            goToEventDetail = { event ->
+                                mainViewModel.sendIntent(MainContract.UiIntent.SetCurrentEvent(event))
+                                goToEventDetail(event)
+                            }
                         )
                     }
                 }
@@ -153,7 +161,7 @@ fun MyEventsScreen(
 fun PreviewMyEventsScreenLight(modifier: Modifier = Modifier) {
     val effect: StateFlow<Effect?> = MutableStateFlow(null)
     NPreview {
-        MyEventsScreen(
+        EventsListScreen(
             uiState = UiState(),
             onIntent = {},
             effect = effect,
