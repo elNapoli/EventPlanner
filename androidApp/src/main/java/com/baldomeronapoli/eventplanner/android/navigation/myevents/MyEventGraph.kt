@@ -24,7 +24,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
 import com.baldomeronapoli.eventplanner.android.views.events.CreateEventScreen
-import com.baldomeronapoli.eventplanner.android.views.events.MyEventsScreen
+import com.baldomeronapoli.eventplanner.android.views.events.EventsListScreen
 import com.baldomeronapoli.eventplanner.presentation.event.EventViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -52,7 +52,7 @@ fun NavGraphBuilder.myEventGraph(
                     }
                 }
             ) {
-                MyEventsScreen(
+                EventsListScreen(
                     uiState = uiState.value,
                     effect = viewmodel.effect,
                     onIntent = viewmodel::sendIntent,
