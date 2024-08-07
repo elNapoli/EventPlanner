@@ -36,6 +36,19 @@ class EventRepositoryImpl(
             }))
         }
 
+    override suspend fun getNearbyEvents(
+        page: Int,
+        lat: Double,
+        long: Double
+    ): Flow<NetworkResult<List<Event?>>> = flow {
+        emit(NetworkResult.Loading(true))
+        val events = eventQueries.getNearbyEvents(page = page, lat = lat, lon = long)
+        emit(NetworkResult.Success(events.data.map {
+            it.toInstance()
+
+        }))
+    }
+
     override suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame?>>> =
         flow {
             emit(NetworkResult.Loading(true))

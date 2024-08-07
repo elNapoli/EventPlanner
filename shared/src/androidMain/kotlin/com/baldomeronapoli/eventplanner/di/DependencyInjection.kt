@@ -21,7 +21,7 @@ actual fun platformModule() = module {
 
     //auth
     viewModel { AuthViewModel(get(), get(), get()) }
-    viewModel { EventViewModel(get(), get(), get(), get(), get()) }
+    viewModel { EventViewModel(get(), get(), get(), get(), get(), get()) }
 
     //Main
     viewModel { MainViewModel(get()) }

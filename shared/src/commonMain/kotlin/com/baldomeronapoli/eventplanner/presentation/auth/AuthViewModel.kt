@@ -53,7 +53,6 @@ open class AuthViewModel(
     private fun loginWithGoogle(token: String) = scope.useCaseRunner(
         loadingUpdater = { value -> updateUiState { loading(value) } },
         onError = {
-            Logger.e(it.message.toString())
             updateUiState {
                 handleCreateUseWithEmailAndPassword(
                     user = null, feedbackUI = FeedbackUI(

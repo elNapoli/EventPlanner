@@ -4,6 +4,7 @@ import co.touchlab.kermit.Logger
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetNearbyEventsUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
@@ -25,8 +26,9 @@ class EventViewModel(
     private val searchBoardGamesUseCase: SearchBoardGamesUseCase,
     private val getEventsByAttendeeUseCase: GetEventsByAttendeeUseCase,
     private val getEventByIdUseCase: GetEventByIdUseCase,
+    private val getNearbyEventsUseCase: GetNearbyEventsUseCase
 
-    ) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
+) : BaseViewModel<UiState, UiIntent, Effect>(UiState()) {
 
     init {
         getCurrentLocation()
@@ -65,8 +67,24 @@ class EventViewModel(
             is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
             is UiIntent.UpdateStartDateEvent -> updateUiState { copy(event = event.copy(startDate = uiIntent.value)) }
             is UiIntent.SetThumbnailByArray -> updateUiState { copy(tempThumbnail = uiIntent.file) }
+            is UiIntent.GetNearbyEvents -> TODO()
         }
     }
+
+    private fun getNearbyEvents(page: Int) = scope.useCaseRunner(
+        loadingUpdater = {
+            updateUiState { copy(isLoading = it) }
+        },
+        onError = {},
+        onSuccess = {
+            val hola = it.map { event -> event!!.mapToUI() }
+            Logger.e("los eventos son $hola")
+
+        },
+        useCase = {
+            getNearbyEventsUseCase(page = page, lat = -34.6037389, long = -58.3815704)
+        }
+    )
 
     private fun getEventById(eventId: String) = scope.useCaseRunner(
         loadingUpdater = {
@@ -119,7 +137,6 @@ class EventViewModel(
             updateUiState { copy(isLoading = it) }
         },
         onError = {
-            Logger.e(it.message)
             updateUiState {
                 handleFeedbackUI(
                     feedbackUI = FeedbackUI(

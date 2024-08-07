@@ -10,6 +10,7 @@ import com.baldomeronapoli.eventplanner.data.postgresql.dto.BoardGameDTO
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.DbOperationResponse
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
 import com.baldomeronapoli.eventplanner.data.postgresql.requests.AttendeeEventPagination
+import com.baldomeronapoli.eventplanner.data.postgresql.requests.NearbyEventsRequest
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
@@ -38,7 +39,31 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
         events.data.map { event ->
             val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
             val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes)
-            Logger.e(url)
+            event.thumbnail.name = url
+        }
+        return events
+    }
+
+
+    @NativeCoroutines
+    suspend fun getNearbyEvents(page: Int, lat: Double, lon: Double): BaseDto<List<EventDTO>> {
+        val result = supabaseClient.postgrest.rpc(
+            function = "get_nearby_events",
+            parameters = BaseRequest(
+                NearbyEventsRequest(
+                    currentPage = page,
+                    recordsPerPage = 10,
+                    latitude = lat,
+                    longitude = lon
+                )
+            )
+        )
+        Logger.e(result.data)
+        val events = result.decodeAs<BaseDto<List<EventDTO>>>()
+
+        events.data.map { event ->
+            val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
+            val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes)
             event.thumbnail.name = url
         }
         return events
@@ -69,14 +94,12 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
                     ilike("name", "%${query}%")
                 }
             }.data
-        Logger.e(b.toString())
         val a = supabaseClient.from(Scheme.BOARD_GAME_TABLE)
             .select(Columns.raw("*")) {
                 filter {
                     ilike("name", "%${query}%")
                 }
             }.decodeList<BoardGameDTO>()
-        Logger.e(a.toString())
         return a
     }
 }

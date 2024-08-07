@@ -13,6 +13,7 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndP
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
+import com.baldomeronapoli.eventplanner.domain.usecases.events.GetNearbyEventsUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.SharePreferences
@@ -138,5 +139,6 @@ object DependencyInjection {
         single { GetEventByIdUseCase(get()) }
         single { LoginWithGoogleUseCase(get()) }
         single { SearchBoardGamesUseCase(get()) }
+        single { GetNearbyEventsUseCase(get()) }
     }
 }

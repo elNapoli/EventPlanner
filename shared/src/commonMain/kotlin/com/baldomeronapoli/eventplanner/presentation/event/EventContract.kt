@@ -14,6 +14,7 @@ interface EventContract {
         var tempThumbnail: ByteArray? = null,
         var nextEvents: List<EventUI> = emptyList(),
         var expiredEvents: List<EventUI> = emptyList(),
+        var nearbyEvents: List<EventUI?> = emptyList(),
         var ownEvents: List<EventUI?> = emptyList(),
         var queryGames: String = "",
         var boardGameBGG: List<BoardGameUI?> = emptyList(),
@@ -112,6 +113,7 @@ interface EventContract {
         data class GetEventById(val eventId: String) : UiIntent
         data object CreateEvent : UiIntent
         data object LoadAllEventsByCurrentId : UiIntent
+        data class GetNearbyEvents(val page: Int) : UiIntent
 
     }
 

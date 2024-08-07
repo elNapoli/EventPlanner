@@ -23,6 +23,14 @@ interface EventRepository {
     suspend fun getEventsByAttendee(): Flow<NetworkResult<List<Event?>>>
 
     @NativeCoroutines
+    suspend fun getNearbyEvents(
+        page: Int,
+        lat: Double,
+        long: Double
+    ): Flow<NetworkResult<List<Event?>>>
+
+
+    @NativeCoroutines
     suspend fun searchBoardGames(query: String): Flow<NetworkResult<List<BoardGame?>>>
 
 }
