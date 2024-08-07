@@ -13,6 +13,7 @@ import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
 import com.baldomeronapoli.eventplanner.android.views.home.HomeScreen
 import com.baldomeronapoli.eventplanner.presentation.event.EventViewModel
+import com.baldomeronapoli.eventplanner.presentation.main.MainContract
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.homeGraph(onNavigationEvent: (NavigationEvent) -> Unit) {
@@ -36,9 +37,17 @@ fun NavGraphBuilder.homeGraph(onNavigationEvent: (NavigationEvent) -> Unit) {
                     uiState = uiState.value,
                     effect = viewmodel.effect,
                     onIntent = viewmodel::sendIntent,
-                ) {
-                    onNavigationEvent(NavigationEvent.OnNavigateToScreen(EventDetailRoute.Index))
-                }
+                    goToEventDetail = { event ->
+                        mainViewModel.sendIntent(MainContract.UiIntent.SetCurrentEvent(event))
+                        
+                        onNavigationEvent(
+                            NavigationEvent.NavigateToDetailScreen(
+                                EventDetailRoute.Index,
+                                event.id
+                            )
+                        )
+                    },
+                )
             }
 
         }

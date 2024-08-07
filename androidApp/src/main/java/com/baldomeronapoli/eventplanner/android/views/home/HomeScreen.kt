@@ -62,7 +62,7 @@ fun HomeScreen(
                     EventCard(
                         modifier = Modifier.width(260.dp),
                         event = item,
-                        onClick = {  }
+                        onClick = goToEventDetail
                     )
                 }
             }

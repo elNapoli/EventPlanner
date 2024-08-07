@@ -22,6 +22,7 @@ import kotlin.time.Duration.Companion.minutes
 
 class EventQueries(private val supabaseClient: SupabaseClient) {
 
+
     @NativeCoroutines
     suspend fun getEventsByAttendee(page: Int = 1): BaseDto<List<EventDTO>> {
         val result = supabaseClient.postgrest.rpc(
@@ -35,10 +36,11 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
         )
 
         val events = result.decodeAs<BaseDto<List<EventDTO>>>()
-
         events.data.map { event ->
             val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
-            val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes)
+            val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes) {
+                size(width = 228, height = 168)
+            }
             event.thumbnail.name = url
         }
         return events

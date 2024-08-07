@@ -81,7 +81,8 @@ class EventViewModel(
 
         },
         useCase = {
-            getNearbyEventsUseCase(page = page, lat = -34.6037389, long = -58.3815704)
+            getNearbyEventsUseCase(page = page, lat = -40.5607333, long = -73.1789895)
+//TODO se debe tomar las coordenadas del gps del usuario
         }
     )
 
