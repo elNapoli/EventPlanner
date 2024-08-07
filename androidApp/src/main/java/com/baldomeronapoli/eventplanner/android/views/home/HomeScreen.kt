@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -28,13 +29,24 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray60
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
+import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    uiState: UiState,
+    onIntent: (UiIntent) -> Unit,
+    effect: StateFlow<Effect?>,
     goToEventDetail: (EventUI) -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        onIntent(UiIntent.GetNearbyEvents(1))
+    }
     Column {
         Text(
             text = stringResource(id = R.string.find_an_event_around_you),
@@ -45,12 +57,14 @@ fun HomeScreen(
             modifier = Modifier.padding(top = 24.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(listOf(EventsMock.event)) { item ->
-                EventCard(
-                    modifier = Modifier.width(260.dp),
-                    event = item,
-                    onClick = goToEventDetail
-                )
+            items(uiState.nearbyEvents) { item ->
+                item?.let{
+                    EventCard(
+                        modifier = Modifier.width(260.dp),
+                        event = item,
+                        onClick = {  }
+                    )
+                }
             }
         }
 
@@ -89,8 +103,12 @@ fun HomeScreen(
 @Composable
 fun PreviewButtonTapLight(modifier: Modifier = Modifier) {
     NPreview {
-
-        HomeScreen {
+        val effect: StateFlow<Effect?> = MutableStateFlow(null)
+        HomeScreen(
+            uiState = UiState(),
+            effect = effect,
+            onIntent = { },
+        ) {
 
         }
     }

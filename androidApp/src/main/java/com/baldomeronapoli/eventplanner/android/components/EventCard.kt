@@ -1,7 +1,6 @@
 package com.baldomeronapoli.eventplanner.android.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,19 +17,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.White
-import com.baldomeronapoli.eventplanner.domain.models.Event
+import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
+import com.baldomeronapoli.eventplanner.utils.TimeConstant
 
 
 @Composable
@@ -56,12 +59,17 @@ fun EventCard(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         ) {
-            Image(
+
+            AsyncImage(
                 modifier = Modifier
                     .fillMaxWidth(),
-                painter = painterResource(id = R.drawable.empty_thumbnail_event),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(event.thumbnail.name)
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(R.drawable.placeholder),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth // Adjust the content scale as needed
+                contentScale = ContentScale.FillWidth
             )
             Column(
                 modifier = Modifier
@@ -74,20 +82,20 @@ fun EventCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "02",
+                    text = event.startDate.toFormattedDateString(TimeConstant.DAY_ONLY),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = Blue
                 )
                 Text(
-                    text = "Dis",
+                    text = event.startDate.toFormattedDateString(TimeConstant.MONTH_SHORT_LETTER),
                     style = MaterialTheme.typography.titleSmall,
                     color = Blue,
                 )
             }
         }
         Text(
-            text = "Shawn Mendes The Virtual Tour in Germany 2021",
+            text = event.title,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -99,9 +107,9 @@ fun EventCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(text = "10.00 - 12.00", style = MaterialTheme.typography.titleSmall)
+            Text(text = event.startDate.toFormattedDateString(TimeConstant.TIME_FORMAT_24_HOUR), style = MaterialTheme.typography.titleSmall)
             Text(
-                text = "$100",
+                text = "Free",
                 color = Blue,
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleLarge

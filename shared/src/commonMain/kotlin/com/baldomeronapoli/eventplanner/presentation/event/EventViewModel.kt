@@ -67,7 +67,7 @@ class EventViewModel(
             is UiIntent.GetEventById -> getEventById(uiIntent.eventId)
             is UiIntent.UpdateStartDateEvent -> updateUiState { copy(event = event.copy(startDate = uiIntent.value)) }
             is UiIntent.SetThumbnailByArray -> updateUiState { copy(tempThumbnail = uiIntent.file) }
-            is UiIntent.GetNearbyEvents -> TODO()
+            is UiIntent.GetNearbyEvents -> getNearbyEvents(uiIntent.page)
         }
     }
 
@@ -77,8 +77,7 @@ class EventViewModel(
         },
         onError = {},
         onSuccess = {
-            val hola = it.map { event -> event!!.mapToUI() }
-            Logger.e("los eventos son $hola")
+            updateUiState { copy(nearbyEvents = it.map { event -> event!!.mapToUI() }) }
 
         },
         useCase = {
@@ -150,6 +149,8 @@ class EventViewModel(
         },
         onSuccess = { events ->
             updateUiState { copy(ownEvents = events.map { it?.mapToUI() }) }
+            updateUiState { copy(nearbyEvents = events.map { it?.mapToUI() }) }
+
         },
         useCase = {
             getEventsByAttendeeUseCase()

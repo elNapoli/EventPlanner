@@ -8,6 +8,8 @@ class TimeConstant {
         const val TIME_FORMAT_24_HOUR = "HH:mm"
         const val TIME_FORMAT_12_HOUR = "hh:mm a"
         const val DATE_FORMAT_WITH_TIMEZONE = "dd-MM-yyyy HH:mm:ss z"
+        const val DAY_ONLY = "d"
+        const val MONTH_SHORT_LETTER = "MMM"
     }
 
 }
