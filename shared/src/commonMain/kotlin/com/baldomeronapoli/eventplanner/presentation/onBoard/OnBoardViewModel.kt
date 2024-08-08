@@ -4,11 +4,11 @@ import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewMod
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiState
-import com.baldomeronapoli.eventplanner.utils.SharePreferences
+import com.baldomeronapoli.eventplanner.utils.PreferencesManager
 import com.rickclephas.kmp.observableviewmodel.launch
 
 class OnBoardViewModel(
-    private val preferences: SharePreferences,
+    private val preferences: PreferencesManager,
 
     ) : BaseViewModel<UiState, UiIntent, Effect>(
     UiState(preferences.getShownOnboarding())

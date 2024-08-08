@@ -6,7 +6,7 @@ import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.utils.InitialRoute
 import com.baldomeronapoli.eventplanner.domain.models.User
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
-import com.baldomeronapoli.eventplanner.utils.SharePreferences
+import com.baldomeronapoli.eventplanner.utils.PreferencesManager
 import com.baldomeronapoli.eventplanner.utils.toMyError
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import io.github.jan.supabase.SupabaseClient
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.flow
 class AuthRepositoryImpl(
     private val supabaseClient: SupabaseClient,
     private val eventQueries: EventQueries,
-    private val preferences: SharePreferences
+    private val preferences: PreferencesManager
 ) : AuthRepository {
     override suspend fun createUseWithEmailAndPassword(
         email: String,

@@ -6,15 +6,20 @@ import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailA
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
-import com.baldomeronapoli.eventplanner.utils.SharePreferences
+import com.baldomeronapoli.eventplanner.utils.PreferencesManager
+import com.russhwolf.settings.NSUserDefaultsSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.dsl.module
+import platform.Foundation.NSUserDefaults
 
 
 actual fun platformModule() = module {
 
     // onboard
+    factory { PreferencesManager(NSUserDefaultsSettings(NSUserDefaults())) }
+
+
     factory { OnBoardViewModel(get()) }
 
     //auth
@@ -32,5 +37,5 @@ object ViewModels : KoinComponent {
 
 @Suppress("unused")
 object AppDependencies : KoinComponent {
-    fun sharePreferences() = get<SharePreferences>()
+    fun preferencesManager() = get<PreferencesManager>()
 }

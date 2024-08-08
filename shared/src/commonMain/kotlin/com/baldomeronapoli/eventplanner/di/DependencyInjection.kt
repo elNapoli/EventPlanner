@@ -15,7 +15,6 @@ import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttend
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetNearbyEventsUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
-import com.baldomeronapoli.eventplanner.utils.SharePreferences
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.mobile
 import io.github.jan.supabase.compose.auth.ComposeAuth
@@ -70,7 +69,6 @@ object DependencyInjection {
 
     private fun appModule() = module {
         single { Geolocator.mobile() }
-        single { SharePreferences() }
         single {
             createSupabaseClient(
                 supabaseUrl = "https://${MySecrets.PROJECT_SUPABASE_REF}.supabase.co",
