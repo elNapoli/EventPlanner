@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.utils
 
 import co.touchlab.kermit.Logger
+import com.baldomero.napoli.common.network.MyError
 import io.github.jan.supabase.exceptions.RestException
 
 sealed class NetworkResult<out T>(
@@ -21,8 +22,6 @@ sealed class NetworkResult<out T>(
     data class Loading<out T>(val isLoading: Boolean) :
         NetworkResult<T>(data = null, message = null, error = null)
 }
-
-data class MyError(val message: String)
 
 
 fun Throwable.toMyError(): MyError {
