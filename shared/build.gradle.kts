@@ -90,6 +90,9 @@ kotlin {
             implementation("io.github.jan-tennert.supabase:compose-auth")
             implementation("io.github.jan-tennert.supabase:apollo-graphql")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+
+            implementation("com.baldomero.napoli.eventplanner:core:1.0.0")
+            implementation("com.baldomero.napoli:common:1.0.0")
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

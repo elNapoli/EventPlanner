@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.onBoard
 
-import com.baldomeronapoli.eventplanner.presentation.core.BaseViewModel
+import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiState

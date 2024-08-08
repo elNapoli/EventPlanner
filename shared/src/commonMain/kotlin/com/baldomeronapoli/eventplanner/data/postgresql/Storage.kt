@@ -1,6 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.postgresql
 
-import com.baldomeronapoli.eventplanner.utils.randomUUID
+import com.baldomero.napoli.common.randomUUID
 import kotlinx.datetime.Clock
 
 object Storage {

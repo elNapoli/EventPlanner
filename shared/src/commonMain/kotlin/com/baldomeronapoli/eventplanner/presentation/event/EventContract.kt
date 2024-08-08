@@ -1,8 +1,8 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
-import com.baldomeronapoli.eventplanner.presentation.core.BaseEffect
-import com.baldomeronapoli.eventplanner.presentation.core.BaseUiIntent
-import com.baldomeronapoli.eventplanner.presentation.core.BaseUiState
+import com.baldomero.napoli.eventplanner.core.presentation.effect.BaseUiIntent
+import com.baldomero.napoli.eventplanner.core.presentation.intent.BaseEffect
+import com.baldomero.napoli.eventplanner.core.presentation.state.BaseUiState
 import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
