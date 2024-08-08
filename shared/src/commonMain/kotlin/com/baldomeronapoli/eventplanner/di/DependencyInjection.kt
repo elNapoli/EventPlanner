@@ -3,7 +3,6 @@ package com.baldomeronapoli.eventplanner.di
 import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
-import com.baldomeronapoli.eventplanner.data.services.AlgoliaService
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.repositories.EventRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
@@ -107,7 +106,6 @@ object DependencyInjection {
     }
 
     private fun repositoryModule() = module {
-        single { AlgoliaService(get()) }
         single {
             HttpClient {
                 install(ContentNegotiation) {

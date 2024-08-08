@@ -1,7 +1,7 @@
 package com.baldomeronapoli.eventplanner.domain.usecases
 
 import com.baldomero.napoli.common.network.MyError
-import com.baldomeronapoli.eventplanner.utils.NetworkResult
+import com.baldomero.napoli.common.network.NetworkResult
 import com.baldomeronapoli.eventplanner.utils.toMyError
 import com.rickclephas.kmp.observableviewmodel.ViewModelScope
 import com.rickclephas.kmp.observableviewmodel.launch
