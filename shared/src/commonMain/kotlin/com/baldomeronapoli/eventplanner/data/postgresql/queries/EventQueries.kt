@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.data.postgresql.queries
 
 import co.touchlab.kermit.Logger
+import com.baldomero.napoli.supabase.network.NetworkModule
 import com.baldomeronapoli.eventplanner.data.postgresql.Scheme
 import com.baldomeronapoli.eventplanner.data.postgresql.Storage.BUCKET_NAME
 import com.baldomeronapoli.eventplanner.data.postgresql.Storage.generatePathFile
@@ -12,7 +13,6 @@ import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
 import com.baldomeronapoli.eventplanner.data.postgresql.requests.AttendeeEventPagination
 import com.baldomeronapoli.eventplanner.data.postgresql.requests.NearbyEventsRequest
 import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.postgrest.from
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.query.Columns
@@ -20,12 +20,12 @@ import io.github.jan.supabase.postgrest.rpc
 import io.github.jan.supabase.storage.storage
 import kotlin.time.Duration.Companion.minutes
 
-class EventQueries(private val supabaseClient: SupabaseClient) {
+class EventQueries(private val supabaseClient: NetworkModule) {
 
 
     @NativeCoroutines
     suspend fun getEventsByAttendee(page: Int = 1): BaseDto<List<EventDTO>> {
-        val result = supabaseClient.postgrest.rpc(
+        val result = supabaseClient.client.postgrest.rpc(
             function = "get_user_attended_events_with_details",
             parameters = BaseRequest(
                 AttendeeEventPagination(
@@ -37,7 +37,7 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
 
         val events = result.decodeAs<BaseDto<List<EventDTO>>>()
         events.data.map { event ->
-            val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
+            val bucket = supabaseClient.client.storage.from(event.thumbnail.bucketId)
             val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes) {
                 size(width = 228, height = 168)
             }
@@ -49,7 +49,7 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
 
     @NativeCoroutines
     suspend fun getNearbyEvents(page: Int, lat: Double, lon: Double): BaseDto<List<EventDTO>> {
-        val result = supabaseClient.postgrest.rpc(
+        val result = supabaseClient.client.postgrest.rpc(
             function = "get_nearby_events",
             parameters = BaseRequest(
                 NearbyEventsRequest(
@@ -64,7 +64,7 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
         val events = result.decodeAs<BaseDto<List<EventDTO>>>()
 
         events.data.map { event ->
-            val bucket = supabaseClient.storage.from(event.thumbnail.bucketId)
+            val bucket = supabaseClient.client.storage.from(event.thumbnail.bucketId)
             val url = bucket.createSignedUrl(path = event.thumbnail.name, expiresIn = 1.minutes)
             event.thumbnail.name = url
         }
@@ -76,12 +76,12 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
         event: EventDTO,
         file: ByteArray
     ): Boolean {
-        val data = supabaseClient.postgrest.rpc(
+        val data = supabaseClient.client.postgrest.rpc(
             function = Scheme.Event.Functions.SETUP_EVENT_WITH_DETAILS,
             parameters = BaseRequest(event)
         ).decodeAs<BaseDto<DbOperationResponse>>()
         val path = generatePathFile(data.data.id)
-        supabaseClient.storage.from(BUCKET_NAME)
+        supabaseClient.client.storage.from(BUCKET_NAME)
             .upload(path, file)
         return true
     }
@@ -90,13 +90,13 @@ class EventQueries(private val supabaseClient: SupabaseClient) {
     suspend fun searchBoardGames(
         query: String
     ): List<BoardGameDTO?> {
-        val b = supabaseClient.from(Scheme.BOARD_GAME_TABLE)
+        val b = supabaseClient.client.from(Scheme.BOARD_GAME_TABLE)
             .select(Columns.raw("*")) {
                 filter {
                     ilike("name", "%${query}%")
                 }
             }.data
-        val a = supabaseClient.from(Scheme.BOARD_GAME_TABLE)
+        val a = supabaseClient.client.from(Scheme.BOARD_GAME_TABLE)
             .select(Columns.raw("*")) {
                 filter {
                     ilike("name", "%${query}%")

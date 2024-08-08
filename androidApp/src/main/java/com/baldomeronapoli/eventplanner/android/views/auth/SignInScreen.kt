@@ -39,6 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.Effect
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.UiIntent
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.UiState
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AlertSticky
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
@@ -51,9 +54,6 @@ import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.Purple
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -128,8 +128,6 @@ fun SignInScreen(
                         },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Email),
 
-                        isError = uiState.error?.property == "email",
-                        textError = uiState.error?.message ?: "",
                         placeholder = "prueba@gmail.com",
                         label = stringResource(id = R.string.email)
                     )
@@ -179,7 +177,6 @@ fun SignInScreen(
                         }, horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     NButton(
-                        enabled = uiState.error == null,
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(id = R.string.login_button)
                     ) {
@@ -199,7 +196,7 @@ fun SignInScreen(
                             text = stringResource(id = R.string.login_with_google),
                             squareButton = true,
                             hashedNonce = uiState.nonceHash(),
-                            googleClientId = uiState.googleClientId
+                            googleClientId = "uiState.googleClientId"
                         ) {
                             onIntent(UiIntent.LoginWithGoogle(it))
                         }

@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.domain.models
 
+import com.baldomero.napoli.supabase.auth.domain.models.User
 import com.baldomeronapoli.eventplanner.data.postgresql.dto.EventDTO
 import com.baldomeronapoli.eventplanner.mappers.BiMappable
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI

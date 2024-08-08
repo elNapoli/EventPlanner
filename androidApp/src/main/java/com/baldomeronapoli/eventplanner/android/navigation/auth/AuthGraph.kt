@@ -4,12 +4,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.baldomero.napoli.supabase.auth.presentation.AuthViewModel
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
 import com.baldomeronapoli.eventplanner.android.navigation.route.MainRoute
 import com.baldomeronapoli.eventplanner.android.views.auth.SignInScreen
 import com.baldomeronapoli.eventplanner.android.views.auth.SignUpScreen
 import com.baldomeronapoli.eventplanner.android.views.auth.SuccessfulSignUpScreen
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import org.koin.androidx.compose.koinViewModel
 
 

@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.presentation.models
 
+import com.baldomero.napoli.supabase.auth.presentation.models.UserUI
 import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.mappers.Mappable
 import kotlinx.datetime.Clock

@@ -4,12 +4,12 @@ import co.touchlab.kermit.Logger
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
 import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewModel
+import com.baldomero.napoli.eventplanner.core.utils.useCaseRunner
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetNearbyEventsUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState

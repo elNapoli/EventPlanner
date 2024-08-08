@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.baldomero.napoli.eventplanner.core.PreferencesManager
 import com.baldomero.napoli.eventplanner.onboarding.presentation.OnBoardViewModel
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.event.EventViewModel
 import com.baldomeronapoli.eventplanner.presentation.main.MainViewModel
 import com.russhwolf.settings.SharedPreferencesSettings
@@ -23,7 +22,6 @@ actual fun platformModule() = module {
     viewModel { OnBoardViewModel(get()) }
 
     //auth
-    viewModel { AuthViewModel(get(), get(), get()) }
     viewModel { EventViewModel(get(), get(), get(), get(), get(), get()) }
 
     //Main

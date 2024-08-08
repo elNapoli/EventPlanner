@@ -39,9 +39,9 @@ import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
-import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.Effect
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.UiIntent
+import com.baldomero.napoli.supabase.auth.presentation.AuthContract.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -120,7 +120,7 @@ fun SignUpScreen(
                     GoogleSignInButton(
                         text = stringResource(id = R.string.login_with_google),
                         hashedNonce = uiState.nonceHash(),
-                        googleClientId = uiState.googleClientId
+                        googleClientId = " uiState.googleClientId"
                     ) {
                         onIntent(UiIntent.LoginWithGoogle(it))
                     }
@@ -154,8 +154,6 @@ fun SignUpScreen(
                                 contentDescription = null
                             )
                         },
-                        isError = uiState.error?.property == "email",
-                        textError = uiState.error?.message ?: "",
                         placeholder = "prueba@gmail.com",
                         label = stringResource(id = R.string.email)
                     )
@@ -183,8 +181,7 @@ fun SignUpScreen(
                         onValueChange = {
                             onIntent(UiIntent.SaveRepeatPassword(it))
                         },
-                        isError = uiState.error?.property == "repeatPassword",
-                        textError = uiState.error?.message ?: "",
+
                         trailingIcon = {
                             val image = if (uiState.passwordVisible)
                                 Icons.Filled.Visibility
@@ -201,7 +198,6 @@ fun SignUpScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 32.dp),
-                        enabled = uiState.error == null,
                         text = stringResource(id = R.string.signup)
                     ) {
                         onIntent(UiIntent.CreateUseWithEmailAndPassword)

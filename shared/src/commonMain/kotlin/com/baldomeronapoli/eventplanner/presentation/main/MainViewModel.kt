@@ -4,8 +4,8 @@ import co.touchlab.kermit.Logger
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
 import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewModel
-import com.baldomeronapoli.eventplanner.domain.usecases.auth.CheckIsLoggedUserUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
+import com.baldomero.napoli.eventplanner.core.utils.useCaseRunner
+import com.baldomero.napoli.supabase.auth.domain.usecases.CheckIsLoggedUserUseCase
 import com.baldomeronapoli.eventplanner.presentation.main.MainContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.main.MainContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.main.MainContract.UiState

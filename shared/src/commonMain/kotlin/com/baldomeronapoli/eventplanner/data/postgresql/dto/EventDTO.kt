@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.data.postgresql.dto
 
+import com.baldomero.napoli.supabase.auth.data.models.UserDTO
 import com.baldomeronapoli.eventplanner.domain.models.Event
 import com.baldomeronapoli.eventplanner.mappers.Mappable
 import kotlinx.datetime.Instant
