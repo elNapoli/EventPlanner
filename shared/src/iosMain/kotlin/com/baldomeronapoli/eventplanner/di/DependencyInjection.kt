@@ -1,12 +1,12 @@
 package com.baldomeronapoli.eventplanner.di
 
+import com.baldomero.napoli.eventplanner.core.PreferencesManager
 import com.baldomeronapoli.eventplanner.data.repositories.AuthRepositoryImpl
 import com.baldomeronapoli.eventplanner.domain.repositories.AuthRepository
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.SignInWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthViewModel
 import com.baldomeronapoli.eventplanner.presentation.onBoard.OnBoardViewModel
-import com.baldomeronapoli.eventplanner.utils.PreferencesManager
 import com.russhwolf.settings.NSUserDefaultsSettings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get

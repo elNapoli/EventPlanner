@@ -1,6 +1,8 @@
 package com.baldomeronapoli.eventplanner.presentation.event
 
 import co.touchlab.kermit.Logger
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
 import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewModel
 import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
@@ -12,8 +14,6 @@ import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.models.AddressUI
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 import com.rickclephas.kmp.observableviewmodel.launch
 import dev.jordond.compass.Place
 import dev.jordond.compass.autocomplete.Autocomplete

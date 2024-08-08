@@ -19,11 +19,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baldomero.napoli.eventplanner.onboarding.presentation.OnboardContract.Effect
+import com.baldomero.napoli.eventplanner.onboarding.presentation.OnboardContract.UiIntent
+import com.baldomero.napoli.eventplanner.onboarding.presentation.OnboardContract.UiState
 import com.baldomeronapoli.eventplanner.android.components.CollectEffect
 import com.baldomeronapoli.eventplanner.android.mocks.onboardPagesList
 import com.baldomeronapoli.eventplanner.android.views.base.EmptyScaffold
-import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.onBoard.OnboardContract.UiIntent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -51,7 +52,7 @@ fun OnboardScreen(
             Effect.GoToAuthGraph -> goToAuth()
         }
     }
-    EmptyScaffold{
+    EmptyScaffold {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()

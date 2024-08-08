@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
 import com.baldomeronapoli.eventplanner.android.R
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 
 @Composable
 fun AlertDialog(

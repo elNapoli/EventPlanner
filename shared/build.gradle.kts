@@ -91,7 +91,8 @@ kotlin {
             implementation("io.github.jan-tennert.supabase:apollo-graphql")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
-            implementation("com.baldomero.napoli.eventplanner:core:1.0.0")
+            implementation("com.baldomero.napoli.eventplanner:core:1.0.1")
+            implementation("com.baldomero.napoli.eventplanner:onboarding:1.0.0")
             implementation("com.baldomero.napoli:common:1.0.0")
         }
         iosMain.dependencies {

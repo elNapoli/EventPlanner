@@ -3,10 +3,10 @@ package com.baldomeronapoli.eventplanner.presentation.auth
 import com.baldomero.napoli.common.randomUUID
 import com.baldomero.napoli.eventplanner.core.presentation.effect.BaseUiIntent
 import com.baldomero.napoli.eventplanner.core.presentation.intent.BaseEffect
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
 import com.baldomero.napoli.eventplanner.core.presentation.state.BaseUiState
 import com.baldomeronapoli.eventplanner.domain.models.ValidationError
 import com.baldomeronapoli.eventplanner.domain.properties.EmailValidation
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
 import com.baldomeronapoli.eventplanner.presentation.models.UserUI
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import com.baldomeronapoli.eventplanner.utils.ValidateState

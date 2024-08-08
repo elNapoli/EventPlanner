@@ -1,5 +1,7 @@
 package com.baldomeronapoli.eventplanner.presentation.auth
 
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
 import com.baldomero.napoli.eventplanner.core.presentation.viewModel.BaseViewModel
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.CreateUseWithEmailAndPasswordUseCase
 import com.baldomeronapoli.eventplanner.domain.usecases.auth.LoginWithGoogleUseCase
@@ -8,8 +10,6 @@ import com.baldomeronapoli.eventplanner.domain.usecases.useCaseRunner
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.auth.AuthContract.UiState
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
 
 open class AuthViewModel(
     private val createUseWithEmailAndPasswordUseCase: CreateUseWithEmailAndPasswordUseCase,

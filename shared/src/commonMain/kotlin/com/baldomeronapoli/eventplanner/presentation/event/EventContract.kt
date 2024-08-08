@@ -2,10 +2,10 @@ package com.baldomeronapoli.eventplanner.presentation.event
 
 import com.baldomero.napoli.eventplanner.core.presentation.effect.BaseUiIntent
 import com.baldomero.napoli.eventplanner.core.presentation.intent.BaseEffect
+import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
 import com.baldomero.napoli.eventplanner.core.presentation.state.BaseUiState
 import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
-import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUI
 
 interface EventContract {
     data class UiState(
