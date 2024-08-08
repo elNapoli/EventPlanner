@@ -43,6 +43,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.baldomero.napoli.common.formatters.TimeFormat
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AddressMap
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
@@ -62,7 +63,6 @@ import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.baldomeronapoli.eventplanner.presentation.models.FeedbackUIType
-import com.baldomeronapoli.eventplanner.utils.TimeConstant
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -193,7 +193,7 @@ fun CreateEventContent(
 
         item {
             NOutlinedTextField(
-                value = uiState.event.startDate.toFormattedDateString(TimeConstant.TIME_FORMAT_24_HOUR),
+                value = uiState.event.startDate.toFormattedDateString(TimeFormat.TIME_FORMAT_24_HOUR),
                 label = stringResource(id = R.string.hour),
                 maxLines = 1,
                 onValueChange = { },

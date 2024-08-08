@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.baldomero.napoli.common.formatters.TimeFormat
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
@@ -33,7 +34,6 @@ import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.White
 import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
-import com.baldomeronapoli.eventplanner.utils.TimeConstant
 
 
 @Composable
@@ -82,13 +82,13 @@ fun EventCard(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = event.startDate.toFormattedDateString(TimeConstant.DAY_ONLY),
+                    text = event.startDate.toFormattedDateString(TimeFormat.DAY_ONLY),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = Blue
                 )
                 Text(
-                    text = event.startDate.toFormattedDateString(TimeConstant.MONTH_SHORT_LETTER),
+                    text = event.startDate.toFormattedDateString(TimeFormat.MONTH_SHORT_LETTER),
                     style = MaterialTheme.typography.titleSmall,
                     color = Blue,
                 )
@@ -107,7 +107,10 @@ fun EventCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(text = event.startDate.toFormattedDateString(TimeConstant.TIME_FORMAT_24_HOUR), style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = event.startDate.toFormattedDateString(TimeFormat.TIME_FORMAT_24_HOUR),
+                style = MaterialTheme.typography.titleSmall
+            )
             Text(
                 text = "Free",
                 color = Blue,
