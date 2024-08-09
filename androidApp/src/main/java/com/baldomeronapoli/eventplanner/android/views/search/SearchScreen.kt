@@ -15,14 +15,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baldomero.napoli.eventplannerevents.presentation.models.EventUI
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.CategoryFilter
 import com.baldomeronapoli.eventplanner.android.components.EventCard
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
 import com.baldomeronapoli.eventplanner.android.components.NPreview
 import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
-import com.baldomeronapoli.eventplanner.domain.models.Event
-import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 @Composable
 fun SearchScreen(modifier: Modifier = Modifier, goToEventDetail: (EventUI) -> Unit) {

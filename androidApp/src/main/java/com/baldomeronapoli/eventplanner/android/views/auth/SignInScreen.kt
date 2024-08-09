@@ -2,6 +2,7 @@ package com.baldomeronapoli.eventplanner.android.views.auth
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -67,6 +68,7 @@ fun SignInScreen(
     goToSignUp: () -> Unit,
     goToHome: () -> Unit
 ) {
+    Log.e("uiState", uiState.toString())
     CollectEffect(effect) {
         when (it) {
             Effect.GoToHome -> goToHome()
@@ -196,7 +198,7 @@ fun SignInScreen(
                             text = stringResource(id = R.string.login_with_google),
                             squareButton = true,
                             hashedNonce = uiState.nonceHash(),
-                            googleClientId = "uiState.googleClientId"
+                            googleClientId = "829828855061-q0kgij7220515fcpetll46pfnf3l2ode.apps.googleusercontent.com"
                         ) {
                             onIntent(UiIntent.LoginWithGoogle(it))
                         }

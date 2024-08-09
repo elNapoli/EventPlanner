@@ -20,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.*
+import com.baldomero.napoli.eventplannerevents.presentation.models.EventUI
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.CategoryFilter
 import com.baldomeronapoli.eventplanner.android.components.EventCard
@@ -29,10 +31,6 @@ import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.Gray60
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
-import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

@@ -45,6 +45,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.baldomero.napoli.common.formatters.TimeFormat
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUIType
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.Effect
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.UiIntent
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.UiState
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AddressMap
 import com.baldomeronapoli.eventplanner.android.components.AlertDialog
@@ -60,9 +63,6 @@ import com.baldomeronapoli.eventplanner.android.utils.RequestMultiplePermissions
 import com.baldomeronapoli.eventplanner.android.utils.getRequiredPermissions
 import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.android.utils.uriToByteArray
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

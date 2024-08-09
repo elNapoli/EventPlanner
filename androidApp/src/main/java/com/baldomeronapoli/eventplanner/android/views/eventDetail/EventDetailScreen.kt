@@ -28,6 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.Effect
+import com.baldomero.napoli.eventplannerevents.presentation.EventContract.UiIntent
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.AddressMap
 import com.baldomeronapoli.eventplanner.android.components.NButton
@@ -37,9 +40,6 @@ import com.baldomeronapoli.eventplanner.android.theme.Blue
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
 import com.baldomeronapoli.eventplanner.android.utils.toRichHtmlString
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.Effect
-import com.baldomeronapoli.eventplanner.presentation.event.EventContract.UiIntent
-import com.baldomeronapoli.eventplanner.presentation.main.MainContract
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -47,12 +47,12 @@ import kotlinx.coroutines.flow.StateFlow
 fun EventDetailScreen(
     modifier: Modifier = Modifier,
     onIntent: (UiIntent) -> Unit,
-    mainState: MainContract.UiState,
+    uiState: EventContract.UiState,
     effect: StateFlow<Effect?>,
     eventId: String,
     goBack: () -> Unit = {}
 ) {
-    if (mainState.currentEvent != null) {
+    if (uiState.currentEvent != null) {
 
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             AsyncImage(
@@ -62,7 +62,7 @@ fun EventDetailScreen(
                     .clip(MaterialTheme.shapes.small),
 
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(mainState.currentEvent!!.thumbnail.name)
+                    .data(uiState.currentEvent!!.thumbnail.name)
                     .crossfade(true)
                     .build(),
                 placeholder = painterResource(R.drawable.placeholder),
@@ -98,14 +98,14 @@ fun EventDetailScreen(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
-                    Text(text = mainState.currentEvent!!.startDate.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
+                    Text(text = uiState.currentEvent!!.startDate.toFormattedDateString("EEEE dd 'de' MMMM 'del' yyyy"))
                 }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Icon(imageVector = Icons.Default.AccessTime, contentDescription = null)
-                    Text(text = mainState.currentEvent!!.startDate.toFormattedDateString("HH:mm"))
+                    Text(text = uiState.currentEvent!!.startDate.toFormattedDateString("HH:mm"))
                 }
             }
             Column(
@@ -122,7 +122,7 @@ fun EventDetailScreen(
 
                 )
                 Text(
-                    text = mainState.currentEvent!!.description.toRichHtmlString(),
+                    text = uiState.currentEvent!!.description.toRichHtmlString(),
                     style = MaterialTheme.typography.labelLarge,
                     maxLines = 5,
                     overflow = TextOverflow.Ellipsis,
@@ -147,7 +147,7 @@ fun EventDetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    OrganizerAvatar(name = mainState.currentEvent!!.host.email)
+                    OrganizerAvatar(name = uiState.currentEvent!!.host.email)
                     Text(
                         text = stringResource(id = R.string.chat),
                         color = Blue,
@@ -172,10 +172,10 @@ fun EventDetailScreen(
 
 
                 AddressMap(
-                    address = mainState.currentEvent!!.address.street,
+                    address = uiState.currentEvent!!.address.street,
                     previewMode = true,
-                    lat = mainState.currentEvent!!.address.latitude,
-                    lng = mainState.currentEvent!!.address.longitude,
+                    lat = uiState.currentEvent!!.address.latitude,
+                    lng = uiState.currentEvent!!.address.longitude,
                 ) { onIntent(UiIntent.UpdatePlace(it)) }
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -203,7 +203,7 @@ fun PreviewEventDetailScreenLight(modifier: Modifier = Modifier) {
 
     NPreview {
         EventDetailScreen(
-            mainState = MainContract.UiState(),
+            uiState = EventContract.UiState(),
             onIntent = {},
             effect = effect,
             eventId = ""

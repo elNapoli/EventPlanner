@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.baldomero.napoli.eventplannerevents.presentation.models.EventUI
 import com.baldomeronapoli.eventplanner.android.components.EventCardWide
 import com.baldomeronapoli.eventplanner.android.components.NPreview
-import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 
 @Composable

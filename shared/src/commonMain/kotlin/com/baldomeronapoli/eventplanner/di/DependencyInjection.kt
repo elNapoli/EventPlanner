@@ -1,16 +1,9 @@
 package com.baldomeronapoli.eventplanner.di
 
+import com.baldomero.napoli.eventplannerevents.di.EventModule
 import com.baldomero.napoli.supabase.auth.di.AuthModule
 import com.baldomero.napoli.supabase.network.config.NetworkConfig
 import com.baldomero.napoli.supabase.network.di.networkModule
-import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
-import com.baldomeronapoli.eventplanner.data.repositories.EventRepositoryImpl
-import com.baldomeronapoli.eventplanner.domain.repositories.EventRepository
-import com.baldomeronapoli.eventplanner.domain.usecases.events.CreateEventUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventByIdUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.GetEventsByAttendeeUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.GetNearbyEventsUseCase
-import com.baldomeronapoli.eventplanner.domain.usecases.events.SearchBoardGamesUseCase
 import com.baldomeronapoli.eventplanner.shared.MySecrets
 import dev.jordond.compass.geolocation.Geolocator
 import dev.jordond.compass.geolocation.mobile
@@ -39,9 +32,8 @@ object DependencyInjection {
                 appModule(),
                 repositoryModule(),
                 AuthModule.init(),
-                useCaseModule(),
+                EventModule.init(),
                 platformModule(),
-                managersModuleO()
             )
         }
     }
@@ -54,9 +46,8 @@ object DependencyInjection {
                 appModule(),
                 repositoryModule(),
                 AuthModule.init(),
-                useCaseModule(),
+                EventModule.init(),
                 platformModule(),
-                managersModuleO()
             )
         }.koin
 
@@ -68,9 +59,6 @@ object DependencyInjection {
                 override val supabaseKey: String = MySecrets.API_KEY_SUPABASE
                 override val googleClientId: String = MySecrets.GOOGLE_CLIENT_ID
             }
-        }
-        single {
-            EventQueries(get())
         }
     }
 
@@ -89,18 +77,6 @@ object DependencyInjection {
                 }
             }
         }
-        single<EventRepository> { EventRepositoryImpl(get()) }
     }
 
-    private fun managersModuleO() = module {
-
-    }
-
-    private fun useCaseModule() = module {
-        single { CreateEventUseCase(get()) }
-        single { GetEventsByAttendeeUseCase(get()) }
-        single { GetEventByIdUseCase(get()) }
-        single { SearchBoardGamesUseCase(get()) }
-        single { GetNearbyEventsUseCase(get()) }
-    }
 }

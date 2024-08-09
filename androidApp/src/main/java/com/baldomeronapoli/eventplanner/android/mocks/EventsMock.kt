@@ -1,6 +1,7 @@
 package com.baldomeronapoli.eventplanner.android.mocks
 
-import com.baldomeronapoli.eventplanner.presentation.models.EventUI
+import com.baldomero.napoli.eventplannerevents.presentation.models.EventUI
+
 
 object EventsMock {
     val event = EventUI(

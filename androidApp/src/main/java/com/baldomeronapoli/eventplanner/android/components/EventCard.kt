@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.baldomero.napoli.common.formatters.TimeFormat
+import com.baldomero.napoli.eventplannerevents.presentation.models.EventUI
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.mocks.EventsMock
 import com.baldomeronapoli.eventplanner.android.theme.Blue
@@ -33,7 +34,6 @@ import com.baldomeronapoli.eventplanner.android.theme.Gray
 import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.theme.White
 import com.baldomeronapoli.eventplanner.android.utils.toFormattedDateString
-import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 
 @Composable

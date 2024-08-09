@@ -16,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.baldomero.napoli.eventplannerevents.presentation.EventViewModel
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.NTopBar
 import com.baldomeronapoli.eventplanner.android.navigation.NavigationEvent
@@ -25,7 +26,6 @@ import com.baldomeronapoli.eventplanner.android.theme.GrayTitle
 import com.baldomeronapoli.eventplanner.android.views.base.ScaffoldWithBottomBarNavigation
 import com.baldomeronapoli.eventplanner.android.views.events.CreateEventScreen
 import com.baldomeronapoli.eventplanner.android.views.events.EventsListScreen
-import com.baldomeronapoli.eventplanner.presentation.event.EventViewModel
 import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.myEventGraph(

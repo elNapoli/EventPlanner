@@ -36,9 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import coil.compose.AsyncImage
+import com.baldomero.napoli.eventplannerevents.presentation.models.BoardGameUI
 import com.baldomeronapoli.eventplanner.android.R
 import com.baldomeronapoli.eventplanner.android.components.NOutlinedTextField
-import com.baldomeronapoli.eventplanner.presentation.models.BoardGameUI
 
 
 @Composable
