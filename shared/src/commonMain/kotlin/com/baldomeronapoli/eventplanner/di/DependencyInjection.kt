@@ -1,5 +1,6 @@
 package com.baldomeronapoli.eventplanner.di
 
+import com.baldomero.napoli.supabase.auth.di.AuthModule
 import com.baldomero.napoli.supabase.network.config.NetworkConfig
 import com.baldomero.napoli.supabase.network.di.networkModule
 import com.baldomeronapoli.eventplanner.data.postgresql.queries.EventQueries
@@ -25,7 +26,6 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
-import com.baldomero.napoli.supabase.auth.di.DependencyInjection as AuthDependencyInjection
 
 expect fun platformModule(): Module
 
@@ -38,7 +38,7 @@ object DependencyInjection {
                 networkModule,
                 appModule(),
                 repositoryModule(),
-                AuthDependencyInjection.init(),
+                AuthModule.init(),
                 useCaseModule(),
                 platformModule(),
                 managersModuleO()
@@ -53,7 +53,7 @@ object DependencyInjection {
                 networkModule,
                 appModule(),
                 repositoryModule(),
-                AuthDependencyInjection.init(),
+                AuthModule.init(),
                 useCaseModule(),
                 platformModule(),
                 managersModuleO()

@@ -3,8 +3,8 @@ package com.baldomeronapoli.eventplanner.presentation.main
 import com.baldomero.napoli.eventplanner.core.presentation.effect.BaseUiIntent
 import com.baldomero.napoli.eventplanner.core.presentation.intent.BaseEffect
 import com.baldomero.napoli.eventplanner.core.presentation.models.FeedbackUI
+import com.baldomero.napoli.eventplanner.core.presentation.models.UserUI
 import com.baldomero.napoli.eventplanner.core.presentation.state.BaseUiState
-import com.baldomero.napoli.supabase.auth.presentation.models.UserUI
 import com.baldomeronapoli.eventplanner.presentation.models.EventUI
 
 
